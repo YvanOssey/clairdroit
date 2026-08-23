@@ -20,9 +20,10 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { startLogin } from "@/const";
+import { trpc } from "@/lib/trpc";
 import { useIsMobile } from "@/hooks/useMobile";
 import { FileText, LayoutDashboard, LogOut, PanelLeft, PenLine } from "lucide-react";
-import { CSSProperties, useEffect, useRef, useState } from "react";
+import { CSSProperties, FormEvent, useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
 import { DashboardLayoutSkeleton } from './DashboardLayoutSkeleton';
 import { Button } from "./ui/button";
@@ -37,6 +38,17 @@ const SIDEBAR_WIDTH_KEY = "sidebar-width";
 const DEFAULT_WIDTH = 280;
 const MIN_WIDTH = 200;
 const MAX_WIDTH = 480;
+const localAuthEnabled = import.meta.env.DEV && import.meta.env.VITE_LOCAL_AUTH_ENABLED === "true";
+
+function LocalLogin() {
+  const utils = trpc.useUtils();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const loginMutation = trpc.auth.localLogin.useMutation({ onSuccess: async () => { await utils.auth.me.invalidate(); }, });
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => { event.preventDefault(); loginMutation.mutate({ email, password }); };
+
+  return <div className="flex min-h-screen items-center justify-center bg-[#f7f4ee] px-5 text-[#12243b]"><form onSubmit={handleSubmit} className="w-full max-w-md border-t-2 border-[#b86e4b] bg-[#ece6da] p-7 shadow-sm md:p-10"><p className="eyebrow mb-3">Développement local</p><h1 className="font-display text-4xl font-semibold leading-none">Connexion rédaction.</h1><p className="mt-4 text-sm leading-6 text-[#536174]">Utilisez les identifiants définis dans votre fichier .env.local.</p><label className="mt-8 block"><span className="mb-2 block text-xs font-bold uppercase tracking-[0.1em] text-[#667384]">Email</span><input required type="email" value={email} onChange={(event) => setEmail(event.target.value)} autoComplete="username" className="w-full border-b border-[rgba(18,36,59,0.25)] bg-transparent px-0 py-3 text-sm focus:border-[#b86e4b] focus:outline-none" /></label><label className="mt-5 block"><span className="mb-2 block text-xs font-bold uppercase tracking-[0.1em] text-[#667384]">Mot de passe</span><input required type="password" value={password} onChange={(event) => setPassword(event.target.value)} autoComplete="current-password" className="w-full border-b border-[rgba(18,36,59,0.25)] bg-transparent px-0 py-3 text-sm focus:border-[#b86e4b] focus:outline-none" /></label>{loginMutation.error && <p className="mt-5 border-l-2 border-[#b86e4b] bg-[#f3e0d8] px-4 py-3 text-sm text-[#9b5439]">{loginMutation.error.message}</p>}<button type="submit" disabled={loginMutation.isPending} className="mt-7 w-full bg-[#12243b] px-5 py-3.5 text-xs font-bold uppercase tracking-[0.12em] text-[#f7f4ee] transition hover:bg-[#b86e4b] disabled:opacity-60">{loginMutation.isPending ? "Connexion…" : "Se connecter"}</button></form></div>;
+}
 
 export default function DashboardLayout({
   children,
@@ -58,6 +70,7 @@ export default function DashboardLayout({
   }
 
   if (!user) {
+    if (localAuthEnabled) return <LocalLogin />;
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="flex flex-col items-center gap-8 p-8 max-w-md w-full">

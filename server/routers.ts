@@ -1,11 +1,14 @@
 /* Administration éditoriale : procédures publiques limitées aux publications et mutations réservées aux administrateurs. */
+import { timingSafeEqual } from "node:crypto";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { COOKIE_NAME } from "@shared/const";
+import { COOKIE_NAME, ONE_YEAR_MS } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
+import { ENV } from "./_core/env";
+import { sdk } from "./_core/sdk";
 import { systemRouter } from "./_core/systemRouter";
 import { adminProcedure, publicProcedure, router } from "./_core/trpc";
-import { getArticleById, getPublishedArticleBySlug, insertArticle, listAdminArticles, listPublishedArticles, updateArticle } from "./db";
+import { getArticleById, getPublishedArticleBySlug, insertArticle, listAdminArticles, listPublishedArticles, updateArticle, upsertUser } from "./db";
 import { storagePut } from "./storage";
 
 const articleInput = z.object({
@@ -20,13 +23,30 @@ const articleInput = z.object({
 
 const slugify = (value: string) => value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "").slice(0, 180) || `article-${Date.now()}`;
 
+const safeEqual = (left: string, right: string) => {
+  const a = Buffer.from(left);
+  const b = Buffer.from(right);
+  return a.length === b.length && timingSafeEqual(a, b);
+};
+
 export const appRouter = router({
   system: systemRouter,
   auth: router({
     me: publicProcedure.query((opts) => opts.ctx.user),
     logout: publicProcedure.mutation(({ ctx }) => {
       const cookieOptions = getSessionCookieOptions(ctx.req);
-      ctx.res.clearCookie(COOKIE_NAME, { ...cookieOptions, maxAge: -1 });
+      ctx.res.clearCookie(COOKIE_NAME, { ...cookieOptions, sameSite: ENV.localAuthEnabled ? "lax" : cookieOptions.sameSite, maxAge: -1 });
+      return { success: true } as const;
+    }),
+    localLogin: publicProcedure.input(z.object({ email: z.string().email(), password: z.string().min(1) })).mutation(async ({ input, ctx }) => {
+      if (!ENV.localAuthEnabled) throw new TRPCError({ code: "FORBIDDEN", message: "La connexion locale est désactivée." });
+      if (!ENV.localAdminEmail || !ENV.localAdminPassword) throw new TRPCError({ code: "PRECONDITION_FAILED", message: "Configurez LOCAL_ADMIN_EMAIL et LOCAL_ADMIN_PASSWORD." });
+      if (!safeEqual(input.email.trim().toLowerCase(), ENV.localAdminEmail.trim().toLowerCase()) || !safeEqual(input.password, ENV.localAdminPassword)) throw new TRPCError({ code: "UNAUTHORIZED", message: "Email ou mot de passe incorrect." });
+      const openId = `local:${ENV.localAdminEmail.trim().toLowerCase()}`;
+      await upsertUser({ openId, email: ENV.localAdminEmail.trim().toLowerCase(), name: "Administrateur local", loginMethod: "local", role: "admin" });
+      const token = await sdk.signSession({ openId, appId: ENV.appId || "local", name: "Administrateur local" });
+      const cookieOptions = getSessionCookieOptions(ctx.req);
+      ctx.res.cookie(COOKIE_NAME, token, { ...cookieOptions, sameSite: "lax", maxAge: ONE_YEAR_MS });
       return { success: true } as const;
     }),
   }),

@@ -31,6 +31,11 @@ describe("articles administration permissions", () => {
     expect(Array.isArray(result)).toBe(true);
   });
 
+  it("keeps local login disabled by default", async () => {
+    const caller = appRouter.createCaller(contextFor("admin"));
+    await expect(caller.auth.localLogin({ email: "admin@example.local", password: "test" })).rejects.toMatchObject({ code: "FORBIDDEN" });
+  });
+
   it("rejects an oversized image before storage upload", async () => {
     const caller = appRouter.createCaller(contextFor("admin"));
     const oversizedData = Buffer.alloc(6_000_001).toString("base64");

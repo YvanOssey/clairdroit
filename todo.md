@@ -36,3 +36,18 @@
 - [x] Afficher réellement les images Markdown insérées dans le contenu des articles administrés sur la page publique.
 - [x] Vérifier l’éditeur enrichi en mobile après l’ajout de l’aperçu, de l’upload et du SEO.
 - [x] Créer le checkpoint livrable final après ces validations.
+
+## Authentification locale temporaire
+
+- [x] Ajouter un mode de connexion local activable uniquement en développement.
+- [x] Ajouter les variables locales d’identification sans les versionner.
+- [x] Créer la session locale et l’endpoint de connexion/déconnexion.
+- [x] Relier la session locale au contrôle administrateur sans modifier l’authentification Manus en production.
+- [x] Ajouter les tests de refus, de connexion et de protection de route.
+- [x] Documenter l’activation locale et vérifier le build.
+
+## Compléments de sécurité locale
+
+- [x] Vérifier que `.env.local` est explicitement ignoré par Git.
+- [x] Ajouter un test de connexion locale réussie avec création du cookie et accès admin.
+- [x] Documenter clairement l’activation, l’usage strictement local et la désactivation en production.

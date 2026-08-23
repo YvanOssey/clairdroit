@@ -285,6 +285,21 @@ class SDKServer {
       return buildCronUser(userInfo);
     }
 
+    if (ENV.localAuthEnabled && session.openId.startsWith("local:")) {
+      const now = new Date();
+      return {
+        id: 0,
+        openId: session.openId,
+        email: ENV.localAdminEmail,
+        name: "Administrateur local",
+        loginMethod: "local",
+        role: "admin",
+        createdAt: now,
+        updatedAt: now,
+        lastSignedIn: now,
+      };
+    }
+
     const sessionUserId = session.openId;
     const signedInAt = new Date();
     let user = await db.getUserByOpenId(sessionUserId);
