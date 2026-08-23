@@ -120,3 +120,9 @@
 
 - [x] Persister explicitement la clé d’icône sociale et l’utiliser dans l’aperçu et le footer.
 - [x] Ajouter une validation de sauvegarde et de réhydratation des réglages sociaux avant le checkpoint.
+
+## Correctif déconnexion locale
+
+- [x] Corriger le bouton de déconnexion pour supprimer réellement la session locale et réafficher la page de connexion.
+- [x] Ajouter ou mettre à jour un test de déconnexion côté client/serveur et valider le parcours sous Windows.
+- [ ] Faire confirmer sous Windows que le clic sur « Se déconnecter » réaffiche bien la page de connexion après téléchargement de la correction.
