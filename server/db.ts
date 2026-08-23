@@ -1,7 +1,17 @@
 /* Administration éditoriale : accès aux articles centralisé ici pour garder les procédures tRPC fines et testables. */
 import { desc, eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertArticle, InsertSiteSettings, InsertUser, articles, siteSettings, users } from "../drizzle/schema";
+import {
+  articles,
+  contactMessages,
+  InsertArticle,
+  InsertContactMessage,
+  InsertSiteSettings,
+  InsertUser,
+  newsletterSubscribers,
+  siteSettings,
+  users,
+} from "../drizzle/schema";
 import { SITE_SETTINGS_DEFAULTS, type PageContentValues, type SocialLink } from "../shared/siteSettings";
 import { ENV } from "./_core/env";
 
@@ -110,6 +120,43 @@ export async function updateArticle(id: number, values: Partial<InsertArticle>) 
   if (!db) throw new Error("Database is not available");
   await db.update(articles).set(values).where(eq(articles.id, id));
   return getArticleById(id);
+}
+
+export async function insertContactMessage(values: InsertContactMessage) {
+  const db = await getDb();
+  if (!db) throw new Error("Database is not available");
+  const result = await db.insert(contactMessages).values(values);
+  const inserted = await db.select().from(contactMessages).where(eq(contactMessages.id, Number(result[0].insertId))).limit(1);
+  return inserted[0];
+}
+
+export async function listContactMessages() {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(contactMessages).orderBy(desc(contactMessages.createdAt));
+}
+
+export async function updateContactMessageStatus(id: number, status: "new" | "read" | "archived") {
+  const db = await getDb();
+  if (!db) throw new Error("Database is not available");
+  await db.update(contactMessages).set({ status }).where(eq(contactMessages.id, id));
+  const result = await db.select().from(contactMessages).where(eq(contactMessages.id, id)).limit(1);
+  return result[0];
+}
+
+export async function insertNewsletterSubscriber(email: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database is not available");
+  const now = new Date();
+  await db.insert(newsletterSubscribers).values({ email, status: "active" }).onDuplicateKeyUpdate({ set: { status: "active", updatedAt: now } });
+  const result = await db.select().from(newsletterSubscribers).where(eq(newsletterSubscribers.email, email)).limit(1);
+  return result[0];
+}
+
+export async function listNewsletterSubscribers() {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(newsletterSubscribers).orderBy(desc(newsletterSubscribers.createdAt));
 }
 
 function parseSocialLinks(value: string | null | undefined): SocialLink[] {

@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/sidebar";
 import { trpc } from "@/lib/trpc";
 import { useIsMobile } from "@/hooks/useMobile";
-import { FileText, LayoutDashboard, LogOut, PanelLeft, PenLine, Settings } from "lucide-react";
+import { FileText, Inbox, LayoutDashboard, LogOut, PanelLeft, PenLine, Settings } from "lucide-react";
 import { CSSProperties, FormEvent, useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
 import { DashboardLayoutSkeleton } from './DashboardLayoutSkeleton';
@@ -31,6 +31,7 @@ const menuItems = [
   { icon: FileText, label: "Mes articles", path: "/admin/articles" },
   { icon: PenLine, label: "Nouvel article", path: "/admin/articles/new" },
   { icon: Settings, label: "Identité du site", path: "/admin/settings" },
+  { icon: Inbox, label: "Messages reçus", path: "/admin/inbox" },
 ];
 
 const SIDEBAR_WIDTH_KEY = "sidebar-width";

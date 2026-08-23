@@ -164,17 +164,22 @@ export function SiteHeader() {
 
 export function SiteFooter() {
   const [email, setEmail] = useState("");
+  const [subscribed, setSubscribed] = useState(false);
   const { data: remoteSettings } = trpc.site.settings.useQuery();
+  const subscribe = trpc.newsletter.subscribe.useMutation({
+    onSuccess: () => {
+      setSubscribed(true);
+      setEmail("");
+      toast.success("Votre inscription à la newsletter est confirmée.");
+    },
+    onError: (error) => toast.error(error.message),
+  });
   const settings = { ...SITE_SETTINGS_DEFAULTS, ...remoteSettings, logoUrl: remoteSettings?.logoUrl ?? SITE_SETTINGS_DEFAULTS.logoUrl, socialLinks: remoteSettings?.socialLinks ?? SITE_SETTINGS_DEFAULTS.socialLinks };
 
   const handleSubscribe = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!email.trim()) {
-      toast.error("Indiquez une adresse email pour vous inscrire.");
-      return;
-    }
-    toast.success("Merci. Votre inscription est enregistrée pour cette démo.");
-    setEmail("");
+    setSubscribed(false);
+    subscribe.mutate({ email });
   };
 
   return (
@@ -210,13 +215,15 @@ export function SiteFooter() {
               type="email"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
+              required
               placeholder="votre@email.fr"
               className="min-w-0 flex-1 bg-transparent text-sm text-[#f7f4ee] placeholder:text-[#8793a0] focus:outline-none"
             />
-            <button type="submit" className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.12em] text-[#d7a187] transition-colors hover:text-[#f7f4ee]">
-              S’inscrire <ArrowUpRight size={15} />
+            <button disabled={subscribe.isPending} type="submit" className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.12em] text-[#d7a187] transition-colors hover:text-[#f7f4ee] disabled:cursor-wait disabled:opacity-60">
+              {subscribe.isPending ? "Envoi…" : "S’inscrire"} <ArrowUpRight size={15} />
             </button>
           </form>
+          {subscribed && <p role="status" className="mt-3 text-xs text-[#d7a187]">Vous êtes bien inscrit à la prochaine édition.</p>}
         </div>
       </div>
       <div className="border-t border-[#34455b]">

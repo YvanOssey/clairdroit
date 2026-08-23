@@ -8,9 +8,26 @@ import { ENV } from "./_core/env";
 import { sdk } from "./_core/sdk";
 import { systemRouter } from "./_core/systemRouter";
 import { adminProcedure, publicProcedure, router } from "./_core/trpc";
-import { getSiteSettings, getUserByEmail, getArticleById, getPublishedArticleBySlug, insertArticle, listAdminArticles, listPublishedArticles, updateArticle, upsertSiteSettings, upsertUser } from "./db";
+import {
+  getSiteSettings,
+  getUserByEmail,
+  getArticleById,
+  getPublishedArticleBySlug,
+  insertArticle,
+  insertContactMessage,
+  insertNewsletterSubscriber,
+  listAdminArticles,
+  listContactMessages,
+  listNewsletterSubscribers,
+  listPublishedArticles,
+  updateArticle,
+  updateContactMessageStatus,
+  upsertSiteSettings,
+  upsertUser,
+} from "./db";
 import { hashPassword, verifyPassword } from "./auth/password";
 import { storagePut } from "./storage";
+import { emailText, sendNotificationEmail } from "./email";
 
 const siteSettingsInput = z.object({
   siteName: z.string().trim().min(1).max(120),
@@ -108,6 +125,38 @@ export const appRouter = router({
   site: router({
     settings: publicProcedure.query(() => getSiteSettings()),
     updateSettings: adminProcedure.input(siteSettingsInput).mutation(({ input }) => upsertSiteSettings(input)),
+  }),
+  contact: router({
+    submit: publicProcedure.input(z.object({
+      name: z.string().trim().min(2).max(160),
+      email: z.string().trim().email().max(320),
+      subject: z.string().trim().min(2).max(255),
+      message: z.string().trim().min(10).max(10000),
+    })).mutation(async ({ input }) => {
+      const saved = await insertContactMessage(input);
+      await sendNotificationEmail({
+        subject: `Nouveau message — ${input.subject}`,
+        replyTo: input.email,
+        text: `Nouveau message reçu sur Droit de regard.\n\nNom : ${input.name}\nEmail : ${input.email}\nObjet : ${input.subject}\n\n${input.message}`,
+        html: `<h2>Nouveau message reçu sur Droit de regard</h2><p><strong>Nom :</strong> ${emailText(input.name)}</p><p><strong>Email :</strong> ${emailText(input.email)}</p><p><strong>Objet :</strong> ${emailText(input.subject)}</p><p>${emailText(input.message).replace(/\n/g, "<br />")}</p>`,
+      });
+      return { success: true, id: saved?.id } as const;
+    }),
+    adminList: adminProcedure.query(() => listContactMessages()),
+    updateStatus: adminProcedure.input(z.object({ id: z.number().int().positive(), status: z.enum(["new", "read", "archived"]) })).mutation(({ input }) => updateContactMessageStatus(input.id, input.status)),
+  }),
+  newsletter: router({
+    subscribe: publicProcedure.input(z.object({ email: z.string().trim().email().max(320) })).mutation(async ({ input }) => {
+      const subscriber = await insertNewsletterSubscriber(input.email);
+      await sendNotificationEmail({
+        subject: "Nouvelle inscription à la newsletter",
+        replyTo: input.email,
+        text: `Nouvelle inscription à la newsletter de Droit de regard.\n\nEmail : ${input.email}`,
+        html: `<h2>Nouvelle inscription à la newsletter</h2><p><strong>Email :</strong> ${emailText(input.email)}</p>`,
+      });
+      return { success: true, id: subscriber?.id } as const;
+    }),
+    adminList: adminProcedure.query(() => listNewsletterSubscribers()),
   }),
   articles: router({
     published: publicProcedure.query(() => listPublishedArticles()),

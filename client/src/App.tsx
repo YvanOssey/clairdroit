@@ -7,6 +7,7 @@ import AdminArticleEditor from "@/pages/AdminArticleEditor";
 import AdminArticles from "@/pages/AdminArticles";
 import AdminOverview from "@/pages/AdminOverview";
 import AdminSiteSettings from "@/pages/AdminSiteSettings";
+import AdminInbox from "@/pages/AdminInbox";
 import ArticleIndex from "@/pages/ArticleIndex";
 import ArticlePage from "@/pages/ArticlePage";
 import CategoryPage from "@/pages/CategoryPage";
@@ -26,6 +27,7 @@ function Router() {
       <Route path="/a-propos" component={About} />
       <Route path="/contact" component={Contact} />
       <Route path="/admin/settings" component={AdminSiteSettings} />
+      <Route path="/admin/inbox" component={AdminInbox} />
       <Route path="/admin/articles/:id/edit" component={AdminArticleEditor} />
       <Route path="/admin/articles/new" component={AdminArticleEditor} />
       <Route path="/admin/articles" component={AdminArticles} />

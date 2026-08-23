@@ -125,7 +125,7 @@
 
 - [x] Corriger le bouton de déconnexion pour supprimer réellement la session locale et réafficher la page de connexion.
 - [x] Ajouter ou mettre à jour un test de déconnexion côté client/serveur et valider le parcours sous Windows.
-- [ ] Faire confirmer sous Windows que le clic sur « Se déconnecter » réaffiche bien la page de connexion après téléchargement de la correction.
+- [x] Faire confirmer sous Windows que le clic sur « Se déconnecter » réaffiche bien la page de connexion après téléchargement de la correction.
 
 ## Personnalisation des pages éditoriales
 
@@ -138,7 +138,7 @@
 
 - [x] Synchroniser les titres et descriptions SEO pertinents avec les contenus éditoriaux de chaque page.
 - [x] Valider le parcours de sauvegarde tRPC, le rechargement logique des réglages et le rendu public des nouveaux contenus.
-- [ ] Créer un checkpoint après ces validations complémentaires.
+- [x] Créer un checkpoint après ces validations complémentaires.
 
 ## Contenu éditorial de lancement
 
@@ -157,4 +157,12 @@
 - [x] Remplacer le lien d’ancrage intercepté par un défilement explicite vers la section À la une.
 - [x] Vérifier le clic sur desktop et mobile, puis valider le build.
 - [ ] Tester réellement le bouton « Dernière lecture » sur desktop et mobile par un clic et confirmer l’arrivée sur `#derniere-lecture`.
-- [ ] Exécuter `pnpm build` après le correctif du bouton et revalider ce suivi.
+- [x] Exécuter `pnpm build` après le correctif du bouton et revalider ce suivi.
+
+## Formulaires Contact et Newsletter réels
+
+- [x] Ajouter les tables `contactMessages` et `newsletterSubscribers`.
+- [x] Ajouter les procédures publiques de soumission et les procédures admin de consultation.
+- [x] Ajouter l’envoi sécurisé de notifications email à l’adresse administrateur configurée.
+- [x] Brancher les formulaires publics avec états de chargement, succès et erreur.
+- [x] Ajouter les tests, la documentation des secrets et valider le build.
