@@ -22,3 +22,17 @@
 - [x] Extraire la logique de recherche globale dans une fonction testable et couvrir les résultats d’articles publiés.
 - [x] Afficher explicitement les erreurs de chargement dans les écrans d’administration et dans l’éditeur.
 - [x] Refaire le checkpoint après ces validations complémentaires.
+
+## Nouvelle extension éditeur
+
+- [x] Ajouter méta-titre et méta-description au modèle des articles et à la migration.
+- [x] Ajouter l’upload sécurisé d’images vers le stockage du projet et l’insertion d’URL dans le contenu.
+- [x] Ajouter un mode aperçu fidèle dans l’éditeur sans publication.
+- [x] Afficher les métadonnées SEO et les images dans le rendu public.
+- [x] Ajouter les tests, vérifier le responsive et créer un nouveau checkpoint.
+
+## Correctifs finaux
+
+- [x] Afficher réellement les images Markdown insérées dans le contenu des articles administrés sur la page publique.
+- [x] Vérifier l’éditeur enrichi en mobile après l’ajout de l’aperçu, de l’upload et du SEO.
+- [x] Créer le checkpoint livrable final après ces validations.

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { searchArticles, type RemoteArticle } from "./content";
+import { fromRemoteArticle, searchArticles, type RemoteArticle } from "./content";
 
 const publishedArticle = {
   id: 7,
@@ -10,6 +10,8 @@ const publishedArticle = {
   category: "Numérique",
   author: "La rédaction",
   coverImage: null,
+  seoTitle: "La preuve numérique devant le juge",
+  seoDescription: "Les nouveaux repères pour documenter un litige.",
   status: "published",
   publishedAt: new Date(),
   createdAt: new Date(),
@@ -17,6 +19,11 @@ const publishedArticle = {
 } satisfies RemoteArticle;
 
 describe("searchArticles", () => {
+  it("maps inserted Markdown images to public image sections", () => {
+    const article = fromRemoteArticle({ ...publishedArticle, content: "Premier paragraphe.\n\n![Illustration](https://example.com/illustration.jpg)" });
+    expect(article.sections[1]).toMatchObject({ image: "https://example.com/illustration.jpg", body: "" });
+  });
+
   it("includes published articles supplied by the administration", () => {
     expect(searchArticles("preuve numérique", [
       {

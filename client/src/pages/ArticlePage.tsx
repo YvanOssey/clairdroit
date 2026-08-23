@@ -1,4 +1,5 @@
 /* Direction « Cabinet éditorial » : lecture longue, marge de contexte et typographie de revue pour faire respirer l’analyse. */
+import { useEffect } from "react";
 import { ArrowLeft, ArrowUpRight, BookOpen, Clock3 } from "lucide-react";
 import { Link, useRoute } from "wouter";
 import { PageShell } from "@/components/SiteLayout";
@@ -10,6 +11,19 @@ export default function ArticlePage() {
   const slug = params?.slug ?? "";
   const remoteQuery = trpc.articles.bySlug.useQuery({ slug }, { enabled: Boolean(slug) });
   const article = getArticle(slug) ?? (remoteQuery.data ? fromRemoteArticle(remoteQuery.data) : undefined);
+
+  useEffect(() => {
+    if (!article) return;
+    document.title = remoteQuery.data?.seoTitle || article.title;
+    const description = remoteQuery.data?.seoDescription || article.excerpt;
+    let meta = document.querySelector('meta[name="description"]');
+    if (!meta) {
+      meta = document.createElement("meta");
+      meta.setAttribute("name", "description");
+      document.head.appendChild(meta);
+    }
+    meta.setAttribute("content", description);
+  }, [article, remoteQuery.data]);
 
   if (remoteQuery.isLoading && !article) {
     return <PageShell><section className="container py-28"><p className="eyebrow">Chargement de l’analyse…</p></section></PageShell>;
@@ -56,7 +70,7 @@ export default function ArticlePage() {
                   <section key={section.heading} className="mb-12 last:mb-0">
                     <div className="mb-4 flex items-center gap-3"><span className="font-display text-2xl font-semibold text-[#b86e4b]">0{index + 1}</span><span className="h-px w-10 bg-[#b86e4b]" /></div>
                     <h2 className="font-display text-4xl font-semibold leading-[0.95] tracking-[-0.035em] text-[#12243b]">{section.heading}</h2>
-                    <p className="mt-5 text-base leading-8 text-[#3f4e60]">{section.body}</p>
+                    {section.image ? <img src={section.image} alt="Illustration intégrée à l’article" className="mt-6 max-h-[520px] w-full object-cover" /> : <p className="mt-5 text-base leading-8 text-[#3f4e60]">{section.body}</p>}
                   </section>
                 ))}
               </div>

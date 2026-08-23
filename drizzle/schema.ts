@@ -36,6 +36,8 @@ export const articles = mysqlTable("articles", {
   category: varchar("category", { length: 120 }).notNull(),
   author: varchar("author", { length: 160 }).notNull(),
   coverImage: text("coverImage"),
+  seoTitle: varchar("seoTitle", { length: 255 }),
+  seoDescription: text("seoDescription"),
   status: mysqlEnum("status", articleStatus).default("draft").notNull(),
   publishedAt: timestamp("publishedAt"),
   authorId: int("authorId").notNull().references(() => users.id),

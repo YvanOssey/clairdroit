@@ -30,4 +30,10 @@ describe("articles administration permissions", () => {
     const result = await caller.articles.adminList();
     expect(Array.isArray(result)).toBe(true);
   });
+
+  it("rejects an oversized image before storage upload", async () => {
+    const caller = appRouter.createCaller(contextFor("admin"));
+    const oversizedData = Buffer.alloc(6_000_001).toString("base64");
+    await expect(caller.articles.uploadImage({ fileName: "large.jpg", contentType: "image/jpeg", data: oversizedData })).rejects.toMatchObject({ code: "PAYLOAD_TOO_LARGE" });
+  });
 });

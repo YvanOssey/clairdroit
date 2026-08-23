@@ -12,7 +12,7 @@ export type Article = {
   imageAlt: string;
   author: string;
   featured?: boolean;
-  sections: { heading: string; body: string }[];
+  sections: { heading: string; body: string; image?: string }[];
 };
 
 export const categories = [
@@ -141,6 +141,8 @@ export type RemoteArticle = {
   category: string;
   author: string;
   coverImage: string | null;
+  seoTitle: string | null;
+  seoDescription: string | null;
   status: "draft" | "published" | "archived";
   publishedAt: Date | null;
   createdAt: Date;
@@ -154,11 +156,11 @@ export const fromRemoteArticle = (article: RemoteArticle): Article => ({
   title: article.title,
   excerpt: article.excerpt,
   date: new Date(article.publishedAt ?? article.updatedAt).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" }),
-  readTime: `${Math.max(3, Math.ceil(article.content.trim().split(/\\s+/).length / 190))} min`,
+  readTime: `${Math.max(3, Math.ceil(article.content.trim().split(/\s+/).length / 190))} min`,
   image: article.coverImage || "https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&w=1600&q=85",
   imageAlt: `Illustration éditoriale pour ${article.title}`,
   author: article.author,
-  sections: article.content.split(/\\n{2,}/).filter(Boolean).map((body, index) => ({ heading: index === 0 ? "Le point de départ" : `Repère ${String(index + 1).padStart(2, "0")}`, body })),
+  sections: article.content.split(/\n{2,}/).filter(Boolean).map((body, index) => { const image = body.match(/^!\[[^\]]*\]\(([^)]+)\)$/); return { heading: index === 0 ? "Le point de départ" : `Repère ${String(index + 1).padStart(2, "0")}`, body: image ? "" : body, ...(image ? { image: image[1] } : {}) }; }),
 });
 
 export function searchArticles(query: string, remoteArticles: Article[] = []) {
