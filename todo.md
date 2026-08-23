@@ -166,3 +166,9 @@
 - [x] Ajouter l’envoi sécurisé de notifications email à l’adresse administrateur configurée.
 - [x] Brancher les formulaires publics avec états de chargement, succès et erreur.
 - [x] Ajouter les tests, la documentation des secrets et valider le build.
+
+## Livraison manuelle Contact, Newsletter et Resend
+
+- [x] Fournir les fichiers complets modifiés pour la copie Windows.
+- [x] Fournir le script SQL local et la notice de configuration Resend.
+- [ ] Enregistrer un checkpoint correspondant à cette intégration.
