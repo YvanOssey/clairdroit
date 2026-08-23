@@ -99,3 +99,11 @@
 - [x] Préparer et valider le parcours de bout en bout : création, publication, accueil, index, rubrique et page article.
 - [x] Préparer et valider le téléversement local d’image et son affichage dans le rendu public.
 - [x] Capturer une preuve ciblée des états publics sans contenu mocké et consigner les validations de code restantes.
+
+## Personnalisation de l’identité du site
+
+- [x] Ajouter un modèle persistant de réglages : nom, signature, logo, textes d’accueil, navigation et footer.
+- [x] Ajouter les procédures sécurisées de lecture et de sauvegarde réservées à l’administrateur.
+- [x] Créer une page admin Identité du site avec formulaire de personnalisation.
+- [x] Relier les réglages aux pages publiques, au header, au footer et aux métadonnées du site.
+- [x] Tester la sauvegarde, le rendu public et le responsive, puis créer un checkpoint.

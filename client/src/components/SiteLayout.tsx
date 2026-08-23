@@ -1,17 +1,11 @@
 /* Direction « Cabinet éditorial » : navigation en marge, filets fins, actions explicites et matière papier sans effets criards. */
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useLocation } from "wouter";
 import { ArrowUpRight, ChevronRight, Menu, Search, X } from "lucide-react";
 import { toast } from "sonner";
 import { fromRemoteArticle, searchArticles } from "@/lib/content";
 import { trpc } from "@/lib/trpc";
-
-const navItems = [
-  { label: "À la une", href: "/" },
-  { label: "Décryptages", href: "/articles" },
-  { label: "Rubriques", href: "/rubriques/Droit du travail" },
-  { label: "À propos", href: "/a-propos" },
-];
+import { SITE_SETTINGS_DEFAULTS } from "@shared/siteSettings";
 
 export function SiteHeader() {
   const [location] = useLocation();
@@ -19,6 +13,24 @@ export function SiteHeader() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [query, setQuery] = useState("");
   const { data: publishedArticles } = trpc.articles.published.useQuery();
+  const { data: remoteSettings } = trpc.site.settings.useQuery();
+  const settings = { ...SITE_SETTINGS_DEFAULTS, ...remoteSettings, logoUrl: remoteSettings?.logoUrl ?? SITE_SETTINGS_DEFAULTS.logoUrl };
+  useEffect(() => {
+    document.title = `${settings.siteName} — ${settings.siteTagline}`;
+    let description = document.querySelector<HTMLMetaElement>('meta[name="description"]');
+    if (!description) {
+      description = document.createElement("meta");
+      description.name = "description";
+      document.head.appendChild(description);
+    }
+    description.content = settings.homeDescription;
+  }, [settings.siteName, settings.siteTagline, settings.homeDescription]);
+  const navItems = [
+    { label: settings.navHomeLabel, href: "/" },
+    { label: settings.navArticlesLabel, href: "/articles" },
+    { label: settings.navCategoriesLabel, href: "/rubriques/Droit du travail" },
+    { label: settings.navAboutLabel, href: "/a-propos" },
+  ];
   const liveArticles = useMemo(() => (publishedArticles ?? []).map(fromRemoteArticle), [publishedArticles]);
 
   const results = useMemo(() => searchArticles(query, liveArticles), [liveArticles, query]);
@@ -34,12 +46,12 @@ export function SiteHeader() {
     <>
       <header className="sticky top-0 z-50 border-b border-[rgba(18,36,59,0.12)] bg-[#f7f4ee]/95 backdrop-blur-md">
         <div className="container flex min-h-[76px] items-center justify-between gap-6">
-          <Link href="/" className="group flex shrink-0 items-center gap-3" aria-label="Droit de regard, accueil">
+          <Link href="/" className="group flex shrink-0 items-center gap-3" aria-label={`${settings.siteName}, accueil`}>
             <span className="flex h-10 w-10 items-center justify-center bg-[#12243b] shadow-[4px_4px_0_#b86e4b] transition-transform duration-200 group-hover:-translate-y-0.5">
-              <img src="/manus-storage/droit-de-regard-mark_63489c0c.png" alt="" className="h-7 w-7 object-contain" />
+              <img src={settings.logoUrl} alt="" className="h-7 w-7 object-contain" />
             </span>
             <span className="font-display text-[1.65rem] font-semibold leading-none tracking-[-0.03em] text-[#12243b]">
-              Droit de regard
+              {settings.siteName}
             </span>
           </Link>
 
@@ -72,7 +84,7 @@ export function SiteHeader() {
               href="/contact"
               className="hidden border border-[#12243b] px-4 py-2.5 text-[0.69rem] font-bold uppercase tracking-[0.13em] text-[#12243b] transition-all duration-180 hover:bg-[#12243b] hover:text-[#f7f4ee] sm:inline-flex"
             >
-              Nous écrire
+              {settings.navContactLabel}
             </Link>
             <button
               type="button"
@@ -101,7 +113,7 @@ export function SiteHeader() {
                 </Link>
               ))}
               <Link href="/contact" onClick={closeMenu} className="mt-3 bg-[#12243b] px-4 py-3 text-center text-xs font-bold uppercase tracking-[0.12em] text-[#f7f4ee]">
-                Nous écrire
+                {settings.navContactLabel}
               </Link>
             </nav>
           </div>
@@ -149,6 +161,8 @@ export function SiteHeader() {
 
 export function SiteFooter() {
   const [email, setEmail] = useState("");
+  const { data: remoteSettings } = trpc.site.settings.useQuery();
+  const settings = { ...SITE_SETTINGS_DEFAULTS, ...remoteSettings, logoUrl: remoteSettings?.logoUrl ?? SITE_SETTINGS_DEFAULTS.logoUrl };
 
   const handleSubscribe = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -166,12 +180,12 @@ export function SiteFooter() {
         <div>
           <div className="mb-5 flex items-center gap-3">
             <span className="flex h-9 w-9 items-center justify-center bg-[#f7f4ee]">
-              <img src="/manus-storage/droit-de-regard-mark_63489c0c.png" alt="" className="h-6 w-6 object-contain" />
+              <img src={settings.logoUrl} alt="" className="h-6 w-6 object-contain" />
             </span>
-            <span className="font-display text-2xl font-semibold">Droit de regard</span>
+            <span className="font-display text-2xl font-semibold">{settings.siteName}</span>
           </div>
-          <p className="max-w-sm text-sm leading-7 text-[#c6ccd4]">Analyses, repères et décryptages pour lire le droit dans le monde réel.</p>
-          <p className="mt-8 text-xs uppercase tracking-[0.15em] text-[#b86e4b]">Le droit, avec un angle</p>
+          <p className="max-w-sm text-sm leading-7 text-[#c6ccd4]">{settings.footerDescription}</p>
+          <p className="mt-8 text-xs uppercase tracking-[0.15em] text-[#b86e4b]">{settings.footerKicker}</p>
         </div>
         <div>
           <p className="eyebrow mb-5">Explorer</p>
@@ -183,8 +197,8 @@ export function SiteFooter() {
           </div>
         </div>
         <div>
-          <p className="eyebrow mb-5">La lettre de fond</p>
-          <p className="mb-4 text-sm leading-6 text-[#c6ccd4]">Une sélection mensuelle pour prendre du recul sur les règles qui nous entourent.</p>
+          <p className="eyebrow mb-5">{settings.newsletterTitle}</p>
+          <p className="mb-4 text-sm leading-6 text-[#c6ccd4]">{settings.newsletterDescription}</p>
           <form onSubmit={handleSubscribe} className="flex border-b border-[#6d7a89] pb-2">
             <label htmlFor="newsletter-email" className="sr-only">Votre email</label>
             <input
@@ -203,7 +217,7 @@ export function SiteFooter() {
       </div>
       <div className="border-t border-[#34455b]">
         <div className="container flex flex-col gap-3 py-5 text-[0.68rem] uppercase tracking-[0.12em] text-[#9ca8b5] sm:flex-row sm:items-center sm:justify-between">
-          <span>© 2026 Droit de regard</span>
+          <span>© 2026 {settings.siteName}</span>
           <span>Un espace éditorial, pas un avis personnalisé</span>
         </div>
       </div>

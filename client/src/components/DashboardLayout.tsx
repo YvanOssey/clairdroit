@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/sidebar";
 import { trpc } from "@/lib/trpc";
 import { useIsMobile } from "@/hooks/useMobile";
-import { FileText, LayoutDashboard, LogOut, PanelLeft, PenLine } from "lucide-react";
+import { FileText, LayoutDashboard, LogOut, PanelLeft, PenLine, Settings } from "lucide-react";
 import { CSSProperties, FormEvent, useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
 import { DashboardLayoutSkeleton } from './DashboardLayoutSkeleton';
@@ -30,6 +30,7 @@ const menuItems = [
   { icon: LayoutDashboard, label: "Vue d’ensemble", path: "/admin" },
   { icon: FileText, label: "Mes articles", path: "/admin/articles" },
   { icon: PenLine, label: "Nouvel article", path: "/admin/articles/new" },
+  { icon: Settings, label: "Identité du site", path: "/admin/settings" },
 ];
 
 const SIDEBAR_WIDTH_KEY = "sidebar-width";
@@ -159,7 +160,7 @@ function DashboardLayoutContent({
               {!isCollapsed ? (
                 <div className="flex items-center gap-2 min-w-0">
                   <span className="font-semibold tracking-tight truncate">
-                    Droit de regard
+                    Identité éditoriale
                   </span>
                 </div>
               ) : null}

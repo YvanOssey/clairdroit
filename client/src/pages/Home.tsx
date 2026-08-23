@@ -5,6 +5,7 @@ import { Link } from "wouter";
 import { PageShell } from "@/components/SiteLayout";
 import { Article, categories, fromRemoteArticle } from "@/lib/content";
 import { trpc } from "@/lib/trpc";
+import { SITE_SETTINGS_DEFAULTS } from "@shared/siteSettings";
 
 function ArticleCard({ article, index }: { article: Article; index: number }) {
   return (
@@ -35,6 +36,8 @@ function ArticleCard({ article, index }: { article: Article; index: number }) {
 
 export default function Home() {
   const publishedQuery = trpc.articles.published.useQuery();
+  const { data: remoteSettings } = trpc.site.settings.useQuery();
+  const settings = { ...SITE_SETTINGS_DEFAULTS, ...remoteSettings, logoUrl: remoteSettings?.logoUrl ?? SITE_SETTINGS_DEFAULTS.logoUrl };
   const liveArticles = useMemo(() => (publishedQuery.data ?? []).map(fromRemoteArticle), [publishedQuery.data]);
   const featuredArticle = liveArticles[0];
   const latestArticles = liveArticles.slice(1);
@@ -47,18 +50,18 @@ export default function Home() {
           <div className="relative z-10 max-w-3xl animated-enter">
             <div className="mb-8 flex items-center gap-3">
               <span className="h-px w-12 bg-[#b86e4b]" />
-              <span className="eyebrow">Droit de regard · Revue indépendante</span>
+              <span className="eyebrow">{settings.homeEyebrow}</span>
             </div>
             <h1 className="font-display text-[clamp(3.8rem,8vw,7.8rem)] font-semibold leading-[0.78] tracking-[-0.065em] text-[#12243b]">
-              Ce que la règle<br /><em className="font-normal text-[#b86e4b]">change,</em> concrètement.
+              {settings.homeTitleMain}<br /><em className="font-normal text-[#b86e4b]">{settings.homeTitleAccent}</em> {settings.homeTitleEnd}
             </h1>
-            <p className="mt-10 max-w-xl text-[1.05rem] leading-8 text-[#3a4b60] md:text-lg">Analyses, repères et décryptages pour lire le droit dans le monde réel — sans perdre de vue celles et ceux qu’il engage.</p>
+            <p className="mt-10 max-w-xl text-[1.05rem] leading-8 text-[#3a4b60] md:text-lg">{settings.homeDescription}</p>
             <div className="mt-10 flex flex-wrap items-center gap-5">
               <Link href="/articles" className="group inline-flex items-center gap-3 bg-[#12243b] px-5 py-3.5 text-xs font-bold uppercase tracking-[0.13em] text-[#f7f4ee] transition duration-180 hover:bg-[#b86e4b]">
-                Explorer les analyses <ArrowUpRight size={16} className="transition-transform duration-180 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                {settings.homePrimaryCta} <ArrowUpRight size={16} className="transition-transform duration-180 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </Link>
               <Link href="#derniere-lecture" className="inline-flex items-center gap-2 border-b border-[#b86e4b] pb-1 text-xs font-bold uppercase tracking-[0.13em] text-[#12243b] transition-colors hover:text-[#b86e4b]">
-                Dernière lecture <ArrowDownRight size={15} />
+                {settings.homeSecondaryCta} <ArrowDownRight size={15} />
               </Link>
             </div>
           </div>

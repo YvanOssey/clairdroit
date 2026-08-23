@@ -22,6 +22,13 @@
       "when": 1787502295123,
       "tag": "0002_bitter_scrambler",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1787505664003,
+      "tag": "0003_friendly_fat_cobra",
+      "breakpoints": true
     }
   ]
 }

@@ -48,3 +48,30 @@ export const articles = mysqlTable("articles", {
 
 export type Article = typeof articles.$inferSelect;
 export type InsertArticle = typeof articles.$inferInsert;
+
+export const siteSettings = mysqlTable("siteSettings", {
+  id: int("id").primaryKey(),
+  siteName: varchar("siteName", { length: 120 }).notNull(),
+  siteTagline: varchar("siteTagline", { length: 180 }).notNull(),
+  logoUrl: text("logoUrl"),
+  navHomeLabel: varchar("navHomeLabel", { length: 80 }).notNull(),
+  navArticlesLabel: varchar("navArticlesLabel", { length: 80 }).notNull(),
+  navCategoriesLabel: varchar("navCategoriesLabel", { length: 80 }).notNull(),
+  navAboutLabel: varchar("navAboutLabel", { length: 80 }).notNull(),
+  navContactLabel: varchar("navContactLabel", { length: 80 }).notNull(),
+  homeEyebrow: varchar("homeEyebrow", { length: 180 }).notNull(),
+  homeTitleMain: varchar("homeTitleMain", { length: 180 }).notNull(),
+  homeTitleAccent: varchar("homeTitleAccent", { length: 180 }).notNull(),
+  homeTitleEnd: varchar("homeTitleEnd", { length: 180 }).notNull(),
+  homeDescription: text("homeDescription").notNull(),
+  homePrimaryCta: varchar("homePrimaryCta", { length: 120 }).notNull(),
+  homeSecondaryCta: varchar("homeSecondaryCta", { length: 120 }).notNull(),
+  footerDescription: text("footerDescription").notNull(),
+  footerKicker: varchar("footerKicker", { length: 180 }).notNull(),
+  newsletterTitle: varchar("newsletterTitle", { length: 120 }).notNull(),
+  newsletterDescription: text("newsletterDescription").notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type SiteSettings = typeof siteSettings.$inferSelect;
+export type InsertSiteSettings = typeof siteSettings.$inferInsert;

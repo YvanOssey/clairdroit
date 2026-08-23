@@ -8,9 +8,31 @@ import { ENV } from "./_core/env";
 import { sdk } from "./_core/sdk";
 import { systemRouter } from "./_core/systemRouter";
 import { adminProcedure, publicProcedure, router } from "./_core/trpc";
-import { getUserByEmail, getArticleById, getPublishedArticleBySlug, insertArticle, listAdminArticles, listPublishedArticles, updateArticle, upsertUser } from "./db";
+import { getSiteSettings, getUserByEmail, getArticleById, getPublishedArticleBySlug, insertArticle, listAdminArticles, listPublishedArticles, updateArticle, upsertSiteSettings, upsertUser } from "./db";
 import { hashPassword, verifyPassword } from "./auth/password";
 import { storagePut } from "./storage";
+
+const siteSettingsInput = z.object({
+  siteName: z.string().trim().min(1).max(120),
+  siteTagline: z.string().trim().min(1).max(180),
+  logoUrl: z.string().trim().max(2000),
+  navHomeLabel: z.string().trim().min(1).max(80),
+  navArticlesLabel: z.string().trim().min(1).max(80),
+  navCategoriesLabel: z.string().trim().min(1).max(80),
+  navAboutLabel: z.string().trim().min(1).max(80),
+  navContactLabel: z.string().trim().min(1).max(80),
+  homeEyebrow: z.string().trim().min(1).max(180),
+  homeTitleMain: z.string().trim().min(1).max(180),
+  homeTitleAccent: z.string().trim().min(1).max(180),
+  homeTitleEnd: z.string().trim().min(1).max(180),
+  homeDescription: z.string().trim().min(1),
+  homePrimaryCta: z.string().trim().min(1).max(120),
+  homeSecondaryCta: z.string().trim().min(1).max(120),
+  footerDescription: z.string().trim().min(1),
+  footerKicker: z.string().trim().min(1).max(180),
+  newsletterTitle: z.string().trim().min(1).max(120),
+  newsletterDescription: z.string().trim().min(1),
+});
 
 const articleInput = z.object({
   title: z.string().trim().min(3).max(255),
@@ -59,12 +81,16 @@ export const appRouter = router({
       return { success: true } as const;
     }),
   }),
+  site: router({
+    settings: publicProcedure.query(() => getSiteSettings()),
+    updateSettings: adminProcedure.input(siteSettingsInput).mutation(({ input }) => upsertSiteSettings(input)),
+  }),
   articles: router({
     published: publicProcedure.query(() => listPublishedArticles()),
     bySlug: publicProcedure.input(z.object({ slug: z.string().min(1) })).query(({ input }) => getPublishedArticleBySlug(input.slug)),
     adminList: adminProcedure.query(() => listAdminArticles()),
     adminById: adminProcedure.input(z.object({ id: z.number().int().positive() })).query(({ input }) => getArticleById(input.id)),
-    uploadImage: adminProcedure.input(z.object({ fileName: z.string().trim().min(1).max(180), contentType: z.enum(["image/jpeg", "image/png", "image/webp", "image/gif"]), data: z.string().min(1).max(8_500_000) })).mutation(async ({ input, ctx }) => {
+    uploadImage: adminProcedure.input(z.object({ fileName: z.string().trim().min(1).max(180), contentType: z.enum(["image/jpeg", "image/png", "image/webp", "image/gif", "image/svg+xml"]), data: z.string().min(1).max(8_500_000) })).mutation(async ({ input, ctx }) => {
       const buffer = Buffer.from(input.data, "base64");
       if (buffer.byteLength > 6_000_000) throw new TRPCError({ code: "PAYLOAD_TOO_LARGE", message: "L’image ne doit pas dépasser 6 Mo." });
       const safeName = input.fileName.replace(/[^a-zA-Z0-9._-]+/g, "-");

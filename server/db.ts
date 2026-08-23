@@ -1,7 +1,8 @@
 /* Administration éditoriale : accès aux articles centralisé ici pour garder les procédures tRPC fines et testables. */
 import { desc, eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertArticle, InsertUser, articles, users } from "../drizzle/schema";
+import { InsertArticle, InsertSiteSettings, InsertUser, articles, siteSettings, users } from "../drizzle/schema";
+import { SITE_SETTINGS_DEFAULTS } from "../shared/siteSettings";
 import { ENV } from "./_core/env";
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -109,4 +110,18 @@ export async function updateArticle(id: number, values: Partial<InsertArticle>) 
   if (!db) throw new Error("Database is not available");
   await db.update(articles).set(values).where(eq(articles.id, id));
   return getArticleById(id);
+}
+
+export async function getSiteSettings() {
+  const db = await getDb();
+  if (!db) return { id: 1, ...SITE_SETTINGS_DEFAULTS, updatedAt: new Date() };
+  const result = await db.select().from(siteSettings).where(eq(siteSettings.id, 1)).limit(1);
+  return result[0] ?? { id: 1, ...SITE_SETTINGS_DEFAULTS, updatedAt: new Date() };
+}
+
+export async function upsertSiteSettings(values: Omit<InsertSiteSettings, "id" | "updatedAt">) {
+  const db = await getDb();
+  if (!db) throw new Error("Database is not available");
+  await db.insert(siteSettings).values({ id: 1, ...values }).onDuplicateKeyUpdate({ set: values });
+  return getSiteSettings();
 }
