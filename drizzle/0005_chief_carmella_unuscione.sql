@@ -1,0 +1,1 @@
+ALTER TABLE `siteSettings` MODIFY COLUMN `socialLinks` text;

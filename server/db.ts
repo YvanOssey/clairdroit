@@ -2,7 +2,7 @@
 import { desc, eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import { InsertArticle, InsertSiteSettings, InsertUser, articles, siteSettings, users } from "../drizzle/schema";
-import { SITE_SETTINGS_DEFAULTS } from "../shared/siteSettings";
+import { SITE_SETTINGS_DEFAULTS, type SocialLink } from "../shared/siteSettings";
 import { ENV } from "./_core/env";
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -112,16 +112,31 @@ export async function updateArticle(id: number, values: Partial<InsertArticle>) 
   return getArticleById(id);
 }
 
+function parseSocialLinks(value: string | null | undefined): SocialLink[] {
+  if (!value) return [];
+  try {
+    const parsed = JSON.parse(value);
+    return Array.isArray(parsed) ? parsed.map((item) => ({ ...item, icon: item.icon ?? item.platform })) as SocialLink[] : [];
+  } catch {
+    return [];
+  }
+}
+
+function formatSettings(row: typeof siteSettings.$inferSelect) {
+  return { ...SITE_SETTINGS_DEFAULTS, ...row, logoUrl: row.logoUrl ?? SITE_SETTINGS_DEFAULTS.logoUrl, socialLinks: parseSocialLinks(row.socialLinks) };
+}
+
 export async function getSiteSettings() {
   const db = await getDb();
   if (!db) return { id: 1, ...SITE_SETTINGS_DEFAULTS, updatedAt: new Date() };
   const result = await db.select().from(siteSettings).where(eq(siteSettings.id, 1)).limit(1);
-  return result[0] ?? { id: 1, ...SITE_SETTINGS_DEFAULTS, updatedAt: new Date() };
+  return result[0] ? formatSettings(result[0]) : { id: 1, ...SITE_SETTINGS_DEFAULTS, updatedAt: new Date() };
 }
 
-export async function upsertSiteSettings(values: Omit<InsertSiteSettings, "id" | "updatedAt">) {
+export async function upsertSiteSettings(values: Omit<InsertSiteSettings, "id" | "updatedAt" | "socialLinks"> & { socialLinks: SocialLink[] }) {
   const db = await getDb();
   if (!db) throw new Error("Database is not available");
-  await db.insert(siteSettings).values({ id: 1, ...values }).onDuplicateKeyUpdate({ set: values });
+  const databaseValues = { ...values, socialLinks: JSON.stringify(values.socialLinks) };
+  await db.insert(siteSettings).values({ id: 1, ...databaseValues }).onDuplicateKeyUpdate({ set: databaseValues });
   return getSiteSettings();
 }

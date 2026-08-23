@@ -107,3 +107,16 @@
 - [x] Créer une page admin Identité du site avec formulaire de personnalisation.
 - [x] Relier les réglages aux pages publiques, au header, au footer et aux métadonnées du site.
 - [x] Tester la sauvegarde, le rendu public et le responsive, puis créer un checkpoint.
+
+## Nouvelle extension identité — aperçu et réseaux sociaux
+
+- [x] Ajouter les champs persistants des réseaux sociaux : plateforme, libellé, URL, icône et visibilité.
+- [x] Ajouter la gestion admin des réseaux sociaux avec validation des URLs et sauvegarde sécurisée.
+- [x] Ajouter un aperçu en direct non enregistré de l’identité du site dans le panneau admin.
+- [x] Afficher les réseaux sociaux configurés dans le pied de page public avec liens accessibles.
+- [x] Tester la sauvegarde, l’aperçu, le rendu public, le responsive, puis créer un checkpoint.
+
+## Correctif de conformité des réseaux sociaux
+
+- [x] Persister explicitement la clé d’icône sociale et l’utiliser dans l’aperçu et le footer.
+- [x] Ajouter une validation de sauvegarde et de réhydratation des réglages sociaux avant le checkpoint.

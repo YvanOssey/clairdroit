@@ -70,6 +70,7 @@ export const siteSettings = mysqlTable("siteSettings", {
   footerKicker: varchar("footerKicker", { length: 180 }).notNull(),
   newsletterTitle: varchar("newsletterTitle", { length: 120 }).notNull(),
   newsletterDescription: text("newsletterDescription").notNull(),
+  socialLinks: text("socialLinks"),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
 

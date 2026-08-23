@@ -1,3 +1,13 @@
+export type SocialPlatform = "linkedin" | "facebook" | "instagram" | "youtube" | "x" | "tiktok" | "github";
+
+export type SocialLink = {
+  platform: SocialPlatform;
+  label: string;
+  icon: SocialPlatform;
+  url: string;
+  visible: boolean;
+};
+
 export type SiteSettingsValues = {
   siteName: string;
   siteTagline: string;
@@ -18,6 +28,7 @@ export type SiteSettingsValues = {
   footerKicker: string;
   newsletterTitle: string;
   newsletterDescription: string;
+  socialLinks: SocialLink[];
 };
 
 export const SITE_SETTINGS_DEFAULTS: SiteSettingsValues = {
@@ -40,4 +51,5 @@ export const SITE_SETTINGS_DEFAULTS: SiteSettingsValues = {
   footerKicker: "Le droit, avec un angle",
   newsletterTitle: "La lettre de fond",
   newsletterDescription: "Une sélection mensuelle pour prendre du recul sur les règles qui nous entourent.",
+  socialLinks: [],
 };

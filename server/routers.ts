@@ -32,6 +32,13 @@ const siteSettingsInput = z.object({
   footerKicker: z.string().trim().min(1).max(180),
   newsletterTitle: z.string().trim().min(1).max(120),
   newsletterDescription: z.string().trim().min(1),
+  socialLinks: z.array(z.object({
+    platform: z.enum(["linkedin", "facebook", "instagram", "youtube", "x", "tiktok", "github"]),
+    label: z.string().trim().min(1).max(80),
+    icon: z.enum(["linkedin", "facebook", "instagram", "youtube", "x", "tiktok", "github"]),
+    url: z.string().trim().url().max(500),
+    visible: z.boolean(),
+  })).max(8),
 });
 
 const articleInput = z.object({

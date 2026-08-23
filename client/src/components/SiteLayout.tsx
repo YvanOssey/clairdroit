@@ -1,11 +1,13 @@
 /* Direction « Cabinet éditorial » : navigation en marge, filets fins, actions explicites et matière papier sans effets criards. */
 import { useEffect, useMemo, useState } from "react";
 import { Link, useLocation } from "wouter";
-import { ArrowUpRight, ChevronRight, Menu, Search, X } from "lucide-react";
+import { ArrowUpRight, AtSign, ChevronRight, Facebook, Github, Instagram, Linkedin, Menu, Music2, Search, X, Youtube } from "lucide-react";
 import { toast } from "sonner";
 import { fromRemoteArticle, searchArticles } from "@/lib/content";
 import { trpc } from "@/lib/trpc";
-import { SITE_SETTINGS_DEFAULTS } from "@shared/siteSettings";
+import { SITE_SETTINGS_DEFAULTS, type SocialPlatform } from "@shared/siteSettings";
+
+const socialIcons: Record<SocialPlatform, typeof AtSign> = { linkedin: Linkedin, facebook: Facebook, instagram: Instagram, youtube: Youtube, x: AtSign, tiktok: Music2, github: Github };
 
 export function SiteHeader() {
   const [location] = useLocation();
@@ -14,7 +16,7 @@ export function SiteHeader() {
   const [query, setQuery] = useState("");
   const { data: publishedArticles } = trpc.articles.published.useQuery();
   const { data: remoteSettings } = trpc.site.settings.useQuery();
-  const settings = { ...SITE_SETTINGS_DEFAULTS, ...remoteSettings, logoUrl: remoteSettings?.logoUrl ?? SITE_SETTINGS_DEFAULTS.logoUrl };
+  const settings = { ...SITE_SETTINGS_DEFAULTS, ...remoteSettings, logoUrl: remoteSettings?.logoUrl ?? SITE_SETTINGS_DEFAULTS.logoUrl, socialLinks: remoteSettings?.socialLinks ?? SITE_SETTINGS_DEFAULTS.socialLinks };
   useEffect(() => {
     document.title = `${settings.siteName} — ${settings.siteTagline}`;
     let description = document.querySelector<HTMLMetaElement>('meta[name="description"]');
@@ -162,7 +164,7 @@ export function SiteHeader() {
 export function SiteFooter() {
   const [email, setEmail] = useState("");
   const { data: remoteSettings } = trpc.site.settings.useQuery();
-  const settings = { ...SITE_SETTINGS_DEFAULTS, ...remoteSettings, logoUrl: remoteSettings?.logoUrl ?? SITE_SETTINGS_DEFAULTS.logoUrl };
+  const settings = { ...SITE_SETTINGS_DEFAULTS, ...remoteSettings, logoUrl: remoteSettings?.logoUrl ?? SITE_SETTINGS_DEFAULTS.logoUrl, socialLinks: remoteSettings?.socialLinks ?? SITE_SETTINGS_DEFAULTS.socialLinks };
 
   const handleSubscribe = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -186,6 +188,7 @@ export function SiteFooter() {
           </div>
           <p className="max-w-sm text-sm leading-7 text-[#c6ccd4]">{settings.footerDescription}</p>
           <p className="mt-8 text-xs uppercase tracking-[0.15em] text-[#b86e4b]">{settings.footerKicker}</p>
+          {settings.socialLinks.filter((social) => social.visible && social.url).length > 0 && <div className="mt-6 flex flex-wrap gap-3" aria-label="Réseaux sociaux">{settings.socialLinks.filter((social) => social.visible && social.url).map((social) => { const Icon = socialIcons[social.icon]; return <a key={`${social.platform}-${social.url}`} href={social.url} target="_blank" rel="noreferrer" aria-label={social.label} title={social.label} className="flex h-9 w-9 items-center justify-center border border-[#526177] text-[#d7a187] transition-colors hover:border-[#d7a187] hover:bg-[#d7a187] hover:text-[#12243b]"><Icon size={16} strokeWidth={1.7} /></a>; })}</div>}
         </div>
         <div>
           <p className="eyebrow mb-5">Explorer</p>
