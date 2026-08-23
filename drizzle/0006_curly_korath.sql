@@ -1,0 +1,1 @@
+ALTER TABLE `siteSettings` ADD `pageContent` text;

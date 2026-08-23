@@ -16,17 +16,18 @@ export function SiteHeader() {
   const [query, setQuery] = useState("");
   const { data: publishedArticles } = trpc.articles.published.useQuery();
   const { data: remoteSettings } = trpc.site.settings.useQuery();
-  const settings = { ...SITE_SETTINGS_DEFAULTS, ...remoteSettings, logoUrl: remoteSettings?.logoUrl ?? SITE_SETTINGS_DEFAULTS.logoUrl, socialLinks: remoteSettings?.socialLinks ?? SITE_SETTINGS_DEFAULTS.socialLinks };
+  const settings = { ...SITE_SETTINGS_DEFAULTS, ...remoteSettings, logoUrl: remoteSettings?.logoUrl ?? SITE_SETTINGS_DEFAULTS.logoUrl, socialLinks: remoteSettings?.socialLinks ?? SITE_SETTINGS_DEFAULTS.socialLinks, pageContent: remoteSettings?.pageContent ?? SITE_SETTINGS_DEFAULTS.pageContent };
+  const pageSeo = location === "/a-propos" ? { title: `${settings.pageContent.about.titleMain} ${settings.pageContent.about.titleAccent}`, description: settings.pageContent.about.intro } : location === "/articles" ? { title: `${settings.pageContent.decryptions.titleMain} ${settings.pageContent.decryptions.titleAccent}`, description: settings.pageContent.decryptions.description } : location.startsWith("/rubriques/") ? { title: `${settings.pageContent.rubrics.titleMain} ${settings.pageContent.rubrics.titleAccent}`, description: settings.pageContent.rubrics.intro } : location === "/contact" ? { title: `${settings.pageContent.contact.titleMain} ${settings.pageContent.contact.titleAccent}`, description: settings.pageContent.contact.description } : location === "/" ? { title: `${settings.pageContent.featured.titleMain} ${settings.pageContent.featured.titleEnd}`, description: settings.homeDescription } : null;
   useEffect(() => {
-    document.title = `${settings.siteName} — ${settings.siteTagline}`;
+    document.title = pageSeo ? `${pageSeo.title} — ${settings.siteName}` : `${settings.siteName} — ${settings.siteTagline}`;
     let description = document.querySelector<HTMLMetaElement>('meta[name="description"]');
     if (!description) {
       description = document.createElement("meta");
       description.name = "description";
       document.head.appendChild(description);
     }
-    description.content = settings.homeDescription;
-  }, [settings.siteName, settings.siteTagline, settings.homeDescription]);
+    description.content = pageSeo?.description ?? settings.homeDescription;
+  }, [location, pageSeo?.title, pageSeo?.description, settings.siteName, settings.siteTagline, settings.homeDescription]);
   const navItems = [
     { label: settings.navHomeLabel, href: "/" },
     { label: settings.navArticlesLabel, href: "/articles" },

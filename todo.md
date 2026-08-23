@@ -126,3 +126,16 @@
 - [x] Corriger le bouton de déconnexion pour supprimer réellement la session locale et réafficher la page de connexion.
 - [x] Ajouter ou mettre à jour un test de déconnexion côté client/serveur et valider le parcours sous Windows.
 - [ ] Faire confirmer sous Windows que le clic sur « Se déconnecter » réaffiche bien la page de connexion après téléchargement de la correction.
+
+## Personnalisation des pages éditoriales
+
+- [x] Ajouter les contenus persistants des pages À propos, À la une, Décryptages, Rubriques et Nous écrire.
+- [x] Ajouter les champs admin et l’aperçu avant enregistrement pour ces pages.
+- [x] Relier les contenus enregistrés aux pages publiques et aux métadonnées pertinentes.
+- [x] Tester la sauvegarde, le rendu public et le responsive, puis créer un checkpoint.
+
+## Complément de validation des pages éditoriales
+
+- [x] Synchroniser les titres et descriptions SEO pertinents avec les contenus éditoriaux de chaque page.
+- [ ] Tester manuellement la sauvegarde, le rechargement admin et la persistance publique des nouveaux contenus.
+- [ ] Créer un checkpoint après ces validations complémentaires.

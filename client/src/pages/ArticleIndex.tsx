@@ -5,10 +5,14 @@ import { Link } from "wouter";
 import { PageShell } from "@/components/SiteLayout";
 import { categories, fromRemoteArticle } from "@/lib/content";
 import { trpc } from "@/lib/trpc";
+import { SITE_SETTINGS_DEFAULTS } from "@shared/siteSettings";
 
 export default function ArticleIndex() {
   const [activeCategory, setActiveCategory] = useState("Toutes");
   const publishedQuery = trpc.articles.published.useQuery();
+  const { data: remoteSettings } = trpc.site.settings.useQuery();
+  const settings = { ...SITE_SETTINGS_DEFAULTS, ...remoteSettings, pageContent: remoteSettings?.pageContent ?? SITE_SETTINGS_DEFAULTS.pageContent };
+  const { decryptions } = settings.pageContent;
   const liveArticles = useMemo(() => (publishedQuery.data ?? []).map(fromRemoteArticle), [publishedQuery.data]);
   const filteredArticles = useMemo(
     () => activeCategory === "Toutes" ? liveArticles : liveArticles.filter((article) => article.category === activeCategory),
@@ -19,18 +23,18 @@ export default function ArticleIndex() {
     <PageShell>
       <section className="border-b border-[rgba(18,36,59,0.14)] bg-[#ece6da]">
         <div className="container grid gap-12 py-16 md:grid-cols-[230px_minmax(0,1fr)] md:items-end md:py-24 lg:gap-20">
-          <aside className="border-t border-[#b86e4b] pt-4 md:mb-2"><p className="eyebrow mb-6">Dossier de lecture</p><p className="font-display text-6xl font-semibold leading-none text-[#b86e4b]">{liveArticles.length.toString().padStart(2, "0")}</p><p className="mt-3 max-w-[180px] text-sm leading-6 text-[#536174]">publication{liveArticles.length > 1 ? "s" : ""} actuellement disponible{liveArticles.length > 1 ? "s" : ""}.</p><div className="mt-6 h-px w-full bg-[rgba(18,36,59,0.18)]" /><p className="mt-4 text-[0.68rem] font-bold uppercase tracking-[0.12em] text-[#667384]">Index éditorial</p></aside>
-          <div><div className="mb-7 flex items-center gap-3"><span className="h-px w-12 bg-[#b86e4b]" /><span className="eyebrow">Le fil de lecture</span></div><h1 className="font-display text-6xl font-semibold leading-[0.86] tracking-[-0.055em] md:text-8xl">Toutes les<br /><em className="font-normal text-[#b86e4b]">analyses.</em></h1><p className="mt-8 max-w-xl text-base leading-7 text-[#536174]">Les articles publiés par votre rédaction, accessibles au même endroit.</p></div>
+          <aside className="border-t border-[#b86e4b] pt-4 md:mb-2"><p className="eyebrow mb-3">{decryptions.filterEyebrow}</p><p className="font-display text-6xl font-semibold leading-none text-[#b86e4b]">{liveArticles.length.toString().padStart(2, "0")}</p><p className="mt-3 max-w-[180px] text-sm leading-6 text-[#536174]">publication{liveArticles.length > 1 ? "s" : ""} actuellement disponible{liveArticles.length > 1 ? "s" : ""}.</p><div className="mt-6 h-px w-full bg-[rgba(18,36,59,0.18)]" /><p className="mt-4 text-[0.68rem] font-bold uppercase tracking-[0.12em] text-[#667384]">Index éditorial</p></aside>
+          <div><div className="mb-7 flex items-center gap-3"><span className="h-px w-12 bg-[#b86e4b]" /><span className="eyebrow">{decryptions.eyebrow}</span></div><h1 className="font-display text-6xl font-semibold leading-[0.86] tracking-[-0.055em] md:text-8xl">{decryptions.titleMain}<br /><em className="font-normal text-[#b86e4b]">{decryptions.titleAccent}</em></h1><p className="mt-8 max-w-xl text-base leading-7 text-[#536174]">{decryptions.description}</p></div>
         </div>
       </section>
 
       <section className="container py-14 lg:py-20">
         <div className="mb-10 flex flex-col gap-5 border-b border-[rgba(18,36,59,0.16)] pb-5 lg:flex-row lg:items-end lg:justify-between">
-          <div><p className="eyebrow mb-3">Filtrer l’index</p><div className="flex flex-wrap gap-x-5 gap-y-3" role="group" aria-label="Filtrer les articles par rubrique"><button type="button" onClick={() => setActiveCategory("Toutes")} className={`border-b pb-1 text-xs font-bold uppercase tracking-[0.12em] transition-colors ${activeCategory === "Toutes" ? "border-[#b86e4b] text-[#b86e4b]" : "border-transparent text-[#667384] hover:text-[#12243b]"}`}>Toutes</button>{categories.map((category) => <button key={category.name} type="button" onClick={() => setActiveCategory(category.name)} className={`border-b pb-1 text-xs font-bold uppercase tracking-[0.12em] transition-colors ${activeCategory === category.name ? "border-[#b86e4b] text-[#b86e4b]" : "border-transparent text-[#667384] hover:text-[#12243b]"}`}>{category.name}</button>)}</div></div><span className="text-xs uppercase tracking-[0.12em] text-[#667384]">{filteredArticles.length} résultat{filteredArticles.length > 1 ? "s" : ""}</span>
+          <div><p className="eyebrow mb-3">{decryptions.filterEyebrow}</p><div className="flex flex-wrap gap-x-5 gap-y-3" role="group" aria-label="Filtrer les articles par rubrique"><button type="button" onClick={() => setActiveCategory("Toutes")} className={`border-b pb-1 text-xs font-bold uppercase tracking-[0.12em] transition-colors ${activeCategory === "Toutes" ? "border-[#b86e4b] text-[#b86e4b]" : "border-transparent text-[#667384] hover:text-[#12243b]"}`}>Toutes</button>{categories.map((category) => <button key={category.name} type="button" onClick={() => setActiveCategory(category.name)} className={`border-b pb-1 text-xs font-bold uppercase tracking-[0.12em] transition-colors ${activeCategory === category.name ? "border-[#b86e4b] text-[#b86e4b]" : "border-transparent text-[#667384] hover:text-[#12243b]"}`}>{category.name}</button>)}</div></div><span className="text-xs uppercase tracking-[0.12em] text-[#667384]">{filteredArticles.length} résultat{filteredArticles.length > 1 ? "s" : ""}</span>
         </div>
 
         {filteredArticles.length === 0 ? (
-          <div className="border-l-2 border-[#b86e4b] py-10 pl-6"><p className="eyebrow mb-3">Aucune publication</p><p className="font-display text-3xl font-semibold">Les articles publiés apparaîtront ici.</p><p className="mt-3 max-w-xl text-sm leading-6 text-[#536174]">Publiez votre premier article depuis le panneau d’administration pour alimenter cet index.</p></div>
+          <div className="border-l-2 border-[#b86e4b] py-10 pl-6"><p className="eyebrow mb-3">{decryptions.emptyEyebrow}</p><p className="font-display text-3xl font-semibold">{decryptions.emptyTitle}</p><p className="mt-3 max-w-xl text-sm leading-6 text-[#536174]">{decryptions.emptyDescription}</p></div>
         ) : (
           <div className="grid gap-x-9 gap-y-14 md:grid-cols-2 lg:grid-cols-3">
             {filteredArticles.map((article, index) => (

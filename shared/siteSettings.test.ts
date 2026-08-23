@@ -6,6 +6,12 @@ describe("site identity social links", () => {
     expect(SITE_SETTINGS_DEFAULTS.socialLinks).toEqual([]);
   });
 
+  it("exposes editable content for all requested public pages", () => {
+    expect(Object.keys(SITE_SETTINGS_DEFAULTS.pageContent)).toEqual(["about", "featured", "decryptions", "rubrics", "contact"]);
+    expect(SITE_SETTINGS_DEFAULTS.pageContent.contact.email).toContain("@");
+    expect(SITE_SETTINGS_DEFAULTS.pageContent.about.paragraphOne.length).toBeGreaterThan(20);
+  });
+
   it("round-trips configured links through the database representation", () => {
     const links: SocialLink[] = [
       { platform: "linkedin", label: "LinkedIn", icon: "linkedin", url: "https://www.linkedin.com/company/droit-de-regard", visible: true },

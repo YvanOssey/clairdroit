@@ -39,6 +39,23 @@ const siteSettingsInput = z.object({
     url: z.string().trim().url().max(500),
     visible: z.boolean(),
   })).max(8),
+  pageContent: z.object({
+    about: z.object({
+      eyebrow: z.string().trim().min(1).max(180), titleMain: z.string().trim().min(1).max(180), titleAccent: z.string().trim().min(1).max(180), intro: z.string().trim().min(1).max(1000), intentionEyebrow: z.string().trim().min(1).max(180), intentionTitleMain: z.string().trim().min(1).max(180), intentionTitleAccent: z.string().trim().min(1).max(180), paragraphOne: z.string().trim().min(1).max(5000), paragraphTwo: z.string().trim().min(1).max(5000), quote: z.string().trim().min(1).max(500), quoteAttribution: z.string().trim().min(1).max(180), principlesEyebrow: z.string().trim().min(1).max(180), principleOneTitle: z.string().trim().min(1).max(120), principleOneBody: z.string().trim().min(1).max(1000), principleTwoTitle: z.string().trim().min(1).max(120), principleTwoBody: z.string().trim().min(1).max(1000), principleThreeTitle: z.string().trim().min(1).max(120), principleThreeBody: z.string().trim().min(1).max(1000), ctaEyebrow: z.string().trim().min(1).max(180), ctaTitle: z.string().trim().min(1).max(180), ctaLabel: z.string().trim().min(1).max(120),
+    }),
+    featured: z.object({
+      eyebrow: z.string().trim().min(1).max(180), titleMain: z.string().trim().min(1).max(180), titleEnd: z.string().trim().min(1).max(180), description: z.string().trim().min(1).max(1000), quote: z.string().trim().min(1).max(500), detail: z.string().trim().min(1).max(1000), linkLabel: z.string().trim().min(1).max(120), emptyEyebrow: z.string().trim().min(1).max(180), emptyTitle: z.string().trim().min(1).max(300), emptyDescription: z.string().trim().min(1).max(1000),
+    }),
+    decryptions: z.object({
+      eyebrow: z.string().trim().min(1).max(180), titleMain: z.string().trim().min(1).max(180), titleAccent: z.string().trim().min(1).max(180), description: z.string().trim().min(1).max(1000), filterEyebrow: z.string().trim().min(1).max(180), emptyEyebrow: z.string().trim().min(1).max(180), emptyTitle: z.string().trim().min(1).max(300), emptyDescription: z.string().trim().min(1).max(1000),
+    }),
+    rubrics: z.object({
+      eyebrow: z.string().trim().min(1).max(180), titleMain: z.string().trim().min(1).max(180), titleAccent: z.string().trim().min(1).max(180), intro: z.string().trim().min(1).max(1000), selectionEyebrow: z.string().trim().min(1).max(180), selectionTitle: z.string().trim().min(1).max(180), emptyEyebrow: z.string().trim().min(1).max(180), emptyTitle: z.string().trim().min(1).max(300),
+    }),
+    contact: z.object({
+      eyebrow: z.string().trim().min(1).max(180), titleMain: z.string().trim().min(1).max(180), titleAccent: z.string().trim().min(1).max(180), description: z.string().trim().min(1).max(1200), detailsEyebrow: z.string().trim().min(1).max(180), email: z.string().trim().email().max(180), responseNote: z.string().trim().min(1).max(300), location: z.string().trim().min(1).max(180), locationNote: z.string().trim().min(1).max(300), disclaimer: z.string().trim().min(1).max(1000), aboutLinkLabel: z.string().trim().min(1).max(180),
+    }),
+  }),
 });
 
 const articleInput = z.object({

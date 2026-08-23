@@ -71,6 +71,7 @@ export const siteSettings = mysqlTable("siteSettings", {
   newsletterTitle: varchar("newsletterTitle", { length: 120 }).notNull(),
   newsletterDescription: text("newsletterDescription").notNull(),
   socialLinks: text("socialLinks"),
+  pageContent: text("pageContent"),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
 

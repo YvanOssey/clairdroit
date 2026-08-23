@@ -37,7 +37,8 @@ function ArticleCard({ article, index }: { article: Article; index: number }) {
 export default function Home() {
   const publishedQuery = trpc.articles.published.useQuery();
   const { data: remoteSettings } = trpc.site.settings.useQuery();
-  const settings = { ...SITE_SETTINGS_DEFAULTS, ...remoteSettings, logoUrl: remoteSettings?.logoUrl ?? SITE_SETTINGS_DEFAULTS.logoUrl };
+  const settings = { ...SITE_SETTINGS_DEFAULTS, ...remoteSettings, logoUrl: remoteSettings?.logoUrl ?? SITE_SETTINGS_DEFAULTS.logoUrl, pageContent: remoteSettings?.pageContent ?? SITE_SETTINGS_DEFAULTS.pageContent };
+  const { featured, rubrics } = settings.pageContent;
   const liveArticles = useMemo(() => (publishedQuery.data ?? []).map(fromRemoteArticle), [publishedQuery.data]);
   const featuredArticle = liveArticles[0];
   const latestArticles = liveArticles.slice(1);
@@ -88,10 +89,10 @@ export default function Home() {
       <section id="derniere-lecture" className="container py-20 lg:py-28">
         <div className="mb-10 flex flex-col gap-4 border-b border-[rgba(18,36,59,0.16)] pb-5 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="eyebrow mb-3">À la une</p>
-            <h2 className="font-display text-4xl font-semibold tracking-[-0.04em] text-[#12243b] md:text-5xl">Le sujet qui mérite<br className="hidden sm:block" /> un vrai détour.</h2>
+            <p className="eyebrow mb-3">{featured.eyebrow}</p>
+            <h2 className="font-display text-4xl font-semibold tracking-[-0.04em] text-[#12243b] md:text-5xl">{featured.titleMain}<br className="hidden sm:block" /> {featured.titleEnd}</h2>
           </div>
-          <span className="max-w-xs text-sm leading-6 text-[#667384] sm:text-right">Une analyse pour prendre le temps de distinguer le mouvement de fond du simple bruit d’actualité.</span>
+          <span className="max-w-xs text-sm leading-6 text-[#667384] sm:text-right">{featured.description}</span>
         </div>
         {featuredArticle ? <div className="grid gap-10 lg:grid-cols-[1.3fr_0.7fr] lg:items-center lg:gap-16">
           <Link href={`/articles/${featuredArticle.slug}`} className="group relative block overflow-hidden bg-[#12243b]">
@@ -104,19 +105,19 @@ export default function Home() {
             </div>
           </Link>
           <div className="border-l border-[#b86e4b] pl-6 lg:pl-8">
-            <p className="font-display text-2xl leading-[1.15] text-[#12243b]">« La bonne question n’est pas seulement ce que permet la règle, mais ce qu’elle rend visible. »</p>
-            <p className="mt-6 text-sm leading-7 text-[#536174]">Cette publication est issue de la rédaction du site et peut être consultée dans son intégralité.</p>
-            <Link href={`/articles/${featuredArticle.slug}`} className="mt-8 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.12em] text-[#b86e4b] hover:text-[#12243b]">Entrer dans le dossier <ArrowUpRight size={15} /></Link>
+            <p className="font-display text-2xl leading-[1.15] text-[#12243b]">{featured.quote}</p>
+            <p className="mt-6 text-sm leading-7 text-[#536174]">{featured.detail}</p>
+            <Link href={`/articles/${featuredArticle.slug}`} className="mt-8 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.12em] text-[#b86e4b] hover:text-[#12243b]">{featured.linkLabel} <ArrowUpRight size={15} /></Link>
           </div>
-        </div> : <div className="border-l border-[#b86e4b] py-10 pl-6"><p className="eyebrow mb-3">Aucune publication</p><p className="font-display text-3xl font-semibold">Les premières analyses seront bientôt publiées.</p><p className="mt-3 max-w-xl text-sm leading-6 text-[#536174]">Le site affichera ici uniquement les articles publiés depuis votre panneau d’administration.</p></div>}
+        </div> : <div className="border-l border-[#b86e4b] py-10 pl-6"><p className="eyebrow mb-3">{featured.emptyEyebrow}</p><p className="font-display text-3xl font-semibold">{featured.emptyTitle}</p><p className="mt-3 max-w-xl text-sm leading-6 text-[#536174]">{featured.emptyDescription}</p></div>}
       </section>
 
       <section className="border-y border-[rgba(18,36,59,0.13)] bg-[#f1ede5]">
         <div className="container py-16 lg:py-20">
           <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="eyebrow mb-3">Index des pratiques</p>
-              <h2 className="font-display text-4xl font-semibold tracking-[-0.04em] md:text-5xl">Entrer par une rubrique.</h2>
+              <p className="eyebrow mb-3">{rubrics.eyebrow}</p>
+              <h2 className="font-display text-4xl font-semibold tracking-[-0.04em] md:text-5xl">{rubrics.titleMain} <em className="font-normal text-[#b86e4b]">{rubrics.titleAccent}</em></h2>
             </div>
             <Link href="/articles" className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.12em] text-[#b86e4b] hover:text-[#12243b]">Voir l’index complet <ArrowUpRight size={15} /></Link>
           </div>

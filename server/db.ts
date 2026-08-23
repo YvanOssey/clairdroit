@@ -2,7 +2,7 @@
 import { desc, eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import { InsertArticle, InsertSiteSettings, InsertUser, articles, siteSettings, users } from "../drizzle/schema";
-import { SITE_SETTINGS_DEFAULTS, type SocialLink } from "../shared/siteSettings";
+import { SITE_SETTINGS_DEFAULTS, type PageContentValues, type SocialLink } from "../shared/siteSettings";
 import { ENV } from "./_core/env";
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -122,8 +122,27 @@ function parseSocialLinks(value: string | null | undefined): SocialLink[] {
   }
 }
 
+function parsePageContent(value: string | null | undefined): PageContentValues {
+  const fallback = SITE_SETTINGS_DEFAULTS.pageContent;
+  if (!value) return fallback;
+  try {
+    const parsed = JSON.parse(value) as Partial<PageContentValues>;
+    return {
+      ...fallback,
+      ...parsed,
+      about: { ...fallback.about, ...(parsed.about ?? {}) },
+      featured: { ...fallback.featured, ...(parsed.featured ?? {}) },
+      decryptions: { ...fallback.decryptions, ...(parsed.decryptions ?? {}) },
+      rubrics: { ...fallback.rubrics, ...(parsed.rubrics ?? {}) },
+      contact: { ...fallback.contact, ...(parsed.contact ?? {}) },
+    };
+  } catch {
+    return fallback;
+  }
+}
+
 function formatSettings(row: typeof siteSettings.$inferSelect) {
-  return { ...SITE_SETTINGS_DEFAULTS, ...row, logoUrl: row.logoUrl ?? SITE_SETTINGS_DEFAULTS.logoUrl, socialLinks: parseSocialLinks(row.socialLinks) };
+  return { ...SITE_SETTINGS_DEFAULTS, ...row, logoUrl: row.logoUrl ?? SITE_SETTINGS_DEFAULTS.logoUrl, socialLinks: parseSocialLinks(row.socialLinks), pageContent: parsePageContent(row.pageContent) };
 }
 
 export async function getSiteSettings() {
@@ -133,10 +152,10 @@ export async function getSiteSettings() {
   return result[0] ? formatSettings(result[0]) : { id: 1, ...SITE_SETTINGS_DEFAULTS, updatedAt: new Date() };
 }
 
-export async function upsertSiteSettings(values: Omit<InsertSiteSettings, "id" | "updatedAt" | "socialLinks"> & { socialLinks: SocialLink[] }) {
+export async function upsertSiteSettings(values: Omit<InsertSiteSettings, "id" | "updatedAt" | "socialLinks" | "pageContent"> & { socialLinks: SocialLink[]; pageContent: PageContentValues }) {
   const db = await getDb();
   if (!db) throw new Error("Database is not available");
-  const databaseValues = { ...values, socialLinks: JSON.stringify(values.socialLinks) };
+  const databaseValues = { ...values, socialLinks: JSON.stringify(values.socialLinks), pageContent: JSON.stringify(values.pageContent) };
   await db.insert(siteSettings).values({ id: 1, ...databaseValues }).onDuplicateKeyUpdate({ set: databaseValues });
   return getSiteSettings();
 }
