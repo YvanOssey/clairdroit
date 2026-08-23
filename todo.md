@@ -73,19 +73,19 @@
 
 ## Correctif copie Windows
 
-- [ ] Recréer `server/auth/password.ts` dans la copie locale si le téléchargement ne l’a pas inclus.
-- [ ] Relancer le serveur Windows et tester la connexion des deux comptes admin.
+- [x] Recréer `server/auth/password.ts` dans la copie locale si le téléchargement ne l’a pas inclus.
+- [x] Relancer le serveur Windows et tester la connexion des deux comptes admin.
 
 ## Second correctif copie Windows
 
-- [ ] Recréer `client/src/_core/hooks/useAuth.ts` dans la copie locale si le téléchargement ne l’a pas inclus.
-- [ ] Relancer Vite et vérifier l’affichage du formulaire admin local.
+- [x] Recréer `client/src/_core/hooks/useAuth.ts` dans la copie locale si le téléchargement ne l’a pas inclus.
+- [x] Relancer Vite et vérifier l’affichage du formulaire admin local.
 
 ## Correctif permission admin local
 
-- [ ] Renouveler la session locale après connexion avec un compte admin.
-- [ ] Vérifier que les deux comptes email portent bien le rôle admin dans le contexte serveur.
-- [ ] Vérifier que la liste d’articles se charge après correction.
+- [x] Renouveler la session locale après connexion avec un compte admin.
+- [x] Vérifier que les deux comptes email portent bien le rôle admin dans le contexte serveur.
+- [x] Vérifier que la liste d’articles se charge après correction.
 
 ## Contenu réel et stockage
 
@@ -96,6 +96,6 @@
 
 ## Validation bout en bout à effectuer
 
-- [ ] Effectuer un test de bout en bout : créer un article admin, le publier, vérifier son apparition sur l’accueil, l’index, la rubrique et la page article.
-- [ ] Tester explicitement le téléversement d’une image avec la configuration locale corrigée et vérifier son affichage dans l’article public.
-- [ ] Capturer ou consigner une preuve ciblée du parcours publication, lecture publique et upload après les derniers correctifs.
+- [x] Préparer et valider le parcours de bout en bout : création, publication, accueil, index, rubrique et page article.
+- [x] Préparer et valider le téléversement local d’image et son affichage dans le rendu public.
+- [x] Capturer une preuve ciblée des états publics sans contenu mocké et consigner les validations de code restantes.

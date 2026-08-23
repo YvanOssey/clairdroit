@@ -51,7 +51,7 @@ export const appRouter = router({
         throw new TRPCError({ code: "UNAUTHORIZED", message: "Email ou mot de passe incorrect." });
       }
       const passwordHash = existing?.passwordHash ?? hashPassword(configuredPassword);
-      const openId = existing?.openId ?? `email:${email}`;
+      const openId = `email:${email}`;
       await upsertUser({ openId, email, name: existing?.name ?? email.split("@")[0], loginMethod: "password", passwordHash, role: "admin", lastSignedIn: new Date() });
       const token = await sdk.signSession({ openId, appId: ENV.appId || "blog-juridique", name: existing?.name ?? email });
       const cookieOptions = getSessionCookieOptions(ctx.req);

@@ -40,5 +40,6 @@ describe("searchArticles", () => {
         sections: [{ heading: "Le point de départ", body: publishedArticle.content }],
       },
     ])).toHaveLength(1);
+    expect(searchArticles("travail hybride", [])).toHaveLength(0);
   });
 });

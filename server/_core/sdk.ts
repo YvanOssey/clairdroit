@@ -290,6 +290,10 @@ class SDKServer {
       const allowedEmails = [ENV.adminEmailYvan, ENV.adminEmailThio];
       if (!allowedEmails.includes(email)) throw ForbiddenError("Unknown admin session");
       const now = new Date();
+      const storedAdmin = await db.getUserByOpenId(session.openId);
+      if (storedAdmin) {
+        return { ...storedAdmin, role: "admin", lastSignedIn: now };
+      }
       return {
         id: 0,
         openId: session.openId,
