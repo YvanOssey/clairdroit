@@ -2,11 +2,18 @@
 import { ArrowLeft, ArrowUpRight, BookOpen, Clock3 } from "lucide-react";
 import { Link, useRoute } from "wouter";
 import { PageShell } from "@/components/SiteLayout";
-import { articles, getArticle } from "@/lib/content";
+import { articles, fromRemoteArticle, getArticle } from "@/lib/content";
+import { trpc } from "@/lib/trpc";
 
 export default function ArticlePage() {
   const [, params] = useRoute("/articles/:slug");
-  const article = getArticle(params?.slug ?? "");
+  const slug = params?.slug ?? "";
+  const remoteQuery = trpc.articles.bySlug.useQuery({ slug }, { enabled: Boolean(slug) });
+  const article = getArticle(slug) ?? (remoteQuery.data ? fromRemoteArticle(remoteQuery.data) : undefined);
+
+  if (remoteQuery.isLoading && !article) {
+    return <PageShell><section className="container py-28"><p className="eyebrow">Chargement de l’analyse…</p></section></PageShell>;
+  }
 
   if (!article) {
     return (

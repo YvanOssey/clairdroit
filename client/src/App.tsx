@@ -1,8 +1,11 @@
-/* Direction « Cabinet éditorial » : layout public structuré par une marge de référence, fond ivoire et navigation calme. */
+/* Direction « Cabinet éditorial » : les parcours publics restent éditoriaux, tandis que l’administration adopte une structure de travail persistante. */
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
 import About from "@/pages/About";
+import AdminArticleEditor from "@/pages/AdminArticleEditor";
+import AdminArticles from "@/pages/AdminArticles";
+import AdminOverview from "@/pages/AdminOverview";
 import ArticleIndex from "@/pages/ArticleIndex";
 import ArticlePage from "@/pages/ArticlePage";
 import CategoryPage from "@/pages/CategoryPage";
@@ -21,6 +24,10 @@ function Router() {
       <Route path="/rubriques/:category" component={CategoryPage} />
       <Route path="/a-propos" component={About} />
       <Route path="/contact" component={Contact} />
+      <Route path="/admin/articles/:id/edit" component={AdminArticleEditor} />
+      <Route path="/admin/articles/new" component={AdminArticleEditor} />
+      <Route path="/admin/articles" component={AdminArticles} />
+      <Route path="/admin" component={AdminOverview} />
       <Route path="/404" component={NotFound} />
       <Route component={NotFound} />
     </Switch>

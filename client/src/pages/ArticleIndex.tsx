@@ -3,13 +3,17 @@ import { useMemo, useState } from "react";
 import { ArrowUpRight, Clock3 } from "lucide-react";
 import { Link } from "wouter";
 import { PageShell } from "@/components/SiteLayout";
-import { articles, categories } from "@/lib/content";
+import { articles, categories, fromRemoteArticle } from "@/lib/content";
+import { trpc } from "@/lib/trpc";
 
 export default function ArticleIndex() {
   const [activeCategory, setActiveCategory] = useState("Toutes");
+  const publishedQuery = trpc.articles.published.useQuery();
+  const liveArticles = useMemo(() => (publishedQuery.data ?? []).map(fromRemoteArticle), [publishedQuery.data]);
+  const allArticles = useMemo(() => [...liveArticles, ...articles], [liveArticles]);
   const filteredArticles = useMemo(
-    () => activeCategory === "Toutes" ? articles : articles.filter((article) => article.category === activeCategory),
-    [activeCategory],
+    () => activeCategory === "Toutes" ? allArticles : allArticles.filter((article) => article.category === activeCategory),
+    [activeCategory, allArticles],
   );
 
   return (

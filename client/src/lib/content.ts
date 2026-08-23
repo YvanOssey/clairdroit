@@ -132,6 +132,41 @@ export const articles: Article[] = [
   },
 ];
 
+export type RemoteArticle = {
+  id: number;
+  slug: string;
+  title: string;
+  excerpt: string;
+  content: string;
+  category: string;
+  author: string;
+  coverImage: string | null;
+  status: "draft" | "published" | "archived";
+  publishedAt: Date | null;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export const fromRemoteArticle = (article: RemoteArticle): Article => ({
+  slug: article.slug,
+  category: article.category,
+  eyebrow: "Publication · Analyse",
+  title: article.title,
+  excerpt: article.excerpt,
+  date: new Date(article.publishedAt ?? article.updatedAt).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" }),
+  readTime: `${Math.max(3, Math.ceil(article.content.trim().split(/\\s+/).length / 190))} min`,
+  image: article.coverImage || "https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&w=1600&q=85",
+  imageAlt: `Illustration éditoriale pour ${article.title}`,
+  author: article.author,
+  sections: article.content.split(/\\n{2,}/).filter(Boolean).map((body, index) => ({ heading: index === 0 ? "Le point de départ" : `Repère ${String(index + 1).padStart(2, "0")}`, body })),
+});
+
+export function searchArticles(query: string, remoteArticles: Article[] = []) {
+  const normalizedQuery = query.trim().toLowerCase();
+  if (!normalizedQuery) return [];
+  return [...remoteArticles, ...articles].filter((article) => [article.title, article.excerpt, article.category].join(" ").toLowerCase().includes(normalizedQuery));
+}
+
 export const featuredArticle = articles.find((article) => article.featured) ?? articles[0];
 
 export const getArticle = (slug: string) => articles.find((article) => article.slug === slug);

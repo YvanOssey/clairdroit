@@ -3,7 +3,8 @@ import { useMemo, useState } from "react";
 import { Link, useLocation } from "wouter";
 import { ArrowUpRight, ChevronRight, Menu, Search, X } from "lucide-react";
 import { toast } from "sonner";
-import { articles } from "@/lib/content";
+import { articles, fromRemoteArticle, searchArticles } from "@/lib/content";
+import { trpc } from "@/lib/trpc";
 
 const navItems = [
   { label: "À la une", href: "/" },
@@ -17,17 +18,10 @@ export function SiteHeader() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [query, setQuery] = useState("");
+  const { data: publishedArticles } = trpc.articles.published.useQuery();
+  const liveArticles = useMemo(() => (publishedArticles ?? []).map(fromRemoteArticle), [publishedArticles]);
 
-  const results = useMemo(() => {
-    const normalizedQuery = query.trim().toLowerCase();
-    if (!normalizedQuery) return [];
-    return articles.filter((article) =>
-      [article.title, article.excerpt, article.category]
-        .join(" ")
-        .toLowerCase()
-        .includes(normalizedQuery),
-    );
-  }, [query]);
+  const results = useMemo(() => searchArticles(query, liveArticles), [liveArticles, query]);
 
   const isActive = (href: string) => {
     if (href === "/") return location === "/";

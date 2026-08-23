@@ -1,8 +1,10 @@
 /* Direction « Cabinet éditorial » : ouverture asymétrique, article à la une prioritaire et repères de lecture visibles dans la marge. */
+import { useMemo } from "react";
 import { ArrowDownRight, ArrowUpRight, Clock3, FileText } from "lucide-react";
 import { Link } from "wouter";
 import { PageShell } from "@/components/SiteLayout";
-import { articles, categories, featuredArticle } from "@/lib/content";
+import { articles, categories, featuredArticle as staticFeaturedArticle, fromRemoteArticle } from "@/lib/content";
+import { trpc } from "@/lib/trpc";
 
 function ArticleCard({ article, index }: { article: (typeof articles)[number]; index: number }) {
   return (
@@ -32,7 +34,11 @@ function ArticleCard({ article, index }: { article: (typeof articles)[number]; i
 }
 
 export default function Home() {
-  const latestArticles = articles.filter((article) => article.slug !== featuredArticle.slug);
+  const publishedQuery = trpc.articles.published.useQuery();
+  const liveArticles = useMemo(() => (publishedQuery.data ?? []).map(fromRemoteArticle), [publishedQuery.data]);
+  const allArticles = useMemo(() => [...liveArticles, ...articles], [liveArticles]);
+  const featuredArticle = liveArticles[0] ?? staticFeaturedArticle;
+  const latestArticles = allArticles.filter((article) => article.slug !== featuredArticle.slug);
 
   return (
     <PageShell>
