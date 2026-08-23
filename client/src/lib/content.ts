@@ -163,10 +163,10 @@ export const fromRemoteArticle = (article: RemoteArticle): Article => ({
   sections: article.content.split(/\n{2,}/).filter(Boolean).map((body, index) => { const image = body.match(/^!\[[^\]]*\]\(([^)]+)\)$/); return { heading: index === 0 ? "Le point de départ" : `Repère ${String(index + 1).padStart(2, "0")}`, body: image ? "" : body, ...(image ? { image: image[1] } : {}) }; }),
 });
 
-export function searchArticles(query: string, remoteArticles: Article[] = []) {
+export function searchArticles(query: string, publishedArticles: Article[] = []) {
   const normalizedQuery = query.trim().toLowerCase();
   if (!normalizedQuery) return [];
-  return [...remoteArticles, ...articles].filter((article) => [article.title, article.excerpt, article.category].join(" ").toLowerCase().includes(normalizedQuery));
+  return publishedArticles.filter((article) => [article.title, article.excerpt, article.category].join(" ").toLowerCase().includes(normalizedQuery));
 }
 
 export const featuredArticle = articles.find((article) => article.featured) ?? articles[0];

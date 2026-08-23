@@ -3,10 +3,10 @@ import { useMemo } from "react";
 import { ArrowDownRight, ArrowUpRight, Clock3, FileText } from "lucide-react";
 import { Link } from "wouter";
 import { PageShell } from "@/components/SiteLayout";
-import { articles, categories, featuredArticle as staticFeaturedArticle, fromRemoteArticle } from "@/lib/content";
+import { Article, categories, fromRemoteArticle } from "@/lib/content";
 import { trpc } from "@/lib/trpc";
 
-function ArticleCard({ article, index }: { article: (typeof articles)[number]; index: number }) {
+function ArticleCard({ article, index }: { article: Article; index: number }) {
   return (
     <article className="group grid gap-5 border-t border-[rgba(18,36,59,0.16)] py-7 md:grid-cols-[150px_1fr] md:gap-7" style={{ animationDelay: `${index * 70}ms` }}>
       <Link href={`/articles/${article.slug}`} className="block overflow-hidden bg-[#ece6da]">
@@ -36,9 +36,9 @@ function ArticleCard({ article, index }: { article: (typeof articles)[number]; i
 export default function Home() {
   const publishedQuery = trpc.articles.published.useQuery();
   const liveArticles = useMemo(() => (publishedQuery.data ?? []).map(fromRemoteArticle), [publishedQuery.data]);
-  const allArticles = useMemo(() => [...liveArticles, ...articles], [liveArticles]);
-  const featuredArticle = liveArticles[0] ?? staticFeaturedArticle;
-  const latestArticles = allArticles.filter((article) => article.slug !== featuredArticle.slug);
+  const featuredArticle = liveArticles[0];
+  const latestArticles = liveArticles.slice(1);
+  const totalReadMinutes = liveArticles.reduce((sum, article) => sum + Number.parseInt(article.readTime, 10), 0);
 
   return (
     <PageShell>
@@ -67,16 +67,16 @@ export default function Home() {
             <p className="eyebrow mb-8">Le numéro du moment</p>
             <div className="space-y-7">
               <div>
-                <span className="font-display text-5xl font-semibold text-[#b86e4b]">04</span>
-                <p className="mt-1 text-sm leading-6 text-[#536174]">angles pour mieux comprendre les transformations du droit.</p>
+                <span className="font-display text-5xl font-semibold text-[#b86e4b]">{liveArticles.length.toString().padStart(2, "0")}</span>
+                <p className="mt-1 text-sm leading-6 text-[#536174]">publication{liveArticles.length > 1 ? "s" : ""} actuellement disponible{liveArticles.length > 1 ? "s" : ""}.</p>
               </div>
               <div className="editorial-rule" />
               <div>
-                <span className="font-display text-5xl font-semibold text-[#b86e4b]">22</span>
-                <p className="mt-1 text-sm leading-6 text-[#536174]">minutes pour traverser notre sélection de la semaine.</p>
+                <span className="font-display text-5xl font-semibold text-[#b86e4b]">{totalReadMinutes}</span>
+                <p className="mt-1 text-sm leading-6 text-[#536174]">minutes de lecture dans vos publications.</p>
               </div>
               <div className="editorial-rule" />
-              <div className="flex items-center gap-3 text-[0.68rem] font-bold uppercase tracking-[0.12em] text-[#12243b]"><FileText size={16} className="text-[#b86e4b]" /> Édition août 2026</div>
+              <div className="flex items-center gap-3 text-[0.68rem] font-bold uppercase tracking-[0.12em] text-[#12243b]"><FileText size={16} className="text-[#b86e4b]" /> Édition en cours</div>
             </div>
           </aside>
         </div>
@@ -90,7 +90,7 @@ export default function Home() {
           </div>
           <span className="max-w-xs text-sm leading-6 text-[#667384] sm:text-right">Une analyse pour prendre le temps de distinguer le mouvement de fond du simple bruit d’actualité.</span>
         </div>
-        <div className="grid gap-10 lg:grid-cols-[1.3fr_0.7fr] lg:items-center lg:gap-16">
+        {featuredArticle ? <div className="grid gap-10 lg:grid-cols-[1.3fr_0.7fr] lg:items-center lg:gap-16">
           <Link href={`/articles/${featuredArticle.slug}`} className="group relative block overflow-hidden bg-[#12243b]">
             <img src={featuredArticle.image} alt={featuredArticle.imageAlt} className="aspect-[16/10] w-full object-cover opacity-85 transition duration-700 group-hover:scale-[1.03] group-hover:opacity-100" />
             <div className="absolute inset-0 bg-gradient-to-t from-[#12243b]/90 via-[#12243b]/10 to-transparent" />
@@ -102,10 +102,10 @@ export default function Home() {
           </Link>
           <div className="border-l border-[#b86e4b] pl-6 lg:pl-8">
             <p className="font-display text-2xl leading-[1.15] text-[#12243b]">« La bonne question n’est pas seulement ce que permet la règle, mais ce qu’elle rend visible. »</p>
-            <p className="mt-6 text-sm leading-7 text-[#536174]">Dans ce dossier, Camille Renaud observe les nouveaux gestes de contrôle, de confiance et de preuve qui accompagnent le travail hybride.</p>
+            <p className="mt-6 text-sm leading-7 text-[#536174]">Cette publication est issue de la rédaction du site et peut être consultée dans son intégralité.</p>
             <Link href={`/articles/${featuredArticle.slug}`} className="mt-8 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.12em] text-[#b86e4b] hover:text-[#12243b]">Entrer dans le dossier <ArrowUpRight size={15} /></Link>
           </div>
-        </div>
+        </div> : <div className="border-l border-[#b86e4b] py-10 pl-6"><p className="eyebrow mb-3">Aucune publication</p><p className="font-display text-3xl font-semibold">Les premières analyses seront bientôt publiées.</p><p className="mt-3 max-w-xl text-sm leading-6 text-[#536174]">Le site affichera ici uniquement les articles publiés depuis votre panneau d’administration.</p></div>}
       </section>
 
       <section className="border-y border-[rgba(18,36,59,0.13)] bg-[#f1ede5]">
@@ -122,7 +122,7 @@ export default function Home() {
               <Link key={category.name} href={`/rubriques/${category.name}`} className="group border-b border-[rgba(18,36,59,0.16)] py-6 transition-colors hover:bg-[#ece6da] md:border-r md:px-5 md:first:pl-0 lg:min-h-[142px] lg:border-b-0 lg:px-6 lg:first:pl-0">
                 <span className="mb-8 block font-display text-3xl text-[#b86e4b]">0{index + 1}</span>
                 <span className="flex items-center justify-between gap-3 text-sm font-bold text-[#12243b] group-hover:text-[#b86e4b]">{category.name} <ArrowUpRight size={15} /></span>
-                <span className="mt-2 block text-xs text-[#667384]">{category.count}</span>
+                <span className="mt-2 block text-xs text-[#667384]">{liveArticles.filter((article) => article.category === category.name).length} publication{liveArticles.filter((article) => article.category === category.name).length > 1 ? "s" : ""}</span>
               </Link>
             ))}
           </div>

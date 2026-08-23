@@ -3,14 +3,14 @@ import { useEffect } from "react";
 import { ArrowLeft, ArrowUpRight, BookOpen, Clock3 } from "lucide-react";
 import { Link, useRoute } from "wouter";
 import { PageShell } from "@/components/SiteLayout";
-import { articles, fromRemoteArticle, getArticle } from "@/lib/content";
+import { fromRemoteArticle } from "@/lib/content";
 import { trpc } from "@/lib/trpc";
 
 export default function ArticlePage() {
   const [, params] = useRoute("/articles/:slug");
   const slug = params?.slug ?? "";
   const remoteQuery = trpc.articles.bySlug.useQuery({ slug }, { enabled: Boolean(slug) });
-  const article = getArticle(slug) ?? (remoteQuery.data ? fromRemoteArticle(remoteQuery.data) : undefined);
+  const article = remoteQuery.data ? fromRemoteArticle(remoteQuery.data) : undefined;
 
   useEffect(() => {
     if (!article) return;
@@ -37,7 +37,7 @@ export default function ArticlePage() {
     );
   }
 
-  const relatedArticles = articles.filter((item) => item.slug !== article.slug).slice(0, 2);
+  const relatedArticles: typeof article[] = [];
 
   return (
     <PageShell>

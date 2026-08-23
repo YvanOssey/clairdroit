@@ -3,7 +3,7 @@ import { useMemo, useState } from "react";
 import { Link, useLocation } from "wouter";
 import { ArrowUpRight, ChevronRight, Menu, Search, X } from "lucide-react";
 import { toast } from "sonner";
-import { articles, fromRemoteArticle, searchArticles } from "@/lib/content";
+import { fromRemoteArticle, searchArticles } from "@/lib/content";
 import { trpc } from "@/lib/trpc";
 
 const navItems = [

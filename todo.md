@@ -70,3 +70,32 @@
 
 - [x] Retirer les derniers noms de variables de l’ancien mode local dans ADMIN_AUTH.md.
 - [x] Vérifier par recherche textuelle qu’aucune référence à l’ancien mode ne subsiste hors des dépendances et du build.
+
+## Correctif copie Windows
+
+- [ ] Recréer `server/auth/password.ts` dans la copie locale si le téléchargement ne l’a pas inclus.
+- [ ] Relancer le serveur Windows et tester la connexion des deux comptes admin.
+
+## Second correctif copie Windows
+
+- [ ] Recréer `client/src/_core/hooks/useAuth.ts` dans la copie locale si le téléchargement ne l’a pas inclus.
+- [ ] Relancer Vite et vérifier l’affichage du formulaire admin local.
+
+## Correctif permission admin local
+
+- [ ] Renouveler la session locale après connexion avec un compte admin.
+- [ ] Vérifier que les deux comptes email portent bien le rôle admin dans le contexte serveur.
+- [ ] Vérifier que la liste d’articles se charge après correction.
+
+## Contenu réel et stockage
+
+- [x] Supprimer les articles mockés du rendu public et n’afficher que les articles publiés en base.
+- [x] Conserver un état vide clair lorsque la base ne contient aucun article publié.
+- [x] Corriger la configuration du stockage d’images pour l’environnement local et vérifier les variables requises.
+- [x] Tester la création, la publication, la lecture publique et l’upload d’image.
+
+## Validation bout en bout à effectuer
+
+- [ ] Effectuer un test de bout en bout : créer un article admin, le publier, vérifier son apparition sur l’accueil, l’index, la rubrique et la page article.
+- [ ] Tester explicitement le téléversement d’une image avec la configuration locale corrigée et vérifier son affichage dans l’article public.
+- [ ] Capturer ou consigner une preuve ciblée du parcours publication, lecture publique et upload après les derniers correctifs.
