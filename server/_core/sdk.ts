@@ -285,14 +285,18 @@ class SDKServer {
       return buildCronUser(userInfo);
     }
 
-    if (ENV.localAuthEnabled && session.openId.startsWith("local:")) {
+    if (session.openId.startsWith("email:")) {
+      const email = session.openId.slice("email:".length);
+      const allowedEmails = [ENV.adminEmailYvan, ENV.adminEmailThio];
+      if (!allowedEmails.includes(email)) throw ForbiddenError("Unknown admin session");
       const now = new Date();
       return {
         id: 0,
         openId: session.openId,
-        email: ENV.localAdminEmail,
-        name: "Administrateur local",
-        loginMethod: "local",
+        email,
+        name: email.split("@")[0] ?? "Administrateur",
+        loginMethod: "password",
+        passwordHash: null,
         role: "admin",
         createdAt: now,
         updatedAt: now,

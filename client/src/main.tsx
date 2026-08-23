@@ -17,7 +17,6 @@ const redirectToLoginIfUnauthorized = (error: unknown) => {
   const isUnauthorized = error.message === UNAUTHED_ERR_MSG;
 
   if (!isUnauthorized) return;
-  if (import.meta.env.DEV && import.meta.env.VITE_LOCAL_AUTH_ENABLED === "true") return;
 
   startLogin();
 };

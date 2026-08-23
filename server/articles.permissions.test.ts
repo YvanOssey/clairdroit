@@ -31,9 +31,9 @@ describe("articles administration permissions", () => {
     expect(Array.isArray(result)).toBe(true);
   });
 
-  it("keeps local login disabled by default", async () => {
+  it("refuses an email outside the administrator allowlist", async () => {
     const caller = appRouter.createCaller(contextFor("admin"));
-    await expect(caller.auth.localLogin({ email: "admin@example.local", password: "test" })).rejects.toMatchObject({ code: "FORBIDDEN" });
+    await expect(caller.auth.login({ email: "unknown@example.com", password: "test" })).rejects.toMatchObject({ code: "UNAUTHORIZED" });
   });
 
   it("rejects an oversized image before storage upload", async () => {

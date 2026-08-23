@@ -51,3 +51,22 @@
 - [x] Vérifier que `.env.local` est explicitement ignoré par Git.
 - [x] Ajouter un test de connexion locale réussie avec création du cookie et accès admin.
 - [x] Documenter clairement l’activation, l’usage strictement local et la désactivation en production.
+
+## Authentification production par email
+
+- [x] Remplacer le mode local temporaire par une authentification de production.
+- [x] Permettre deux comptes administrateur : yvanossey6@gmail.com et thiocorinne@gmail.com.
+- [x] Ajouter le stockage de mots de passe hachés et la gestion des sessions.
+- [x] Ajouter la connexion, la déconnexion et la protection des routes admin.
+- [x] Demander les deux mots de passe via la configuration sécurisée, sans les écrire dans le code.
+- [x] Tester les succès, les refus et le build avant le checkpoint.
+
+## Nettoyage de l’ancien mode local
+
+- [x] Supprimer les variables et branches `LOCAL_*` devenues obsolètes.
+- [x] Mettre à jour les exemples et la documentation pour ne conserver que l’authentification email de production.
+
+## Dernier contrôle documentaire
+
+- [x] Retirer les derniers noms de variables de l’ancien mode local dans ADMIN_AUTH.md.
+- [x] Vérifier par recherche textuelle qu’aucune référence à l’ancien mode ne subsiste hors des dépendances et du build.

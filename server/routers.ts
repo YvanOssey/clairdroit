@@ -8,7 +8,8 @@ import { ENV } from "./_core/env";
 import { sdk } from "./_core/sdk";
 import { systemRouter } from "./_core/systemRouter";
 import { adminProcedure, publicProcedure, router } from "./_core/trpc";
-import { getArticleById, getPublishedArticleBySlug, insertArticle, listAdminArticles, listPublishedArticles, updateArticle, upsertUser } from "./db";
+import { getUserByEmail, getArticleById, getPublishedArticleBySlug, insertArticle, listAdminArticles, listPublishedArticles, updateArticle, upsertUser } from "./db";
+import { hashPassword, verifyPassword } from "./auth/password";
 import { storagePut } from "./storage";
 
 const articleInput = z.object({
@@ -35,16 +36,24 @@ export const appRouter = router({
     me: publicProcedure.query((opts) => opts.ctx.user),
     logout: publicProcedure.mutation(({ ctx }) => {
       const cookieOptions = getSessionCookieOptions(ctx.req);
-      ctx.res.clearCookie(COOKIE_NAME, { ...cookieOptions, sameSite: ENV.localAuthEnabled ? "lax" : cookieOptions.sameSite, maxAge: -1 });
+      ctx.res.clearCookie(COOKIE_NAME, { ...cookieOptions, sameSite: cookieOptions.sameSite, maxAge: -1 });
       return { success: true } as const;
     }),
-    localLogin: publicProcedure.input(z.object({ email: z.string().email(), password: z.string().min(1) })).mutation(async ({ input, ctx }) => {
-      if (!ENV.localAuthEnabled) throw new TRPCError({ code: "FORBIDDEN", message: "La connexion locale est désactivée." });
-      if (!ENV.localAdminEmail || !ENV.localAdminPassword) throw new TRPCError({ code: "PRECONDITION_FAILED", message: "Configurez LOCAL_ADMIN_EMAIL et LOCAL_ADMIN_PASSWORD." });
-      if (!safeEqual(input.email.trim().toLowerCase(), ENV.localAdminEmail.trim().toLowerCase()) || !safeEqual(input.password, ENV.localAdminPassword)) throw new TRPCError({ code: "UNAUTHORIZED", message: "Email ou mot de passe incorrect." });
-      const openId = `local:${ENV.localAdminEmail.trim().toLowerCase()}`;
-      await upsertUser({ openId, email: ENV.localAdminEmail.trim().toLowerCase(), name: "Administrateur local", loginMethod: "local", role: "admin" });
-      const token = await sdk.signSession({ openId, appId: ENV.appId || "local", name: "Administrateur local" });
+    login: publicProcedure.input(z.object({ email: z.string().email(), password: z.string().min(1) })).mutation(async ({ input, ctx }) => {
+      const email = input.email.trim().toLowerCase();
+      const configuredPasswords: Record<string, string> = { [ENV.adminEmailYvan]: ENV.adminPasswordYvan, [ENV.adminEmailThio]: ENV.adminPasswordThio };
+      const configuredPassword = configuredPasswords[email];
+      if (!configuredPassword) throw new TRPCError({ code: "UNAUTHORIZED", message: "Email ou mot de passe incorrect." });
+      const existing = await getUserByEmail(email);
+      if (existing?.passwordHash) {
+        if (!verifyPassword(input.password, existing.passwordHash)) throw new TRPCError({ code: "UNAUTHORIZED", message: "Email ou mot de passe incorrect." });
+      } else if (!safeEqual(input.password, configuredPassword)) {
+        throw new TRPCError({ code: "UNAUTHORIZED", message: "Email ou mot de passe incorrect." });
+      }
+      const passwordHash = existing?.passwordHash ?? hashPassword(configuredPassword);
+      const openId = existing?.openId ?? `email:${email}`;
+      await upsertUser({ openId, email, name: existing?.name ?? email.split("@")[0], loginMethod: "password", passwordHash, role: "admin", lastSignedIn: new Date() });
+      const token = await sdk.signSession({ openId, appId: ENV.appId || "blog-juridique", name: existing?.name ?? email });
       const cookieOptions = getSessionCookieOptions(ctx.req);
       ctx.res.cookie(COOKIE_NAME, token, { ...cookieOptions, sameSite: "lax", maxAge: ONE_YEAR_MS });
       return { success: true } as const;
