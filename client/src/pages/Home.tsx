@@ -61,9 +61,17 @@ export default function Home() {
               <Link href="/articles" className="group inline-flex items-center gap-3 bg-[#12243b] px-5 py-3.5 text-xs font-bold uppercase tracking-[0.13em] text-[#f7f4ee] transition duration-180 hover:bg-[#b86e4b]">
                 {settings.homePrimaryCta} <ArrowUpRight size={16} className="transition-transform duration-180 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </Link>
-              <Link href="#derniere-lecture" className="inline-flex items-center gap-2 border-b border-[#b86e4b] pb-1 text-xs font-bold uppercase tracking-[0.13em] text-[#12243b] transition-colors hover:text-[#b86e4b]">
+              <a
+                href="#derniere-lecture"
+                onClick={(event) => {
+                  event.preventDefault();
+                  document.getElementById("derniere-lecture")?.scrollIntoView({ behavior: "smooth", block: "start" });
+                  window.history.replaceState(null, "", "#derniere-lecture");
+                }}
+                className="inline-flex items-center gap-2 border-b border-[#b86e4b] pb-1 text-xs font-bold uppercase tracking-[0.13em] text-[#12243b] transition-colors hover:text-[#b86e4b]"
+              >
                 {settings.homeSecondaryCta} <ArrowDownRight size={15} />
-              </Link>
+              </a>
             </div>
           </div>
 
@@ -86,7 +94,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="derniere-lecture" className="container py-20 lg:py-28">
+      <section id="derniere-lecture" className="container scroll-mt-24 py-20 lg:py-28">
         <div className="mb-10 flex flex-col gap-4 border-b border-[rgba(18,36,59,0.16)] pb-5 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p className="eyebrow mb-3">{featured.eyebrow}</p>

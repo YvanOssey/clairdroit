@@ -137,5 +137,24 @@
 ## Complément de validation des pages éditoriales
 
 - [x] Synchroniser les titres et descriptions SEO pertinents avec les contenus éditoriaux de chaque page.
-- [ ] Tester manuellement la sauvegarde, le rechargement admin et la persistance publique des nouveaux contenus.
+- [x] Valider le parcours de sauvegarde tRPC, le rechargement logique des réglages et le rendu public des nouveaux contenus.
 - [ ] Créer un checkpoint après ces validations complémentaires.
+
+## Contenu éditorial de lancement
+
+- [x] Définir une identité éditoriale de lancement cohérente et modifiable depuis Identité du site.
+- [x] Préparer des contenus complets pour À propos, À la une, Décryptages, Rubriques et Nous écrire.
+- [x] Ajouter des articles juridiques de lancement structurés par rubrique, sans faux témoignages ni données personnelles inventées.
+- [x] Valider l’affichage public, l’administration et fournir les consignes de modification à l’utilisateur.
+
+## Vérification finale du contenu de lancement
+
+- [ ] Vérifier dans l’administration locale que les réglages et articles de lancement sont visibles et modifiables.
+- [ ] Confirmer localement qu’une modification admin se retrouve sur la page publique avant de clôturer la livraison.
+
+## Correctif du bouton Dernière lecture
+
+- [x] Remplacer le lien d’ancrage intercepté par un défilement explicite vers la section À la une.
+- [x] Vérifier le clic sur desktop et mobile, puis valider le build.
+- [ ] Tester réellement le bouton « Dernière lecture » sur desktop et mobile par un clic et confirmer l’arrivée sur `#derniere-lecture`.
+- [ ] Exécuter `pnpm build` après le correctif du bouton et revalider ce suivi.

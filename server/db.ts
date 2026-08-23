@@ -122,7 +122,11 @@ function parseSocialLinks(value: string | null | undefined): SocialLink[] {
   }
 }
 
-function parsePageContent(value: string | null | undefined): PageContentValues {
+export function serializePageContent(value: PageContentValues): string {
+  return JSON.stringify(value);
+}
+
+export function parsePageContent(value: string | null | undefined): PageContentValues {
   const fallback = SITE_SETTINGS_DEFAULTS.pageContent;
   if (!value) return fallback;
   try {
@@ -155,7 +159,7 @@ export async function getSiteSettings() {
 export async function upsertSiteSettings(values: Omit<InsertSiteSettings, "id" | "updatedAt" | "socialLinks" | "pageContent"> & { socialLinks: SocialLink[]; pageContent: PageContentValues }) {
   const db = await getDb();
   if (!db) throw new Error("Database is not available");
-  const databaseValues = { ...values, socialLinks: JSON.stringify(values.socialLinks), pageContent: JSON.stringify(values.pageContent) };
+  const databaseValues = { ...values, socialLinks: JSON.stringify(values.socialLinks), pageContent: serializePageContent(values.pageContent) };
   await db.insert(siteSettings).values({ id: 1, ...databaseValues }).onDuplicateKeyUpdate({ set: databaseValues });
   return getSiteSettings();
 }
