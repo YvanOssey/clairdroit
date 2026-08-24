@@ -183,3 +183,29 @@
 
 - [x] Remplacer la map dynamique des mots de passe administrateurs par une structure explicitement sûre et limitée aux emails autorisés.
 - [x] Ajouter un test de régression contre les clés non autorisées et relancer les tests d’authentification.
+
+## Diagnostic connexion locale
+
+- [ ] Vérifier l’état du compte `yvanossey6@gmail.com` dans la base locale sans révéler de secret.
+- [ ] Réinitialiser proprement le hachage local si l’ancien mot de passe est encore enregistré.
+- [ ] Valider la connexion réelle après redémarrage du serveur.
+
+## Correctif session locale JWT
+
+- [ ] Définir un `JWT_SECRET` local non vide dans la fenêtre Windows avant le démarrage.
+- [ ] Valider la création du cookie de session et la connexion admin après redémarrage.
+
+## Publication hors Manus
+
+- [ ] Évaluer les dépendances Manus du projet avant une publication chez un fournisseur tiers.
+- [ ] Choisir une architecture indépendante pour le serveur Node, MySQL, les secrets, Resend et le stockage d’images.
+- [ ] Préparer le build et la configuration du fournisseur choisi.
+- [ ] Tester le site et l’authentification sur l’URL publique indépendante.
+
+## Mise à jour éditoriale ClairDroit
+
+- [x] Remplacer le nom du site par `ClairDroit`.
+- [x] Remplacer la signature courte par `Le droit clair pour tous !`.
+- [x] Remplacer la signature de la page À la une par `ClairDroit · Le droit clair pour tous`.
+- [x] Remplacer le titre d’accueil par `Bienvenue à toi lecteur !`.
+- [x] Remplacer la description d’accueil par le texte fourni par l’utilisateur.

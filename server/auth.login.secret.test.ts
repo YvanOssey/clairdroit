@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const mocks = vi.hoisted(() => ({
   getUserByEmail: vi.fn(),
@@ -35,16 +35,26 @@ const createCaller = () => {
   return { caller, cookie };
 };
 
+beforeEach(() => {
+  mocks.getUserByEmail.mockReset();
+  mocks.upsertUser.mockClear();
+  mocks.signSession.mockClear();
+});
+
 describe("authentification persistante de l’administrateur", () => {
   it("initialise le compte avec le secret configuré", async () => {
+    const password = "Initialisation-Test-2026";
+    const originalConfiguredPassword = ENV.adminPasswordYvan;
+    ENV.adminPasswordYvan = password;
     mocks.getUserByEmail.mockResolvedValueOnce(null);
     const { caller, cookie } = createCaller();
 
     const result = await caller.auth.login({
       email: ENV.adminEmailYvan,
-      password: ENV.adminPasswordYvan,
+      password,
     });
 
+    ENV.adminPasswordYvan = originalConfiguredPassword;
     expect(result.success).toBe(true);
     expect(cookie).toHaveBeenCalled();
     expect(mocks.upsertUser).toHaveBeenCalledWith(
