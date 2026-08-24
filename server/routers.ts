@@ -37,11 +37,12 @@ const siteSettingsInput = z.object({
   navArticlesLabel: z.string().trim().min(1).max(80),
   navCategoriesLabel: z.string().trim().min(1).max(80),
   navAboutLabel: z.string().trim().min(1).max(80),
+  navCareersLabel: z.string().trim().min(1).max(80),
   navContactLabel: z.string().trim().min(1).max(80),
   homeEyebrow: z.string().trim().min(1).max(180),
   homeTitleMain: z.string().trim().min(1).max(180),
-  homeTitleAccent: z.string().trim().min(1).max(180),
-  homeTitleEnd: z.string().trim().min(1).max(180),
+  homeTitleAccent: z.string().trim().max(180),
+  homeTitleEnd: z.string().trim().max(180),
   homeDescription: z.string().trim().min(1),
   homePrimaryCta: z.string().trim().min(1).max(120),
   homeSecondaryCta: z.string().trim().min(1).max(120),
@@ -58,7 +59,7 @@ const siteSettingsInput = z.object({
   })).max(8),
   pageContent: z.object({
     about: z.object({
-      eyebrow: z.string().trim().min(1).max(180), titleMain: z.string().trim().min(1).max(180), titleAccent: z.string().trim().min(1).max(180), intro: z.string().trim().min(1).max(1000), intentionEyebrow: z.string().trim().min(1).max(180), intentionTitleMain: z.string().trim().min(1).max(180), intentionTitleAccent: z.string().trim().min(1).max(180), paragraphOne: z.string().trim().min(1).max(5000), paragraphTwo: z.string().trim().min(1).max(5000), quote: z.string().trim().min(1).max(500), quoteAttribution: z.string().trim().min(1).max(180), principlesEyebrow: z.string().trim().min(1).max(180), principleOneTitle: z.string().trim().min(1).max(120), principleOneBody: z.string().trim().min(1).max(1000), principleTwoTitle: z.string().trim().min(1).max(120), principleTwoBody: z.string().trim().min(1).max(1000), principleThreeTitle: z.string().trim().min(1).max(120), principleThreeBody: z.string().trim().min(1).max(1000), ctaEyebrow: z.string().trim().min(1).max(180), ctaTitle: z.string().trim().min(1).max(180), ctaLabel: z.string().trim().min(1).max(120),
+      eyebrow: z.string().trim().min(1).max(180), titleMain: z.string().trim().min(1).max(180), titleAccent: z.string().trim().min(1).max(180), intro: z.string().trim().min(1).max(1000), intentionEyebrow: z.string().trim().min(1).max(180), intentionTitleMain: z.string().trim().min(1).max(180), intentionTitleAccent: z.string().trim().min(1).max(180), paragraphOne: z.string().trim().min(1).max(5000), paragraphTwo: z.string().trim().min(1).max(5000), quote: z.string().trim().min(1).max(500), quoteAttribution: z.string().trim().min(1).max(180), principlesEyebrow: z.string().trim().min(1).max(180), principleOneTitle: z.string().trim().min(1).max(120), principleOneBody: z.string().trim().min(1).max(1000), principleTwoTitle: z.string().trim().min(1).max(120), principleTwoBody: z.string().trim().min(1).max(1000), principleThreeTitle: z.string().trim().min(1).max(120), principleThreeBody: z.string().trim().min(1).max(1000), ctaEyebrow: z.string().trim().min(1).max(180), ctaTitle: z.string().trim().min(1).max(180), ctaLabel: z.string().trim().min(1).max(120), photoUrl: z.string().trim().max(2000),
     }),
     featured: z.object({
       eyebrow: z.string().trim().min(1).max(180), titleMain: z.string().trim().min(1).max(180), titleEnd: z.string().trim().min(1).max(180), description: z.string().trim().min(1).max(1000), quote: z.string().trim().min(1).max(500), detail: z.string().trim().min(1).max(1000), linkLabel: z.string().trim().min(1).max(120), emptyEyebrow: z.string().trim().min(1).max(180), emptyTitle: z.string().trim().min(1).max(300), emptyDescription: z.string().trim().min(1).max(1000),

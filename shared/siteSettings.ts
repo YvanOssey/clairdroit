@@ -31,6 +31,7 @@ export type PageContentValues = {
     ctaEyebrow: string;
     ctaTitle: string;
     ctaLabel: string;
+    photoUrl: string;
   };
   featured: {
     eyebrow: string;
@@ -87,6 +88,7 @@ export type SiteSettingsValues = {
   navArticlesLabel: string;
   navCategoriesLabel: string;
   navAboutLabel: string;
+  navCareersLabel: string;
   navContactLabel: string;
   homeEyebrow: string;
   homeTitleMain: string;
@@ -106,11 +108,12 @@ export type SiteSettingsValues = {
 export const SITE_SETTINGS_DEFAULTS: SiteSettingsValues = {
   siteName: "ClairDroit",
   siteTagline: "Le droit clair pour tous !",
-  logoUrl: "/manus-storage/droit-de-regard-mark_63489c0c.png",
-  navHomeLabel: "À la une",
-  navArticlesLabel: "Décryptages",
-  navCategoriesLabel: "Rubriques",
-  navAboutLabel: "À propos",
+  logoUrl: "/manus-storage/logo-clairdroit_a271f928.jpeg",
+  navHomeLabel: "Actualité juridique",
+  navArticlesLabel: "Articles juridiques vulgarisés",
+  navCategoriesLabel: "Analyses juridiques",
+  navAboutLabel: "À propos de moi",
+  navCareersLabel: "Tips carrières juridiques",
   navContactLabel: "Nous écrire",
   homeEyebrow: "ClairDroit · Le droit clair pour tous",
   homeTitleMain: "Bienvenue à toi lecteur !",
@@ -119,22 +122,22 @@ export const SITE_SETTINGS_DEFAULTS: SiteSettingsValues = {
   homeDescription: "ClairDroit est le Blog qui va t'aider à comprendre le droit plus facilement. Il vise à être une source fiable et gratuite aux concepts juridiques qui peuvent te sembler inaccessible. Notre slogan : Le droit clair pour tous !",
   homePrimaryCta: "Explorer les analyses",
   homeSecondaryCta: "Dernière lecture",
-  footerDescription: "Analyses, repères et décryptages pour lire le droit dans le monde réel.",
-  footerKicker: "Le droit, avec un angle",
-  newsletterTitle: "La lettre de fond",
-  newsletterDescription: "Une sélection mensuelle pour prendre du recul sur les règles qui nous entourent.",
+  footerDescription: "Analyses juridiques, articles vulgarisés, analyses scientifiques pour comprendre le droit plus aisément.",
+  footerKicker: "Le droit clair pour tous !",
+  newsletterTitle: "Newsletter",
+  newsletterDescription: "Abonnez-vous pour recevoir les nouvelles actualités de ClairDroit.",
   socialLinks: [],
   pageContent: {
     about: {
-      eyebrow: "À propos de la revue",
-      titleMain: "Prendre le droit",
-      titleAccent: "au sérieux.",
-      intro: "Sans le rendre intimidant. Droit de regard est un espace de lecture pour comprendre ce que les textes produisent dans la vie réelle.",
-      intentionEyebrow: "Notre intention",
-      intentionTitleMain: "Rendre les règles",
-      intentionTitleAccent: "lisibles.",
-      paragraphOne: "Le droit accompagne presque chaque décision importante, mais il reste souvent raconté dans une langue qui éloigne celles et ceux qu’il concerne. Droit de regard part du mouvement inverse : partir des situations, donner un contexte, nommer les limites, puis revenir au texte.",
-      paragraphTwo: "La revue rassemble des analyses courtes, des décryptages et un lexique pratique. Chaque texte cherche un angle précis plutôt qu’une réponse universelle.",
+      eyebrow: "À propos de moi",
+      titleMain: "À propos",
+      titleAccent: "de moi",
+      intro: "Je suis Corinne Thio, juriste et blogueuse. Avec ClairDroit, je souhaite rendre les notions juridiques plus accessibles et aider chacun à mieux comprendre les règles qui l’entourent.",
+      intentionEyebrow: "Ma démarche",
+      intentionTitleMain: "Rendre le droit",
+      intentionTitleAccent: "plus clair.",
+      paragraphOne: "ClairDroit est un espace de lecture consacré à la vulgarisation juridique, aux analyses et aux explications utiles au quotidien. Chaque article part d’une question concrète et revient à l’essentiel.",
+      paragraphTwo: "Mon objectif est de proposer une information fiable, gratuite et compréhensible, afin que le droit ne soit plus perçu comme un domaine réservé aux initiés.",
       quote: "« Expliquer n’est pas simplifier à outrance. C’est choisir le bon point d’entrée. »",
       quoteAttribution: "— La ligne de Droit de regard",
       principlesEyebrow: "Notre méthode",
@@ -147,6 +150,7 @@ export const SITE_SETTINGS_DEFAULTS: SiteSettingsValues = {
       ctaEyebrow: "Pour aller plus loin",
       ctaTitle: "Entrer dans les textes.",
       ctaLabel: "Lire les analyses",
+      photoUrl: "/manus-storage/photo-corinne_f8503683.jpeg",
     },
     featured: {
       eyebrow: "À la une",

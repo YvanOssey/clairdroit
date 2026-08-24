@@ -58,6 +58,7 @@ export const siteSettings = mysqlTable("siteSettings", {
   navArticlesLabel: varchar("navArticlesLabel", { length: 80 }).notNull(),
   navCategoriesLabel: varchar("navCategoriesLabel", { length: 80 }).notNull(),
   navAboutLabel: varchar("navAboutLabel", { length: 80 }).notNull(),
+  navCareersLabel: varchar("navCareersLabel", { length: 80 }).notNull(),
   navContactLabel: varchar("navContactLabel", { length: 80 }).notNull(),
   homeEyebrow: varchar("homeEyebrow", { length: 180 }).notNull(),
   homeTitleMain: varchar("homeTitleMain", { length: 180 }).notNull(),

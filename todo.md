@@ -186,14 +186,14 @@
 
 ## Diagnostic connexion locale
 
-- [ ] Vérifier l’état du compte `yvanossey6@gmail.com` dans la base locale sans révéler de secret.
-- [ ] Réinitialiser proprement le hachage local si l’ancien mot de passe est encore enregistré.
-- [ ] Valider la connexion réelle après redémarrage du serveur.
+- [x] Vérifier l’état du compte `yvanossey6@gmail.com` dans la base locale sans révéler de secret.
+- [x] Réinitialiser proprement le hachage local si l’ancien mot de passe est encore enregistré.
+- [x] Valider la connexion réelle après redémarrage du serveur.
 
 ## Correctif session locale JWT
 
-- [ ] Définir un `JWT_SECRET` local non vide dans la fenêtre Windows avant le démarrage.
-- [ ] Valider la création du cookie de session et la connexion admin après redémarrage.
+- [x] Définir un `JWT_SECRET` local non vide dans la fenêtre Windows avant le démarrage.
+- [x] Valider la création du cookie de session et la connexion admin après redémarrage.
 
 ## Publication hors Manus
 
@@ -209,3 +209,12 @@
 - [x] Remplacer la signature de la page À la une par `ClairDroit · Le droit clair pour tous`.
 - [x] Remplacer le titre d’accueil par `Bienvenue à toi lecteur !`.
 - [x] Remplacer la description d’accueil par le texte fourni par l’utilisateur.
+
+## Nouvelle identité éditoriale et page À propos
+
+- [x] Remplacer la description du footer par le texte éditorial fourni.
+- [x] Remplacer les libellés de navigation par les intitulés demandés.
+- [x] Remplacer le titre et la description de la newsletter.
+- [x] Recentrer la page À propos sur « À propos de moi » avec un texte personnel et une photo à côté.
+- [x] Supprimer la citation et la section « Notre méthode » de la page À propos.
+- [x] Obtenir ou intégrer une photo personnelle fournie par l’utilisateur.

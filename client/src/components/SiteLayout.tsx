@@ -17,7 +17,7 @@ export function SiteHeader() {
   const { data: publishedArticles } = trpc.articles.published.useQuery();
   const { data: remoteSettings } = trpc.site.settings.useQuery();
   const settings = { ...SITE_SETTINGS_DEFAULTS, ...remoteSettings, logoUrl: remoteSettings?.logoUrl ?? SITE_SETTINGS_DEFAULTS.logoUrl, socialLinks: remoteSettings?.socialLinks ?? SITE_SETTINGS_DEFAULTS.socialLinks, pageContent: remoteSettings?.pageContent ?? SITE_SETTINGS_DEFAULTS.pageContent };
-  const pageSeo = location === "/a-propos" ? { title: `${settings.pageContent.about.titleMain} ${settings.pageContent.about.titleAccent}`, description: settings.pageContent.about.intro } : location === "/articles" ? { title: `${settings.pageContent.decryptions.titleMain} ${settings.pageContent.decryptions.titleAccent}`, description: settings.pageContent.decryptions.description } : location.startsWith("/rubriques/") ? { title: `${settings.pageContent.rubrics.titleMain} ${settings.pageContent.rubrics.titleAccent}`, description: settings.pageContent.rubrics.intro } : location === "/contact" ? { title: `${settings.pageContent.contact.titleMain} ${settings.pageContent.contact.titleAccent}`, description: settings.pageContent.contact.description } : location === "/" ? { title: `${settings.pageContent.featured.titleMain} ${settings.pageContent.featured.titleEnd}`, description: settings.homeDescription } : null;
+  const pageSeo = location === "/a-propos" ? { title: `${settings.pageContent.about.titleMain} ${settings.pageContent.about.titleAccent}`, description: settings.pageContent.about.intro } : location === "/carrieres-juridiques" ? { title: "Tips carrières juridiques", description: "Des repères simples pour comprendre les métiers du droit et construire son parcours juridique." } : location === "/articles" ? { title: `${settings.pageContent.decryptions.titleMain} ${settings.pageContent.decryptions.titleAccent}`, description: settings.pageContent.decryptions.description } : location.startsWith("/rubriques/") ? { title: `${settings.pageContent.rubrics.titleMain} ${settings.pageContent.rubrics.titleAccent}`, description: settings.pageContent.rubrics.intro } : location === "/contact" ? { title: `${settings.pageContent.contact.titleMain} ${settings.pageContent.contact.titleAccent}`, description: settings.pageContent.contact.description } : location === "/" ? { title: `${settings.pageContent.featured.titleMain} ${settings.pageContent.featured.titleEnd}`, description: settings.homeDescription } : null;
   useEffect(() => {
     document.title = pageSeo ? `${pageSeo.title} — ${settings.siteName}` : `${settings.siteName} — ${settings.siteTagline}`;
     let description = document.querySelector<HTMLMetaElement>('meta[name="description"]');
@@ -32,6 +32,7 @@ export function SiteHeader() {
     { label: settings.navHomeLabel, href: "/" },
     { label: settings.navArticlesLabel, href: "/articles" },
     { label: settings.navCategoriesLabel, href: "/rubriques/Droit du travail" },
+    { label: settings.navCareersLabel, href: "/carrieres-juridiques" },
     { label: settings.navAboutLabel, href: "/a-propos" },
   ];
   const liveArticles = useMemo(() => (publishedArticles ?? []).map(fromRemoteArticle), [publishedArticles]);
@@ -175,6 +176,13 @@ export function SiteFooter() {
     onError: (error) => toast.error(error.message),
   });
   const settings = { ...SITE_SETTINGS_DEFAULTS, ...remoteSettings, logoUrl: remoteSettings?.logoUrl ?? SITE_SETTINGS_DEFAULTS.logoUrl, socialLinks: remoteSettings?.socialLinks ?? SITE_SETTINGS_DEFAULTS.socialLinks };
+  const footerNavItems = [
+    { label: settings.navHomeLabel, href: "/" },
+    { label: settings.navArticlesLabel, href: "/articles" },
+    { label: settings.navCategoriesLabel, href: "/rubriques/Droit du travail" },
+    { label: settings.navCareersLabel, href: "/carrieres-juridiques" },
+    { label: settings.navAboutLabel, href: "/a-propos" },
+  ];
 
   const handleSubscribe = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -199,10 +207,7 @@ export function SiteFooter() {
         <div>
           <p className="eyebrow mb-5">Explorer</p>
           <div className="flex flex-col gap-3 text-sm text-[#dfe3e7]">
-            <Link href="/articles" className="transition-colors hover:text-[#d7a187]">Toutes les analyses</Link>
-            <Link href="/rubriques/Numérique" className="transition-colors hover:text-[#d7a187]">Numérique</Link>
-            <Link href="/rubriques/Droit du travail" className="transition-colors hover:text-[#d7a187]">Droit du travail</Link>
-            <Link href="/a-propos" className="transition-colors hover:text-[#d7a187]">À propos</Link>
+            {footerNavItems.map((item) => <Link key={item.href} href={item.href} className="transition-colors hover:text-[#d7a187]">{item.label}</Link>)}
           </div>
         </div>
         <div>
