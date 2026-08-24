@@ -64,6 +64,13 @@
       "when": 1787603064511,
       "tag": "0008_low_riptide",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "5",
+      "when": 1787610518522,
+      "tag": "0009_lazy_mentor",
+      "breakpoints": true
     }
   ]
 }

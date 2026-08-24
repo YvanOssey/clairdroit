@@ -1,8 +1,11 @@
 /* Direction « Cabinet éditorial » : données structurées, ton précis et métadonnées visibles avant tout effet décoratif. */
 
+export type EditorialSection = "actualite" | "vulgarisation" | "analyses" | "carrieres";
+
 export type Article = {
   slug: string;
   category: string;
+  editorialSection?: EditorialSection;
   eyebrow: string;
   title: string;
   excerpt: string;
@@ -139,6 +142,7 @@ export type RemoteArticle = {
   excerpt: string;
   content: string;
   category: string;
+  editorialSection?: EditorialSection;
   author: string;
   coverImage: string | null;
   seoTitle: string | null;
@@ -151,8 +155,9 @@ export type RemoteArticle = {
 
 export const fromRemoteArticle = (article: RemoteArticle): Article => ({
   slug: article.slug,
-  category: article.category,
-  eyebrow: "Publication · Analyse",
+    category: article.category,
+    editorialSection: article.editorialSection ?? "actualite",
+    eyebrow: "Publication · Analyse",
   title: article.title,
   excerpt: article.excerpt,
   date: new Date(article.publishedAt ?? article.updatedAt).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" }),
@@ -162,6 +167,21 @@ export const fromRemoteArticle = (article: RemoteArticle): Article => ({
   author: article.author,
   sections: article.content.split(/\n{2,}/).filter(Boolean).map((body, index) => { const image = body.match(/^!\[[^\]]*\]\(([^)]+)\)$/); return { heading: index === 0 ? "Le point de départ" : `Repère ${String(index + 1).padStart(2, "0")}`, body: image ? "" : body, ...(image ? { image: image[1] } : {}) }; }),
 });
+
+export const editorialSectionPaths: Record<EditorialSection, string> = {
+  actualite: "/actualite-juridique",
+  vulgarisation: "/articles-juridiques",
+  analyses: "/analyses-juridiques",
+  carrieres: "/carrieres-juridiques",
+};
+
+export function getEditorialSectionPath(section: EditorialSection | undefined) {
+  return editorialSectionPaths[section ?? "actualite"];
+}
+
+export function filterArticlesByEditorialSection(articles: Article[], section: EditorialSection) {
+  return articles.filter((article) => (article.editorialSection ?? "actualite") === section);
+}
 
 export function searchArticles(query: string, publishedArticles: Article[] = []) {
   const normalizedQuery = query.trim().toLowerCase();

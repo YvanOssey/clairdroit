@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { ArrowLeft, ArrowUpRight, BookOpen, Clock3 } from "lucide-react";
 import { Link, useRoute } from "wouter";
 import { PageShell } from "@/components/SiteLayout";
-import { fromRemoteArticle } from "@/lib/content";
+import { fromRemoteArticle, getEditorialSectionPath } from "@/lib/content";
 import { trpc } from "@/lib/trpc";
 
 export default function ArticlePage() {
@@ -38,13 +38,14 @@ export default function ArticlePage() {
   }
 
   const relatedArticles: typeof article[] = [];
+  const sectionPath = getEditorialSectionPath(article.editorialSection);
 
   return (
     <PageShell>
       <article>
         <header className="border-b border-[rgba(18,36,59,0.14)] bg-[#ece6da]">
           <div className="container py-12 md:py-20">
-            <Link href="/articles" className="mb-14 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.12em] text-[#667384] transition-colors hover:text-[#b86e4b]"><ArrowLeft size={15} /> Retour aux analyses</Link>
+            <Link href={sectionPath} className="mb-14 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.12em] text-[#667384] transition-colors hover:text-[#b86e4b]"><ArrowLeft size={15} /> Retour à la sélection</Link>
             <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_300px] lg:items-end lg:gap-20">
               <div className="max-w-4xl">
                 <div className="mb-6 flex flex-wrap items-center gap-x-3 gap-y-2"><span className="eyebrow">{article.category}</span><span className="text-[#9a8b7d]">•</span><span className="text-xs uppercase tracking-[0.12em] text-[#667384]">{article.eyebrow}</span></div>
@@ -89,7 +90,7 @@ export default function ArticlePage() {
         </div>
 
         <section className="border-y border-[rgba(18,36,59,0.13)] bg-[#f1ede5]">
-          <div className="container py-14 md:py-20"><div className="mb-8 flex items-end justify-between border-b border-[rgba(18,36,59,0.14)] pb-4"><div><p className="eyebrow mb-2">À lire ensuite</p><h2 className="font-display text-4xl font-semibold tracking-[-0.04em]">Poursuivre le fil.</h2></div><Link href="/articles" className="hidden items-center gap-2 text-xs font-bold uppercase tracking-[0.12em] text-[#b86e4b] sm:flex">Tout l’index <ArrowUpRight size={15} /></Link></div><div className="grid gap-8 md:grid-cols-2">{relatedArticles.map((item) => <Link key={item.slug} href={`/articles/${item.slug}`} className="group grid gap-5 border-t border-[rgba(18,36,59,0.14)] pt-5 sm:grid-cols-[140px_1fr]"><img src={item.image} alt={item.imageAlt} className="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-[1.02]" /><div><span className="eyebrow">{item.category}</span><h3 className="mt-2 font-display text-3xl font-semibold leading-[0.95] tracking-[-0.03em] group-hover:text-[#b86e4b]">{item.title}</h3></div></Link>)}</div></div>
+          <div className="container py-14 md:py-20"><div className="mb-8 flex items-end justify-between border-b border-[rgba(18,36,59,0.14)] pb-4"><div><p className="eyebrow mb-2">À lire ensuite</p><h2 className="font-display text-4xl font-semibold tracking-[-0.04em]">Poursuivre le fil.</h2></div><Link href={sectionPath} className="hidden items-center gap-2 text-xs font-bold uppercase tracking-[0.12em] text-[#b86e4b] sm:flex">Retour à la sélection <ArrowUpRight size={15} /></Link></div><div className="grid gap-8 md:grid-cols-2">{relatedArticles.map((item) => <Link key={item.slug} href={`/articles/${item.slug}`} className="group grid gap-5 border-t border-[rgba(18,36,59,0.14)] pt-5 sm:grid-cols-[140px_1fr]"><img src={item.image} alt={item.imageAlt} className="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-[1.02]" /><div><span className="eyebrow">{item.category}</span><h3 className="mt-2 font-display text-3xl font-semibold leading-[0.95] tracking-[-0.03em] group-hover:text-[#b86e4b]">{item.title}</h3></div></Link>)}</div></div>
         </section>
       </article>
     </PageShell>

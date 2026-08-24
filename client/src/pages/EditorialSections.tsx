@@ -1,10 +1,10 @@
 import { ArrowUpRight, Clock3 } from "lucide-react";
 import { Link } from "wouter";
 import { PageShell } from "@/components/SiteLayout";
-import { fromRemoteArticle } from "@/lib/content";
+import { filterArticlesByEditorialSection, fromRemoteArticle } from "@/lib/content";
 import { trpc } from "@/lib/trpc";
 
-type SectionKey = "actualite" | "vulgarisation" | "analyses";
+type SectionKey = "actualite" | "vulgarisation" | "analyses" | "carrieres";
 
 const sectionCopy: Record<SectionKey, {
   eyebrow: string;
@@ -34,17 +34,20 @@ const sectionCopy: Record<SectionKey, {
     description: "Des analyses pour prendre du recul, confronter les textes à la pratique et mieux saisir les enjeux contemporains du droit.",
     label: "Le temps de l’analyse",
   },
+  carrieres: {
+    eyebrow: "Tips carrières juridiques",
+    titleMain: "Construire son",
+    titleAccent: "parcours.",
+    description: "Des conseils concrets pour comprendre les métiers du droit, progresser dans ses études et construire une trajectoire juridique durable.",
+    label: "Conseils de carrière",
+  },
 };
 
 function SectionPage({ section }: { section: SectionKey }) {
   const copy = sectionCopy[section];
   const { data, isLoading, isError } = trpc.articles.published.useQuery();
   const articles = (data ?? []).map(fromRemoteArticle).sort((a, b) => b.date.localeCompare(a.date));
-  const visibleArticles = section === "actualite"
-    ? articles.slice(0, 4)
-    : section === "vulgarisation"
-      ? articles.slice(0, 6)
-      : articles.filter((article) => ["Droit du travail", "Droit des affaires", "Droit numérique", "Droit public", "Repères juridiques"].includes(article.category));
+  const visibleArticles = filterArticlesByEditorialSection(articles, section);
 
   return (
     <PageShell>
@@ -74,3 +77,4 @@ function SectionPage({ section }: { section: SectionKey }) {
 export function ActualiteJuridique() { return <SectionPage section="actualite" />; }
 export function ArticlesVulgarises() { return <SectionPage section="vulgarisation" />; }
 export function AnalysesJuridiques() { return <SectionPage section="analyses" />; }
+export function CarrieresJuridiques() { return <SectionPage section="carrieres" />; }

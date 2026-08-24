@@ -12,8 +12,7 @@ import ArticlePage from "@/pages/ArticlePage";
 import CategoryPage from "@/pages/CategoryPage";
 import Contact from "@/pages/Contact";
 import Home from "@/pages/Home";
-import LegalCareers from "@/pages/LegalCareers";
-import { ActualiteJuridique, AnalysesJuridiques, ArticlesVulgarises } from "@/pages/EditorialSections";
+import { ActualiteJuridique, AnalysesJuridiques, ArticlesVulgarises, CarrieresJuridiques } from "@/pages/EditorialSections";
 import { Redirect, Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
@@ -30,7 +29,7 @@ function Router() {
       <Route path="/articles/:slug" component={ArticlePage} />
       <Route path="/rubriques/:category" component={CategoryPage} />
       <Route path="/a-propos" component={About} />
-      <Route path="/carrieres-juridiques" component={LegalCareers} />
+      <Route path="/carrieres-juridiques" component={CarrieresJuridiques} />
       <Route path="/contact" component={Contact} />
       <Route path="/admin/settings" component={AdminSiteSettings} />
       <Route path="/admin/inbox" component={AdminInbox} />

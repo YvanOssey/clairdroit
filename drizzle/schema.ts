@@ -27,6 +27,7 @@ export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
 
 export const articleStatus = ["draft", "published", "archived"] as const;
+export const editorialSection = ["actualite", "vulgarisation", "analyses", "carrieres"] as const;
 
 export const articles = mysqlTable("articles", {
   id: int("id").autoincrement().primaryKey(),
@@ -35,6 +36,7 @@ export const articles = mysqlTable("articles", {
   excerpt: text("excerpt").notNull(),
   content: text("content").notNull(),
   category: varchar("category", { length: 120 }).notNull(),
+  editorialSection: mysqlEnum("editorialSection", editorialSection).default("actualite").notNull(),
   author: varchar("author", { length: 160 }).notNull(),
   coverImage: text("coverImage"),
   seoTitle: varchar("seoTitle", { length: 255 }),

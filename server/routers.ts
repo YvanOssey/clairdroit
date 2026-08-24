@@ -81,6 +81,7 @@ const articleInput = z.object({
   excerpt: z.string().trim().min(10),
   content: z.string().trim().min(20),
   category: z.string().trim().min(2).max(120),
+  editorialSection: z.enum(["actualite", "vulgarisation", "analyses", "carrieres"]),
   author: z.string().trim().min(2).max(160),
   coverImage: z.string().trim().url().optional().or(z.literal("")),
   status: z.enum(["draft", "published", "archived"]).default("draft"),

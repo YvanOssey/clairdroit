@@ -1,0 +1,1 @@
+ALTER TABLE `articles` ADD `editorialSection` enum('actualite','vulgarisation','analyses','carrieres') DEFAULT 'actualite' NOT NULL;

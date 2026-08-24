@@ -246,3 +246,23 @@
 - [x] Refondez explicitement `client/src/pages/Home.tsx` pour en faire une page d’accueil dédiée au contenu fourni.
 - [x] Décider et appliquer le remplacement ou maintien des anciennes routes `/articles` et `/rubriques/:category` afin d’éviter des pages publiques incohérentes avec les nouvelles navigations.
 - [x] Ajouter une validation de régression sur les nouveaux chemins publics après ces corrections.
+
+## Publication éditoriale exclusive
+
+- [x] Ajouter un type de publication persistant limité à quatre valeurs : actualité, vulgarisation, analyses ou carrières.
+- [x] Ajouter le champ Page de publication dans l’éditeur admin et dans les validations serveur.
+- [x] Filtrer exclusivement les quatre pages éditoriales selon le type choisi.
+- [x] Préserver les articles existants avec une migration de compatibilité.
+- [x] Tester la création, la publication, la lecture et la séparation des quatre sélections.
+
+## Renforcement de la publication exclusive
+
+- [x] Ajouter un test d’intégration vérifiant que `editorialSection` est persisté lors du create/update et renvoyé par les procédures publiques et admin.
+- [x] Ajouter une validation bout en bout des quatre sections avec une publication par section et vérifier l’absence de mélange.
+- [x] Vérifier et documenter les liens de lecture et de retour vers la bonne section éditoriale.
+
+## Renforcement des preuves éditoriales
+
+- [x] Ajouter un test d’intégration isolé couvrant create/update puis published, bySlug, adminList et adminById avec `editorialSection`.
+- [x] Ajouter une vérification de séparation des quatre sections avec un article attribué à chaque section, sans utiliser de données de production.
+- [x] Ajouter une preuve documentée des liens de lecture et de retour depuis chaque section éditoriale.
