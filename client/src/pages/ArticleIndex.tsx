@@ -3,20 +3,20 @@ import { useMemo, useState } from "react";
 import { ArrowUpRight, Clock3 } from "lucide-react";
 import { Link } from "wouter";
 import { PageShell } from "@/components/SiteLayout";
-import { categories, fromRemoteArticle } from "@/lib/content";
+import { filterArticlesByEditorialSection, fromRemoteArticle, type EditorialSection } from "@/lib/content";
 import { trpc } from "@/lib/trpc";
 import { SITE_SETTINGS_DEFAULTS } from "@shared/siteSettings";
 
 export default function ArticleIndex() {
-  const [activeCategory, setActiveCategory] = useState("Toutes");
+  const [activeSection, setActiveSection] = useState<"Toutes" | EditorialSection>("Toutes");
   const publishedQuery = trpc.articles.published.useQuery();
   const { data: remoteSettings } = trpc.site.settings.useQuery();
   const settings = { ...SITE_SETTINGS_DEFAULTS, ...remoteSettings, pageContent: remoteSettings?.pageContent ?? SITE_SETTINGS_DEFAULTS.pageContent };
   const { decryptions } = settings.pageContent;
   const liveArticles = useMemo(() => (publishedQuery.data ?? []).map(fromRemoteArticle), [publishedQuery.data]);
   const filteredArticles = useMemo(
-    () => activeCategory === "Toutes" ? liveArticles : liveArticles.filter((article) => article.category === activeCategory),
-    [activeCategory, liveArticles],
+    () => activeSection === "Toutes" ? liveArticles : filterArticlesByEditorialSection(liveArticles, activeSection),
+    [activeSection, liveArticles],
   );
 
   return (
@@ -30,7 +30,7 @@ export default function ArticleIndex() {
 
       <section className="container py-14 lg:py-20">
         <div className="mb-10 flex flex-col gap-5 border-b border-[rgba(18,36,59,0.16)] pb-5 lg:flex-row lg:items-end lg:justify-between">
-          <div><p className="eyebrow mb-3">{decryptions.filterEyebrow}</p><div className="flex flex-wrap gap-x-5 gap-y-3" role="group" aria-label="Filtrer les articles par rubrique"><button type="button" onClick={() => setActiveCategory("Toutes")} className={`border-b pb-1 text-xs font-bold uppercase tracking-[0.12em] transition-colors ${activeCategory === "Toutes" ? "border-[#b86e4b] text-[#b86e4b]" : "border-transparent text-[#667384] hover:text-[#12243b]"}`}>Toutes</button>{categories.map((category) => <button key={category.name} type="button" onClick={() => setActiveCategory(category.name)} className={`border-b pb-1 text-xs font-bold uppercase tracking-[0.12em] transition-colors ${activeCategory === category.name ? "border-[#b86e4b] text-[#b86e4b]" : "border-transparent text-[#667384] hover:text-[#12243b]"}`}>{category.name}</button>)}</div></div><span className="text-xs uppercase tracking-[0.12em] text-[#667384]">{filteredArticles.length} résultat{filteredArticles.length > 1 ? "s" : ""}</span>
+          <div><p className="eyebrow mb-3">{decryptions.filterEyebrow}</p><div className="flex flex-wrap gap-x-5 gap-y-3" role="group" aria-label="Filtrer les articles par page éditoriale"><button type="button" onClick={() => setActiveSection("Toutes")} className={`border-b pb-1 text-xs font-bold uppercase tracking-[0.12em] transition-colors ${activeSection === "Toutes" ? "border-[#b86e4b] text-[#b86e4b]" : "border-transparent text-[#667384] hover:text-[#12243b]"}`}>Toutes</button>{([ ["actualite", "Actualités juridiques"], ["vulgarisation", "Articles vulgarisés"], ["analyses", "Analyses juridiques"], ["carrieres", "Tips carrières" ] ] as const).map(([section, label]) => <button key={section} type="button" onClick={() => setActiveSection(section)} className={`border-b pb-1 text-xs font-bold uppercase tracking-[0.12em] transition-colors ${activeSection === section ? "border-[#b86e4b] text-[#b86e4b]" : "border-transparent text-[#667384] hover:text-[#12243b]"}`}>{label}</button>)}</div></div><span className="text-xs uppercase tracking-[0.12em] text-[#667384]">{filteredArticles.length} résultat{filteredArticles.length > 1 ? "s" : ""}</span>
         </div>
 
         {filteredArticles.length === 0 ? (

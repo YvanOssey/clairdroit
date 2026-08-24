@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import { ArrowDownRight, ArrowUpRight, Clock3, FileText } from "lucide-react";
 import { Link } from "wouter";
 import { PageShell } from "@/components/SiteLayout";
-import { Article, categories, fromRemoteArticle } from "@/lib/content";
+import { Article, fromRemoteArticle } from "@/lib/content";
 import { trpc } from "@/lib/trpc";
 import { SITE_SETTINGS_DEFAULTS } from "@shared/siteSettings";
 
@@ -38,7 +38,7 @@ export default function Home() {
   const publishedQuery = trpc.articles.published.useQuery();
   const { data: remoteSettings } = trpc.site.settings.useQuery();
   const settings = { ...SITE_SETTINGS_DEFAULTS, ...remoteSettings, logoUrl: remoteSettings?.logoUrl ?? SITE_SETTINGS_DEFAULTS.logoUrl, pageContent: remoteSettings?.pageContent ?? SITE_SETTINGS_DEFAULTS.pageContent };
-  const { featured, rubrics } = settings.pageContent;
+  const { featured } = settings.pageContent;
   const liveArticles = useMemo(() => (publishedQuery.data ?? []).map(fromRemoteArticle), [publishedQuery.data]);
   const featuredArticle = liveArticles[0];
   const latestArticles = liveArticles.slice(1);
@@ -120,26 +120,6 @@ export default function Home() {
         </div> : <div className="border-l border-[#b86e4b] py-10 pl-6"><p className="eyebrow mb-3">{featured.emptyEyebrow}</p><p className="font-display text-3xl font-semibold">{featured.emptyTitle}</p><p className="mt-3 max-w-xl text-sm leading-6 text-[#536174]">{featured.emptyDescription}</p></div>}
       </section>
 
-      <section className="border-y border-[rgba(18,36,59,0.13)] bg-[#f1ede5]">
-        <div className="container py-16 lg:py-20">
-          <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="eyebrow mb-3">{rubrics.eyebrow}</p>
-              <h2 className="font-display text-4xl font-semibold tracking-[-0.04em] md:text-5xl">{rubrics.titleMain} <em className="font-normal text-[#b86e4b]">{rubrics.titleAccent}</em></h2>
-            </div>
-            <Link href="/analyses-juridiques" className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.12em] text-[#b86e4b] hover:text-[#12243b]">Voir les analyses <ArrowUpRight size={15} /></Link>
-          </div>
-          <div className="grid border-t border-[rgba(18,36,59,0.16)] md:grid-cols-2 lg:grid-cols-5">
-            {categories.map((category, index) => (
-              <Link key={category.name} href={`/rubriques/${category.name}`} className="group border-b border-[rgba(18,36,59,0.16)] py-6 transition-colors hover:bg-[#ece6da] md:border-r md:px-5 md:first:pl-0 lg:min-h-[142px] lg:border-b-0 lg:px-6 lg:first:pl-0">
-                <span className="mb-8 block font-display text-3xl text-[#b86e4b]">0{index + 1}</span>
-                <span className="flex items-center justify-between gap-3 text-sm font-bold text-[#12243b] group-hover:text-[#b86e4b]">{category.name} <ArrowUpRight size={15} /></span>
-                <span className="mt-2 block text-xs text-[#667384]">{liveArticles.filter((article) => article.category === category.name).length} publication{liveArticles.filter((article) => article.category === category.name).length > 1 ? "s" : ""}</span>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
 
       <section className="container py-20 lg:py-28">
         <div className="mb-4 flex items-center justify-between border-b border-[rgba(18,36,59,0.16)] pb-4">

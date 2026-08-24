@@ -55,6 +55,7 @@ export type PageContentValues = {
     emptyTitle: string;
     emptyDescription: string;
   };
+  /** Legacy compatibility only: no longer editable or rendered in the public site. */
   rubrics: {
     eyebrow: string;
     titleMain: string;
@@ -174,7 +175,8 @@ export const SITE_SETTINGS_DEFAULTS: SiteSettingsValues = {
       emptyTitle: "Les articles publiés apparaîtront ici.",
       emptyDescription: "Publiez votre premier article depuis le panneau d’administration pour alimenter cet index.",
     },
-    rubrics: {
+    /** Legacy compatibility only: no longer editable or rendered in the public site. */
+  rubrics: {
       eyebrow: "Rubrique",
       titleMain: "Le droit",
       titleAccent: "en pratique.",

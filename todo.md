@@ -266,3 +266,20 @@
 - [x] Ajouter un test d’intégration isolé couvrant create/update puis published, bySlug, adminList et adminById avec `editorialSection`.
 - [x] Ajouter une vérification de séparation des quatre sections avec un article attribué à chaque section, sans utiliser de données de production.
 - [x] Ajouter une preuve documentée des liens de lecture et de retour depuis chaque section éditoriale.
+
+## Suppression du bloc Rubriques
+
+- [x] Supprimer le bloc public « Rubrique — Le droit en pratique » et ses catégories.
+- [x] Retirer le formulaire admin correspondant dans « Identité du site ».
+- [x] Remplacer ce bloc admin par les quatre pages éditoriales de navigation.
+- [x] Vérifier les routes, le rendu public, l’administration et le build.
+
+## Complément de suppression Rubriques
+
+- [x] Ajouter dans l’identité du site un bloc explicite « Pages éditoriales » avec les quatre liens de navigation.
+- [x] Nettoyer ou justifier les références restantes à `rubrics`, `/rubriques` et aux anciennes catégories hors éditeur d’articles.
+
+## Nettoyage final des anciennes catégories
+
+- [x] Remplacer le filtrage public par anciennes catégories par un filtrage selon les quatre pages éditoriales.
+- [x] Documenter et neutraliser l’ancien bloc de données `rubrics` sans supprimer les colonnes historiques de la base.

@@ -18,13 +18,6 @@ export type Article = {
   sections: { heading: string; body: string; image?: string }[];
 };
 
-export const categories = [
-  { name: "Droit du travail", count: "12 articles" },
-  { name: "Numérique", count: "09 articles" },
-  { name: "Affaires", count: "08 articles" },
-  { name: "Vie privée", count: "06 articles" },
-  { name: "Droit public", count: "05 articles" },
-];
 
 export const articles: Article[] = [
   {
