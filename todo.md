@@ -199,7 +199,7 @@
 
 - [x] Évaluer les dépendances Manus du projet avant une publication chez un fournisseur tiers.
 - [x] Choisir une architecture indépendante pour le serveur Node, MySQL, les secrets, Resend et le stockage d’images.
-- [ ] Préparer le build et la configuration du fournisseur choisi.
+- [x] Préparer le build et la configuration du fournisseur choisi.
 - [ ] Tester le site et l’authentification sur l’URL publique indépendante.
 
 ## Mise à jour éditoriale ClairDroit
@@ -218,3 +218,15 @@
 - [x] Recentrer la page À propos sur « À propos de moi » avec un texte personnel et une photo à côté.
 - [x] Supprimer la citation et la section « Notre méthode » de la page À propos.
 - [x] Obtenir ou intégrer une photo personnelle fournie par l’utilisateur.
+
+## Correctif erreur tRPC — page À propos
+
+- [x] Identifier pourquoi la requête tRPC reçoit `index.html` au lieu du JSON.
+- [x] Corriger la route ou la configuration du client/proxy tRPC.
+- [x] Vérifier la page `/a-propos` et ajouter une validation de régression.
+
+## Renforcement du correctif tRPC
+
+- [x] Reproduire et tracer la réponse HTML éventuelle sur `/api/trpc`.
+- [x] Vérifier explicitement le fallback Vite et le chemin API tRPC.
+- [x] Ajouter une validation reproductible confirmant que `site.settings` renvoie du JSON.
