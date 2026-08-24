@@ -289,3 +289,10 @@
 - [x] Supprimer le bloc « Références » et le champ « Rubrique » de l’éditeur d’article.
 - [x] Conserver et clarifier uniquement le choix de la page éditoriale parmi les quatre destinations.
 - [x] Vérifier le typage, les tests, le rendu admin et le build.
+
+## Téléchargement local de l’image de couverture
+
+- [x] Ajouter un bouton de sélection d’image locale dans l’éditeur d’article.
+- [x] Téléverser la couverture via la procédure de stockage existante et remplir automatiquement le champ enregistré.
+- [x] Ajouter les états de chargement, erreur, validation de format/taille et aperçu de couverture.
+- [x] Vérifier le typage, les tests, le rendu admin et le build.
