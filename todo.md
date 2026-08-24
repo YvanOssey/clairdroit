@@ -178,3 +178,8 @@
 - [x] Rendre la création et la connexion du compte administrateur persistantes après la première initialisation, en local comme en production.
 - [x] Vérifier que les sessions administrateur restent valides et que la déconnexion fonctionne.
 - [x] Ajouter les tests de connexion persistante et documenter la configuration locale et production.
+
+## Correctif scanner — pollution de prototype
+
+- [x] Remplacer la map dynamique des mots de passe administrateurs par une structure explicitement sûre et limitée aux emails autorisés.
+- [x] Ajouter un test de régression contre les clés non autorisées et relancer les tests d’authentification.

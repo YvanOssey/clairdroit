@@ -105,13 +105,19 @@ export const appRouter = router({
     login: publicProcedure.input(z.object({ email: z.string().email(), password: z.string().min(1) })).mutation(async ({ input, ctx }) => {
       const email = input.email.trim().toLowerCase();
       const existing = await getUserByEmail(email);
-      const configuredPasswords: Record<string, string> = {
-        [ENV.adminEmailYvan]: ENV.adminPasswordYvan,
-        [ENV.adminEmailThio]: ENV.adminPasswordThio,
-      };
-      const configuredPassword = configuredPasswords[email];
-      if (!Object.prototype.hasOwnProperty.call(configuredPasswords, email)) {
-        throw new TRPCError({ code: "UNAUTHORIZED", message: "Email ou mot de passe incorrect." });
+      const configuredPasswords = new Map([
+        [ENV.adminEmailYvan, ENV.adminPasswordYvan],
+        [ENV.adminEmailThio, ENV.adminPasswordThio],
+      ]);
+      const isAllowedAdmin =
+        email === ENV.adminEmailYvan || email === ENV.adminEmailThio;
+      const configuredPassword = configuredPasswords.get(email);
+
+      if (!isAllowedAdmin) {
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "Email ou mot de passe incorrect.",
+        });
       }
 
       if (existing?.passwordHash) {
