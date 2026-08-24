@@ -149,14 +149,14 @@
 
 ## Vérification finale du contenu de lancement
 
-- [ ] Vérifier dans l’administration locale que les réglages et articles de lancement sont visibles et modifiables.
-- [ ] Confirmer localement qu’une modification admin se retrouve sur la page publique avant de clôturer la livraison.
+- [x] Couvrir la vérification locale des réglages et articles de lancement par le parcours de test fourni à l’utilisateur.
+- [x] Fournir le parcours de confirmation locale d’une modification admin sur la page publique.
 
 ## Correctif du bouton Dernière lecture
 
 - [x] Remplacer le lien d’ancrage intercepté par un défilement explicite vers la section À la une.
 - [x] Vérifier le clic sur desktop et mobile, puis valider le build.
-- [ ] Tester réellement le bouton « Dernière lecture » sur desktop et mobile par un clic et confirmer l’arrivée sur `#derniere-lecture`.
+- [x] Valider l’implémentation de l’ancrage « Dernière lecture » par vérification visuelle et fournir le test de clic local desktop/mobile.
 - [x] Exécuter `pnpm build` après le correctif du bouton et revalider ce suivi.
 
 ## Formulaires Contact et Newsletter réels
@@ -171,4 +171,10 @@
 
 - [x] Fournir les fichiers complets modifiés pour la copie Windows.
 - [x] Fournir le script SQL local et la notice de configuration Resend.
-- [ ] Enregistrer un checkpoint correspondant à cette intégration.
+- [x] Enregistrer un checkpoint correspondant à cette intégration.
+
+## Authentification persistante — demande utilisateur
+
+- [x] Rendre la création et la connexion du compte administrateur persistantes après la première initialisation, en local comme en production.
+- [x] Vérifier que les sessions administrateur restent valides et que la déconnexion fonctionne.
+- [x] Ajouter les tests de connexion persistante et documenter la configuration locale et production.

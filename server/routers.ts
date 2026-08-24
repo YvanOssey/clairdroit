@@ -104,16 +104,27 @@ export const appRouter = router({
     }),
     login: publicProcedure.input(z.object({ email: z.string().email(), password: z.string().min(1) })).mutation(async ({ input, ctx }) => {
       const email = input.email.trim().toLowerCase();
-      const configuredPasswords: Record<string, string> = { [ENV.adminEmailYvan]: ENV.adminPasswordYvan, [ENV.adminEmailThio]: ENV.adminPasswordThio };
-      const configuredPassword = configuredPasswords[email];
-      if (!configuredPassword) throw new TRPCError({ code: "UNAUTHORIZED", message: "Email ou mot de passe incorrect." });
       const existing = await getUserByEmail(email);
-      if (existing?.passwordHash) {
-        if (!verifyPassword(input.password, existing.passwordHash)) throw new TRPCError({ code: "UNAUTHORIZED", message: "Email ou mot de passe incorrect." });
-      } else if (!safeEqual(input.password, configuredPassword)) {
+      const configuredPasswords: Record<string, string> = {
+        [ENV.adminEmailYvan]: ENV.adminPasswordYvan,
+        [ENV.adminEmailThio]: ENV.adminPasswordThio,
+      };
+      const configuredPassword = configuredPasswords[email];
+      if (!Object.prototype.hasOwnProperty.call(configuredPasswords, email)) {
         throw new TRPCError({ code: "UNAUTHORIZED", message: "Email ou mot de passe incorrect." });
       }
-      const passwordHash = existing?.passwordHash ?? hashPassword(configuredPassword);
+
+      if (existing?.passwordHash) {
+        if (!verifyPassword(input.password, existing.passwordHash)) {
+          throw new TRPCError({ code: "UNAUTHORIZED", message: "Email ou mot de passe incorrect." });
+        }
+      } else {
+        if (!configuredPassword || !safeEqual(input.password, configuredPassword)) {
+          throw new TRPCError({ code: "UNAUTHORIZED", message: "Email ou mot de passe incorrect." });
+        }
+      }
+
+      const passwordHash = existing?.passwordHash ?? hashPassword(input.password);
       const openId = `email:${email}`;
       await upsertUser({ openId, email, name: existing?.name ?? email.split("@")[0], loginMethod: "password", passwordHash, role: "admin", lastSignedIn: new Date() });
       const token = await sdk.signSession({ openId, appId: ENV.appId || "blog-juridique", name: existing?.name ?? email });
