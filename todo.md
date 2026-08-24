@@ -197,8 +197,8 @@
 
 ## Publication hors Manus
 
-- [ ] Évaluer les dépendances Manus du projet avant une publication chez un fournisseur tiers.
-- [ ] Choisir une architecture indépendante pour le serveur Node, MySQL, les secrets, Resend et le stockage d’images.
+- [x] Évaluer les dépendances Manus du projet avant une publication chez un fournisseur tiers.
+- [x] Choisir une architecture indépendante pour le serveur Node, MySQL, les secrets, Resend et le stockage d’images.
 - [ ] Préparer le build et la configuration du fournisseur choisi.
 - [ ] Tester le site et l’authentification sur l’URL publique indépendante.
 
