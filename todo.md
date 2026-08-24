@@ -283,3 +283,9 @@
 
 - [x] Remplacer le filtrage public par anciennes catégories par un filtrage selon les quatre pages éditoriales.
 - [x] Documenter et neutraliser l’ancien bloc de données `rubrics` sans supprimer les colonnes historiques de la base.
+
+## Suppression du champ Rubrique dans l’éditeur
+
+- [x] Supprimer le bloc « Références » et le champ « Rubrique » de l’éditeur d’article.
+- [x] Conserver et clarifier uniquement le choix de la page éditoriale parmi les quatre destinations.
+- [x] Vérifier le typage, les tests, le rendu admin et le build.
