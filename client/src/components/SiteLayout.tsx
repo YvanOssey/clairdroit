@@ -17,7 +17,7 @@ export function SiteHeader() {
   const { data: publishedArticles } = trpc.articles.published.useQuery();
   const { data: remoteSettings } = trpc.site.settings.useQuery();
   const settings = { ...SITE_SETTINGS_DEFAULTS, ...remoteSettings, logoUrl: remoteSettings?.logoUrl ?? SITE_SETTINGS_DEFAULTS.logoUrl, socialLinks: remoteSettings?.socialLinks ?? SITE_SETTINGS_DEFAULTS.socialLinks, pageContent: remoteSettings?.pageContent ?? SITE_SETTINGS_DEFAULTS.pageContent };
-  const pageSeo = location === "/a-propos" ? { title: `${settings.pageContent.about.titleMain} ${settings.pageContent.about.titleAccent}`, description: settings.pageContent.about.intro } : location === "/carrieres-juridiques" ? { title: "Tips carrières juridiques", description: "Des repères simples pour comprendre les métiers du droit et construire son parcours juridique." } : location === "/articles" ? { title: `${settings.pageContent.decryptions.titleMain} ${settings.pageContent.decryptions.titleAccent}`, description: settings.pageContent.decryptions.description } : location.startsWith("/rubriques/") ? { title: `${settings.pageContent.rubrics.titleMain} ${settings.pageContent.rubrics.titleAccent}`, description: settings.pageContent.rubrics.intro } : location === "/contact" ? { title: `${settings.pageContent.contact.titleMain} ${settings.pageContent.contact.titleAccent}`, description: settings.pageContent.contact.description } : location === "/" ? { title: `${settings.pageContent.featured.titleMain} ${settings.pageContent.featured.titleEnd}`, description: settings.homeDescription } : null;
+  const pageSeo = location === "/a-propos" ? { title: `${settings.pageContent.about.titleMain} ${settings.pageContent.about.titleAccent}`, description: settings.pageContent.about.intro } : location === "/carrieres-juridiques" ? { title: "Tips carrières juridiques", description: "Des repères simples pour comprendre les métiers du droit et construire son parcours juridique." } : location === "/actualite-juridique" ? { title: "Actualité juridique", description: "Les évolutions juridiques qui comptent, replacées dans leur contexte." } : location === "/articles-juridiques" ? { title: "Articles juridiques vulgarisés", description: "Des articles pédagogiques pour comprendre les notions juridiques avec des mots simples." } : location === "/analyses-juridiques" ? { title: "Analyses juridiques", description: "Des analyses pour prendre du recul sur les enjeux contemporains du droit." } : location === "/articles" ? { title: `${settings.pageContent.decryptions.titleMain} ${settings.pageContent.decryptions.titleAccent}`, description: settings.pageContent.decryptions.description } : location.startsWith("/rubriques/") ? { title: `${settings.pageContent.rubrics.titleMain} ${settings.pageContent.rubrics.titleAccent}`, description: settings.pageContent.rubrics.intro } : location === "/contact" ? { title: `${settings.pageContent.contact.titleMain} ${settings.pageContent.contact.titleAccent}`, description: settings.pageContent.contact.description } : location === "/" ? { title: `${settings.pageContent.featured.titleMain} ${settings.pageContent.featured.titleEnd}`, description: settings.homeDescription } : null;
   useEffect(() => {
     document.title = pageSeo ? `${pageSeo.title} — ${settings.siteName}` : `${settings.siteName} — ${settings.siteTagline}`;
     let description = document.querySelector<HTMLMetaElement>('meta[name="description"]');
@@ -29,9 +29,9 @@ export function SiteHeader() {
     description.content = pageSeo?.description ?? settings.homeDescription;
   }, [location, pageSeo?.title, pageSeo?.description, settings.siteName, settings.siteTagline, settings.homeDescription]);
   const navItems = [
-    { label: settings.navHomeLabel, href: "/" },
-    { label: settings.navArticlesLabel, href: "/articles" },
-    { label: settings.navCategoriesLabel, href: "/rubriques/Droit du travail" },
+    { label: settings.navHomeLabel, href: "/actualite-juridique" },
+    { label: settings.navArticlesLabel, href: "/articles-juridiques" },
+    { label: settings.navCategoriesLabel, href: "/analyses-juridiques" },
     { label: settings.navCareersLabel, href: "/carrieres-juridiques" },
     { label: settings.navAboutLabel, href: "/a-propos" },
   ];
@@ -177,9 +177,9 @@ export function SiteFooter() {
   });
   const settings = { ...SITE_SETTINGS_DEFAULTS, ...remoteSettings, logoUrl: remoteSettings?.logoUrl ?? SITE_SETTINGS_DEFAULTS.logoUrl, socialLinks: remoteSettings?.socialLinks ?? SITE_SETTINGS_DEFAULTS.socialLinks };
   const footerNavItems = [
-    { label: settings.navHomeLabel, href: "/" },
-    { label: settings.navArticlesLabel, href: "/articles" },
-    { label: settings.navCategoriesLabel, href: "/rubriques/Droit du travail" },
+    { label: settings.navHomeLabel, href: "/actualite-juridique" },
+    { label: settings.navArticlesLabel, href: "/articles-juridiques" },
+    { label: settings.navCategoriesLabel, href: "/analyses-juridiques" },
     { label: settings.navCareersLabel, href: "/carrieres-juridiques" },
     { label: settings.navAboutLabel, href: "/a-propos" },
   ];

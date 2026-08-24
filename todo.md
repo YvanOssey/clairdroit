@@ -230,3 +230,19 @@
 - [x] Reproduire et tracer la réponse HTML éventuelle sur `/api/trpc`.
 - [x] Vérifier explicitement le fallback Vite et le chemin API tRPC.
 - [x] Ajouter une validation reproductible confirmant que `site.settings` renvoie du JSON.
+
+## Pages de navigation distinctes et biographie finale
+
+- [x] Créer une page Accueil dédiée au contenu fourni.
+- [x] Créer une page Actualité juridique avec son propre contenu.
+- [x] Créer une page Articles juridiques vulgarisés avec son propre contenu.
+- [x] Créer une page Analyses juridiques avec son propre contenu.
+- [x] Créer une page Tips carrières juridiques avec son propre contenu.
+- [x] Créer une page À propos de moi avec la biographie fournie et le portrait.
+- [x] Supprimer les anciens blocs de contenu réutilisés entre les pages de navigation.
+
+## Corrections de cohérence des pages
+
+- [x] Refondez explicitement `client/src/pages/Home.tsx` pour en faire une page d’accueil dédiée au contenu fourni.
+- [x] Décider et appliquer le remplacement ou maintien des anciennes routes `/articles` et `/rubriques/:category` afin d’éviter des pages publiques incohérentes avec les nouvelles navigations.
+- [x] Ajouter une validation de régression sur les nouveaux chemins publics après ces corrections.

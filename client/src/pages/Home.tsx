@@ -1,4 +1,4 @@
-/* Direction « Cabinet éditorial » : ouverture asymétrique, article à la une prioritaire et repères de lecture visibles dans la marge. */
+/* Page d’accueil de ClairDroit : présentation de la ligne éditoriale, accès aux sélections et dernières publications. */
 import { useMemo } from "react";
 import { ArrowDownRight, ArrowUpRight, Clock3, FileText } from "lucide-react";
 import { Link } from "wouter";
@@ -58,7 +58,7 @@ export default function Home() {
             </h1>
             <p className="mt-10 max-w-xl text-[1.05rem] leading-8 text-[#3a4b60] md:text-lg">{settings.homeDescription}</p>
             <div className="mt-10 flex flex-wrap items-center gap-5">
-              <Link href="/articles" className="group inline-flex items-center gap-3 bg-[#12243b] px-5 py-3.5 text-xs font-bold uppercase tracking-[0.13em] text-[#f7f4ee] transition duration-180 hover:bg-[#b86e4b]">
+              <Link href="/actualite-juridique" className="group inline-flex items-center gap-3 bg-[#12243b] px-5 py-3.5 text-xs font-bold uppercase tracking-[0.13em] text-[#f7f4ee] transition duration-180 hover:bg-[#b86e4b]">
                 {settings.homePrimaryCta} <ArrowUpRight size={16} className="transition-transform duration-180 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </Link>
               <a
@@ -127,7 +127,7 @@ export default function Home() {
               <p className="eyebrow mb-3">{rubrics.eyebrow}</p>
               <h2 className="font-display text-4xl font-semibold tracking-[-0.04em] md:text-5xl">{rubrics.titleMain} <em className="font-normal text-[#b86e4b]">{rubrics.titleAccent}</em></h2>
             </div>
-            <Link href="/articles" className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.12em] text-[#b86e4b] hover:text-[#12243b]">Voir l’index complet <ArrowUpRight size={15} /></Link>
+            <Link href="/analyses-juridiques" className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.12em] text-[#b86e4b] hover:text-[#12243b]">Voir les analyses <ArrowUpRight size={15} /></Link>
           </div>
           <div className="grid border-t border-[rgba(18,36,59,0.16)] md:grid-cols-2 lg:grid-cols-5">
             {categories.map((category, index) => (
