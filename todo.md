@@ -339,3 +339,8 @@
 - [x] Ajouter les pages publiques Mentions légales et Politique de confidentialité avec un contenu de travail clairement signalé à vérifier.
 - [x] Ajouter leurs routes, liens dans le footer et métadonnées dédiées.
 - [x] Vérifier le rendu desktop/mobile et demander les informations personnelles nécessaires pour finaliser les textes.
+
+## Correctif accessibilité pages de conformité
+
+- [x] Éviter l’imbrication de balises `main` dans les pages Mentions légales et Politique de confidentialité.
+- [x] Revalider le typage et le build après correction.
