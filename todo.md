@@ -296,3 +296,15 @@
 - [x] Téléverser la couverture via la procédure de stockage existante et remplir automatiquement le champ enregistré.
 - [x] Ajouter les états de chargement, erreur, validation de format/taille et aperçu de couverture.
 - [x] Vérifier le typage, les tests, le rendu admin et le build.
+
+## Correctif logo après publication
+
+- [ ] Identifier pourquoi la source du logo ne se charge pas sur le site publié.
+- [ ] Corriger la référence ou le téléversement du logo sans casser l’aperçu admin.
+- [ ] Vérifier le rendu local, le rendu publié et le build avant checkpoint.
+
+## Changement d’adresse admin
+
+- [x] Remplacer l’adresse administrateur secondaire par `corinnethio52@gmail.com` dans la liste blanche et la configuration.
+- [x] Préserver le mot de passe existant et migrer le compte persistant sans créer de doublon non autorisé.
+- [x] Tester la nouvelle adresse, refuser l’ancienne et valider le build avant checkpoint.

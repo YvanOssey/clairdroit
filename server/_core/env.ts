@@ -11,7 +11,7 @@ export const ENV = {
   emailFrom: process.env.EMAIL_FROM ?? "",
   contactNotificationEmail: process.env.CONTACT_NOTIFICATION_EMAIL ?? "",
   adminEmailYvan: "yvanossey6@gmail.com",
-  adminEmailThio: "thiocorinne@gmail.com",
+  adminEmailThio: "corinnethio52@gmail.com",
   adminPasswordYvan: process.env.ADMIN_PASSWORD_YVAN ?? "",
   adminPasswordThio: process.env.ADMIN_PASSWORD_THIO ?? "",
 };

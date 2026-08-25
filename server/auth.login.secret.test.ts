@@ -85,6 +85,41 @@ describe("authentification persistante de l’administrateur", () => {
     ).rejects.toMatchObject({ code: "UNAUTHORIZED" });
   });
 
+  it("autorise la nouvelle adresse administrateur secondaire", async () => {
+    const password = "MotDePasseSecondaire-2026";
+    const originalConfiguredPassword = ENV.adminPasswordThio;
+    ENV.adminPasswordThio = password;
+    mocks.getUserByEmail.mockResolvedValueOnce(null);
+    const { caller, cookie } = createCaller();
+
+    const result = await caller.auth.login({
+      email: "corinnethio52@gmail.com",
+      password,
+    });
+
+    ENV.adminPasswordThio = originalConfiguredPassword;
+    expect(result.success).toBe(true);
+    expect(cookie).toHaveBeenCalled();
+    expect(mocks.upsertUser).toHaveBeenCalledWith(
+      expect.objectContaining({
+        email: "corinnethio52@gmail.com",
+        openId: "email:corinnethio52@gmail.com",
+        role: "admin",
+      }),
+    );
+  });
+
+  it("refuse explicitement l’ancienne adresse secondaire", async () => {
+    const { caller } = createCaller();
+
+    await expect(
+      caller.auth.login({
+        email: "thiocorinne@gmail.com",
+        password: "MotDePasseSecondaire-2026",
+      }),
+    ).rejects.toMatchObject({ code: "UNAUTHORIZED" });
+  });
+
   it("utilise le hachage existant sans dépendre du secret d’initialisation", async () => {
     const password = "MotDePassePersistant-2026";
     const originalConfiguredPassword = ENV.adminPasswordYvan;
