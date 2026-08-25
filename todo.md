@@ -344,3 +344,15 @@
 
 - [x] Éviter l’imbrication de balises `main` dans les pages Mentions légales et Politique de confidentialité.
 - [x] Revalider le typage et le build après correction.
+
+## Coordonnées réelles de Nous écrire
+
+- [x] Remplacer l’ancienne adresse email et l’ancienne localisation par les coordonnées confirmées.
+- [x] Persister les nouvelles valeurs dans les réglages du site et les valeurs par défaut.
+- [x] Vérifier la page publique, le lien mailto et le build avant checkpoint.
+
+## Édition admin des pages de conformité
+
+- [ ] Ajouter les contenus persistants des pages Mentions légales et Politique de confidentialité.
+- [ ] Ajouter leurs champs éditables et un aperçu direct dans Identité du site.
+- [ ] Brancher les pages publiques sur les contenus sauvegardés et tester le build.
