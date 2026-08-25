@@ -429,7 +429,7 @@
 - [x] Lire les logs de build et de démarrage du service Railway.
 - [x] Identifier la cause racine sans modifier les secrets à l’aveugle.
 - [x] Appliquer la correction minimale et valider localement.
-- [ ] Redéployer prudemment et confirmer que le service reste actif.
+- [x] Redéployer prudemment et confirmer que le service reste actif.
 
 ### Cause identifiée par les logs Railway
 
