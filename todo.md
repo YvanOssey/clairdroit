@@ -308,3 +308,9 @@
 - [x] Remplacer l’adresse administrateur secondaire par `corinnethio52@gmail.com` dans la liste blanche et la configuration.
 - [x] Préserver le mot de passe existant et migrer le compte persistant sans créer de doublon non autorisé.
 - [x] Tester la nouvelle adresse, refuser l’ancienne et valider le build avant checkpoint.
+
+## Correctif formulaires HTML au lieu de JSON
+
+- [x] Reproduire et identifier la route qui renvoie `index.html` pour Newsletter et Contact.
+- [x] Corriger le routage API afin que les mutations tRPC renvoient toujours du JSON.
+- [x] Ajouter les tests de régression des deux mutations et valider le rendu publié.
