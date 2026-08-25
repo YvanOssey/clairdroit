@@ -314,3 +314,9 @@
 - [x] Reproduire et identifier la route qui renvoie `index.html` pour Newsletter et Contact.
 - [x] Corriger le routage API afin que les mutations tRPC renvoient toujours du JSON.
 - [x] Ajouter les tests de régression des deux mutations et valider le rendu publié.
+
+## Correctif boîte Messages reçus
+
+- [x] Identifier la requête exacte de la boîte admin qui reçoit encore `index.html`.
+- [x] Corriger le client ou le montage de cette requête sans perturber l’enregistrement des formulaires.
+- [x] Ajouter un test de régression pour le chargement des messages et valider le parcours complet.

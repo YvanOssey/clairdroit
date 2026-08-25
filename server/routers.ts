@@ -95,6 +95,14 @@ const safeEqual = (left: string, right: string) => {
   return a.length === b.length && timingSafeEqual(a, b);
 };
 
+async function notifyWithoutBlocking(payload: Parameters<typeof sendNotificationEmail>[0]) {
+  try {
+    await sendNotificationEmail(payload);
+  } catch (error) {
+    console.warn("[Email] Notification non bloquante échouée après sauvegarde :", error);
+  }
+}
+
 export const appRouter = router({
   system: systemRouter,
   auth: router({
@@ -153,7 +161,7 @@ export const appRouter = router({
       message: z.string().trim().min(10).max(10000),
     })).mutation(async ({ input }) => {
       const saved = await insertContactMessage(input);
-      await sendNotificationEmail({
+      await notifyWithoutBlocking({
         subject: `Nouveau message — ${input.subject}`,
         replyTo: input.email,
         text: `Nouveau message reçu sur Droit de regard.\n\nNom : ${input.name}\nEmail : ${input.email}\nObjet : ${input.subject}\n\n${input.message}`,
@@ -167,7 +175,7 @@ export const appRouter = router({
   newsletter: router({
     subscribe: publicProcedure.input(z.object({ email: z.string().trim().email().max(320) })).mutation(async ({ input }) => {
       const subscriber = await insertNewsletterSubscriber(input.email);
-      await sendNotificationEmail({
+      await notifyWithoutBlocking({
         subject: "Nouvelle inscription à la newsletter",
         replyTo: input.email,
         text: `Nouvelle inscription à la newsletter de Droit de regard.\n\nEmail : ${input.email}`,
