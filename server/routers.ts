@@ -101,6 +101,8 @@ const safeEqual = (left: string, right: string) => {
   return a.length === b.length && timingSafeEqual(a, b);
 };
 
+const isHoneypotFilled = (value?: string) => Boolean(value?.trim());
+
 async function notifyWithoutBlocking(payload: Parameters<typeof sendNotificationEmail>[0]) {
   try {
     await sendNotificationEmail(payload);
@@ -181,8 +183,10 @@ export const appRouter = router({
       email: z.string().trim().email().max(320),
       subject: z.string().trim().min(2).max(255),
       message: z.string().trim().min(10).max(10000),
+      website: z.string().max(200).optional(),
     })).mutation(async ({ input, ctx }) => {
-      const saved = await insertContactMessage(input);
+      if (isHoneypotFilled(input.website)) return { success: true, id: undefined } as const;
+      const saved = await insertContactMessage({ name: input.name, email: input.email, subject: input.subject, message: input.message });
       await notifyWithoutBlocking({
         subject: `Nouveau message — ${input.subject}`,
         replyTo: input.email,
@@ -196,7 +200,8 @@ export const appRouter = router({
     updateStatus: adminProcedure.input(z.object({ id: z.number().int().positive(), status: z.enum(["new", "read", "archived"]) })).mutation(({ input }) => updateContactMessageStatus(input.id, input.status)),
   }),
   newsletter: router({
-    subscribe: publicProcedure.input(z.object({ email: z.string().trim().email().max(320) })).mutation(async ({ input, ctx }) => {
+    subscribe: publicProcedure.input(z.object({ email: z.string().trim().email().max(320), website: z.string().max(200).optional() })).mutation(async ({ input, ctx }) => {
+      if (isHoneypotFilled(input.website)) return { success: true, id: undefined } as const;
       const subscriber = await insertNewsletterSubscriber(input.email);
       await notifyWithoutBlocking({
         subject: "Nouvelle inscription à la newsletter ClairDroit",

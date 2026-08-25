@@ -400,3 +400,11 @@
 - [x] Reproduire le téléversement et la sauvegarde d’un logo depuis Identité du site.
 - [x] Vérifier l’aperçu admin puis l’affichage du logo dans le header et le footer publics.
 - [x] Documenter la preuve de rendu du logo et revalider le build.
+
+## Protection anti-spam des formulaires publics
+
+- [x] Ajouter un champ honeypot invisible au formulaire Contact.
+- [x] Ajouter un champ honeypot invisible au formulaire Newsletter.
+- [x] Refuser côté serveur les soumissions qui remplissent le honeypot sans enregistrer ni notifier.
+- [x] Ajouter les tests de soumission légitime et de détection anti-spam.
+- [x] Vérifier l’accessibilité, le build et enregistrer un checkpoint.

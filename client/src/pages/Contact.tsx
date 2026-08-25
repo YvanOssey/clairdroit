@@ -7,7 +7,7 @@ import { PageShell } from "@/components/SiteLayout";
 import { trpc } from "@/lib/trpc";
 import { SITE_SETTINGS_DEFAULTS } from "@shared/siteSettings";
 
-const initialForm = { name: "", email: "", subject: "", message: "" };
+const initialForm = { name: "", email: "", subject: "", message: "", website: "" };
 
 export default function Contact() {
   const [form, setForm] = useState(initialForm);
@@ -59,6 +59,10 @@ export default function Contact() {
           </div>
           <label className="block"><span className="eyebrow mb-3 block">Objet</span><input required type="text" value={form.subject} onChange={(event) => updateField("subject", event.target.value)} placeholder="Une proposition, une question…" className="w-full border-b border-[rgba(18,36,59,0.25)] bg-transparent px-0 py-3 text-sm text-[#12243b] placeholder:text-[#8b929b] focus:border-[#b86e4b] focus:outline-none" /></label>
           <label className="block"><span className="eyebrow mb-3 block">Votre message</span><textarea required rows={6} value={form.message} onChange={(event) => updateField("message", event.target.value)} placeholder="Dites-nous ce qui vous amène ici." className="w-full resize-y border-b border-[rgba(18,36,59,0.25)] bg-transparent px-0 py-3 text-sm leading-6 text-[#12243b] placeholder:text-[#8b929b] focus:border-[#b86e4b] focus:outline-none" /></label>
+          <div aria-hidden="true" className="absolute -left-[10000px] h-px w-px overflow-hidden">
+            <label htmlFor="contact-website">Site internet</label>
+            <input id="contact-website" name="website" type="text" tabIndex={-1} autoComplete="off" value={form.website} onChange={(event) => updateField("website", event.target.value)} />
+          </div>
           {sent && <p role="status" className="text-sm text-[#517158]">Votre message est bien arrivé dans la rédaction.</p>}
           <button disabled={submitMessage.isPending} type="submit" className="inline-flex items-center gap-3 bg-[#12243b] px-5 py-3.5 text-xs font-bold uppercase tracking-[0.13em] text-[#f7f4ee] transition duration-180 hover:bg-[#b86e4b] disabled:cursor-wait disabled:opacity-60">
             {submitMessage.isPending ? "Envoi en cours…" : "Envoyer le message"} <ArrowUpRight size={16} />

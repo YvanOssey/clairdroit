@@ -195,12 +195,14 @@ export function SiteHeader() {
 
 export function SiteFooter() {
   const [email, setEmail] = useState("");
+  const [website, setWebsite] = useState("");
   const [subscribed, setSubscribed] = useState(false);
   const { data: remoteSettings } = trpc.site.settings.useQuery();
   const subscribe = trpc.newsletter.subscribe.useMutation({
     onSuccess: () => {
       setSubscribed(true);
       setEmail("");
+      setWebsite("");
       toast.success("Votre inscription à la newsletter est confirmée.");
     },
     onError: (error) => toast.error(error.message),
@@ -217,7 +219,7 @@ export function SiteFooter() {
   const handleSubscribe = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setSubscribed(false);
-    subscribe.mutate({ email });
+    subscribe.mutate({ email, website });
   };
 
   return (
@@ -259,6 +261,10 @@ export function SiteFooter() {
               placeholder="votre@email.fr"
               className="min-w-0 flex-1 bg-transparent text-sm text-[#f7f4ee] placeholder:text-[#8793a0] focus:outline-none"
             />
+            <div aria-hidden="true" className="absolute -left-[10000px] h-px w-px overflow-hidden">
+              <label htmlFor="newsletter-website">Site internet</label>
+              <input id="newsletter-website" name="website" type="text" tabIndex={-1} autoComplete="off" value={website} onChange={(event) => setWebsite(event.target.value)} />
+            </div>
             <button disabled={subscribe.isPending} type="submit" className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.12em] text-[#d7a187] transition-colors hover:text-[#f7f4ee] disabled:cursor-wait disabled:opacity-60">
               {subscribe.isPending ? "Envoi…" : "S’inscrire"} <ArrowUpRight size={15} />
             </button>
