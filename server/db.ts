@@ -186,6 +186,8 @@ export function parsePageContent(value: string | null | undefined): PageContentV
       decryptions: { ...fallback.decryptions, ...(parsed.decryptions ?? {}) },
       rubrics: { ...fallback.rubrics, ...(parsed.rubrics ?? {}) },
       contact: { ...fallback.contact, ...(parsed.contact ?? {}) },
+      legalNotice: { ...fallback.legalNotice, ...(parsed.legalNotice ?? {}) },
+      privacyPolicy: { ...fallback.privacyPolicy, ...(parsed.privacyPolicy ?? {}) },
     };
   } catch {
     return fallback;

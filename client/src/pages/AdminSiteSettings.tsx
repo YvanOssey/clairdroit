@@ -56,6 +56,12 @@ const pageSections: PageSection[] = [
   { title: "Nous écrire", group: "contact", fields: [
     { key: "eyebrow", label: "Surtitre" }, { key: "titleMain", label: "Titre — première ligne" }, { key: "titleAccent", label: "Titre — accent" }, { key: "description", label: "Description", multiline: true }, { key: "detailsEyebrow", label: "Surtitre coordonnées" }, { key: "email", label: "Email" }, { key: "responseNote", label: "Note de réponse" }, { key: "location", label: "Localisation" }, { key: "locationNote", label: "Note localisation" }, { key: "disclaimer", label: "Avertissement", multiline: true }, { key: "aboutLinkLabel", label: "Lien vers À propos" },
   ] },
+  { title: "Mentions légales", group: "legalNotice", fields: [
+    { key: "eyebrow", label: "Surtitre" }, { key: "title", label: "Titre" }, { key: "intro", label: "Introduction", multiline: true }, { key: "editorTitle", label: "Titre éditeur" }, { key: "editorBody", label: "Texte éditeur", multiline: true }, { key: "activityTitle", label: "Titre activité" }, { key: "activityBody", label: "Texte activité", multiline: true }, { key: "hostingTitle", label: "Titre hébergement" }, { key: "hostingBody", label: "Texte hébergement", multiline: true }, { key: "rightsTitle", label: "Titre propriété intellectuelle" }, { key: "rightsBody", label: "Texte propriété intellectuelle", multiline: true }, { key: "contactTitle", label: "Titre contact" }, { key: "contactBody", label: "Texte contact", multiline: true }, { key: "draftNotice", label: "Avertissement de relecture", multiline: true },
+  ] },
+  { title: "Politique de confidentialité", group: "privacyPolicy", fields: [
+    { key: "eyebrow", label: "Surtitre" }, { key: "title", label: "Titre" }, { key: "intro", label: "Introduction", multiline: true }, { key: "controllerTitle", label: "Titre responsable" }, { key: "controllerBody", label: "Texte responsable", multiline: true }, { key: "dataTitle", label: "Titre données" }, { key: "dataBody", label: "Texte données", multiline: true }, { key: "purposesTitle", label: "Titre finalités" }, { key: "purposesBody", label: "Texte finalités", multiline: true }, { key: "retentionTitle", label: "Titre conservation" }, { key: "retentionBody", label: "Texte conservation", multiline: true }, { key: "requestsTitle", label: "Titre demandes" }, { key: "requestsBody", label: "Texte demandes", multiline: true }, { key: "cookiesTitle", label: "Titre cookies" }, { key: "cookiesBody", label: "Texte cookies", multiline: true }, { key: "draftNotice", label: "Avertissement de relecture", multiline: true },
+  ] },
 ];
 
 const socialPlatforms: Array<{ value: SocialPlatform; label: string; icon: LucideIcon }> = [
@@ -74,7 +80,7 @@ function Preview({ settings }: { settings: SiteSettingsValues }) {
 }
 
 function PageContentPreview({ settings }: { settings: SiteSettingsValues }) {
-  const { about, featured, decryptions, contact } = settings.pageContent;
+  const { about, featured, decryptions, contact, legalNotice, privacyPolicy } = settings.pageContent;
   const previews = [
     [settings.navHomeLabel, "/actualite-juridique", "Publications d’actualité juridique"],
     [settings.navArticlesLabel, "/articles-juridiques", "Articles juridiques vulgarisés"],
@@ -84,6 +90,8 @@ function PageContentPreview({ settings }: { settings: SiteSettingsValues }) {
     ["À la une", "/", `${featured.titleMain} ${featured.titleEnd}`],
     ["Décryptages", "/articles", `${decryptions.titleMain} ${decryptions.titleAccent}`],
     [settings.navContactLabel, "/contact", `${contact.titleMain} ${contact.titleAccent}`],
+    ["Mentions légales", "/mentions-legales", legalNotice.title],
+    ["Politique de confidentialité", "/politique-confidentialite", privacyPolicy.title],
   ];
   return <div className="mt-4 grid gap-2"><p className="eyebrow mb-1">Pages de navigation</p>{previews.map(([label, href, description]) => <Link key={href} href={href} className="border-l-2 border-[#b86e4b] bg-[#ece6da] px-3 py-2 transition hover:bg-[#e2d7c9]"><p className="text-[9px] font-bold uppercase tracking-[0.12em] text-[#b86e4b]">{label}</p><p className="mt-1 font-display text-base font-semibold text-[#12243b]">{description}</p><p className="mt-1 text-[10px] text-[#667384]">{href}</p></Link>)}</div>;
 }

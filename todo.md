@@ -353,6 +353,6 @@
 
 ## Édition admin des pages de conformité
 
-- [ ] Ajouter les contenus persistants des pages Mentions légales et Politique de confidentialité.
-- [ ] Ajouter leurs champs éditables et un aperçu direct dans Identité du site.
-- [ ] Brancher les pages publiques sur les contenus sauvegardés et tester le build.
+- [x] Ajouter les contenus persistants des pages Mentions légales et Politique de confidentialité.
+- [x] Ajouter leurs champs éditables et un aperçu direct dans Identité du site.
+- [x] Brancher les pages publiques sur les contenus sauvegardés et tester le build.

@@ -73,6 +73,12 @@ const siteSettingsInput = z.object({
     contact: z.object({
       eyebrow: z.string().trim().min(1).max(180), titleMain: z.string().trim().min(1).max(180), titleAccent: z.string().trim().min(1).max(180), description: z.string().trim().min(1).max(1200), detailsEyebrow: z.string().trim().min(1).max(180), email: z.string().trim().email().max(180), responseNote: z.string().trim().min(1).max(300), location: z.string().trim().min(1).max(180), locationNote: z.string().trim().min(1).max(300), disclaimer: z.string().trim().min(1).max(1000), aboutLinkLabel: z.string().trim().min(1).max(180),
     }),
+    legalNotice: z.object({
+      eyebrow: z.string().trim().min(1).max(180), title: z.string().trim().min(1).max(180), intro: z.string().trim().min(1).max(1500), editorTitle: z.string().trim().min(1).max(180), editorBody: z.string().trim().min(1).max(5000), activityTitle: z.string().trim().min(1).max(180), activityBody: z.string().trim().min(1).max(5000), hostingTitle: z.string().trim().min(1).max(180), hostingBody: z.string().trim().min(1).max(5000), rightsTitle: z.string().trim().min(1).max(180), rightsBody: z.string().trim().min(1).max(5000), contactTitle: z.string().trim().min(1).max(180), contactBody: z.string().trim().min(1).max(5000), draftNotice: z.string().trim().min(1).max(1500),
+    }),
+    privacyPolicy: z.object({
+      eyebrow: z.string().trim().min(1).max(180), title: z.string().trim().min(1).max(180), intro: z.string().trim().min(1).max(1500), controllerTitle: z.string().trim().min(1).max(180), controllerBody: z.string().trim().min(1).max(5000), dataTitle: z.string().trim().min(1).max(180), dataBody: z.string().trim().min(1).max(5000), purposesTitle: z.string().trim().min(1).max(180), purposesBody: z.string().trim().min(1).max(5000), retentionTitle: z.string().trim().min(1).max(180), retentionBody: z.string().trim().min(1).max(5000), requestsTitle: z.string().trim().min(1).max(180), requestsBody: z.string().trim().min(1).max(5000), cookiesTitle: z.string().trim().min(1).max(180), cookiesBody: z.string().trim().min(1).max(5000), draftNotice: z.string().trim().min(1).max(1500),
+    }),
   }),
 });
 
