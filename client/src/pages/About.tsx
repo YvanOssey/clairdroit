@@ -32,12 +32,9 @@ export default function About() {
   return (
     <PageShell>
       <section className="border-b border-[rgba(18,36,59,0.14)] bg-[#ece6da]">
-        <div className="container grid gap-10 py-16 md:grid-cols-[1fr_300px] md:items-end md:py-24">
-          <div>
-            <div className="mb-7 flex items-center gap-3"><span className="h-px w-12 bg-[#b86e4b]" /><span className="eyebrow">À propos de moi</span></div>
-            <h1 className="font-display text-6xl font-semibold leading-[0.84] tracking-[-0.055em] md:text-8xl">À propos<br /><em className="font-normal text-[#b86e4b]">de moi</em></h1>
-          </div>
-          <p className="border-l border-[#b86e4b] pl-5 text-sm leading-7 text-[#536174]">Juriste, consultante et blogueuse, je souhaite rendre les notions juridiques plus accessibles et utiles au quotidien.</p>
+        <div className="container py-16 md:py-24">
+          <div className="mb-7 flex items-center gap-3"><span className="h-px w-12 bg-[#b86e4b]" /><span className="eyebrow">À propos de moi</span></div>
+          <h1 className="font-display text-6xl font-semibold leading-[0.84] tracking-[-0.055em] md:text-8xl">À propos<br /><em className="font-normal text-[#b86e4b]">de moi</em></h1>
         </div>
       </section>
 

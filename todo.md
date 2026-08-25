@@ -356,3 +356,14 @@
 - [x] Ajouter les contenus persistants des pages Mentions légales et Politique de confidentialité.
 - [x] Ajouter leurs champs éditables et un aperçu direct dans Identité du site.
 - [x] Brancher les pages publiques sur les contenus sauvegardés et tester le build.
+
+## Recherche visible et nettoyage À propos
+
+- [x] Ajouter une recherche d’articles visible, accessible et fonctionnelle sur les articles publiés.
+- [x] Supprimer le bloc de présentation mis en évidence sur la page À propos de moi.
+- [x] Vérifier les résultats, les quatre sections éditoriales, le responsive et le build.
+
+## Suppression définitive du bloc À propos
+
+- [x] Retirer le texte de présentation et son conteneur décoratif de l’en-tête À propos de moi.
+- [x] Vérifier que le titre, la biographie, la photo et le responsive restent corrects.

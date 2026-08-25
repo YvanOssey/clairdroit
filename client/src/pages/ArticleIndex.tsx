@@ -1,23 +1,24 @@
 /* Index public alimenté exclusivement par les articles publiés depuis l’administration. */
 import { useMemo, useState } from "react";
-import { ArrowUpRight, Clock3 } from "lucide-react";
+import { ArrowUpRight, Clock3, Search } from "lucide-react";
 import { Link } from "wouter";
 import { PageShell } from "@/components/SiteLayout";
-import { filterArticlesByEditorialSection, fromRemoteArticle, type EditorialSection } from "@/lib/content";
+import { filterArticlesByEditorialSection, fromRemoteArticle, searchArticles, type EditorialSection } from "@/lib/content";
 import { trpc } from "@/lib/trpc";
 import { SITE_SETTINGS_DEFAULTS } from "@shared/siteSettings";
 
 export default function ArticleIndex() {
   const [activeSection, setActiveSection] = useState<"Toutes" | EditorialSection>("Toutes");
+  const [query, setQuery] = useState("");
   const publishedQuery = trpc.articles.published.useQuery();
   const { data: remoteSettings } = trpc.site.settings.useQuery();
   const settings = { ...SITE_SETTINGS_DEFAULTS, ...remoteSettings, pageContent: remoteSettings?.pageContent ?? SITE_SETTINGS_DEFAULTS.pageContent };
   const { decryptions } = settings.pageContent;
   const liveArticles = useMemo(() => (publishedQuery.data ?? []).map(fromRemoteArticle), [publishedQuery.data]);
-  const filteredArticles = useMemo(
-    () => activeSection === "Toutes" ? liveArticles : filterArticlesByEditorialSection(liveArticles, activeSection),
-    [activeSection, liveArticles],
-  );
+  const filteredArticles = useMemo(() => {
+    const sectionArticles = activeSection === "Toutes" ? liveArticles : filterArticlesByEditorialSection(liveArticles, activeSection);
+    return searchArticles(query, sectionArticles);
+  }, [activeSection, liveArticles, query]);
 
   return (
     <PageShell>
@@ -30,7 +31,7 @@ export default function ArticleIndex() {
 
       <section className="container py-14 lg:py-20">
         <div className="mb-10 flex flex-col gap-5 border-b border-[rgba(18,36,59,0.16)] pb-5 lg:flex-row lg:items-end lg:justify-between">
-          <div><p className="eyebrow mb-3">{decryptions.filterEyebrow}</p><div className="flex flex-wrap gap-x-5 gap-y-3" role="group" aria-label="Filtrer les articles par page éditoriale"><button type="button" onClick={() => setActiveSection("Toutes")} className={`border-b pb-1 text-xs font-bold uppercase tracking-[0.12em] transition-colors ${activeSection === "Toutes" ? "border-[#b86e4b] text-[#b86e4b]" : "border-transparent text-[#667384] hover:text-[#12243b]"}`}>Toutes</button>{([ ["actualite", "Actualités juridiques"], ["vulgarisation", "Articles vulgarisés"], ["analyses", "Analyses juridiques"], ["carrieres", "Tips carrières" ] ] as const).map(([section, label]) => <button key={section} type="button" onClick={() => setActiveSection(section)} className={`border-b pb-1 text-xs font-bold uppercase tracking-[0.12em] transition-colors ${activeSection === section ? "border-[#b86e4b] text-[#b86e4b]" : "border-transparent text-[#667384] hover:text-[#12243b]"}`}>{label}</button>)}</div></div><span className="text-xs uppercase tracking-[0.12em] text-[#667384]">{filteredArticles.length} résultat{filteredArticles.length > 1 ? "s" : ""}</span>
+          <div><p className="eyebrow mb-3">{decryptions.filterEyebrow}</p><div className="flex flex-wrap gap-x-5 gap-y-3" role="group" aria-label="Filtrer les articles par page éditoriale"><button type="button" onClick={() => setActiveSection("Toutes")} className={`border-b pb-1 text-xs font-bold uppercase tracking-[0.12em] transition-colors ${activeSection === "Toutes" ? "border-[#b86e4b] text-[#b86e4b]" : "border-transparent text-[#667384] hover:text-[#12243b]"}`}>Toutes</button>{([ ["actualite", "Actualités juridiques"], ["vulgarisation", "Articles vulgarisés"], ["analyses", "Analyses juridiques"], ["carrieres", "Tips carrières" ] ] as const).map(([section, label]) => <button key={section} type="button" onClick={() => setActiveSection(section)} className={`border-b pb-1 text-xs font-bold uppercase tracking-[0.12em] transition-colors ${activeSection === section ? "border-[#b86e4b] text-[#b86e4b]" : "border-transparent text-[#667384] hover:text-[#12243b]"}`}>{label}</button>)}</div></div><div className="w-full lg:max-w-xs"><label htmlFor="article-search" className="sr-only">Rechercher un article</label><div className="relative"><Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#b86e4b]" /><input id="article-search" type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Rechercher un article…" className="w-full border border-[rgba(18,36,59,0.22)] bg-[#f7f4ee] py-3 pl-10 pr-3 text-sm text-[#12243b] placeholder:text-[#6e7885] focus:border-[#b86e4b] focus:outline-none" /></div></div><span className="text-xs uppercase tracking-[0.12em] text-[#667384]">{filteredArticles.length} résultat{filteredArticles.length > 1 ? "s" : ""}</span>
         </div>
 
         {filteredArticles.length === 0 ? (
