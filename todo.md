@@ -326,3 +326,10 @@
 - [x] Vérifier la configuration Resend effective et les journaux d’envoi en production.
 - [x] Corriger l’expéditeur ou le destinataire afin que les notifications soient effectivement distribuées.
 - [x] Tester un envoi contrôlé et les notifications Contact/Newsletter avant checkpoint.
+
+## Emails brandés ClairDroit
+
+- [x] Remplacer les anciennes mentions « Droit de regard » par « ClairDroit » dans les notifications.
+- [x] Afficher « ClairDroit » comme nom d’expéditeur avec l’adresse Resend autorisée.
+- [x] Ajouter le logo du site et une mise en page HTML responsive aux emails Contact et Newsletter.
+- [x] Tester le rendu, l’envoi contrôlé, la version texte et le build avant checkpoint.

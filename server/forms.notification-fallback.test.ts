@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const mocks = vi.hoisted(() => ({
   insertContactMessage: vi.fn().mockResolvedValue({ id: 11 }),
   insertNewsletterSubscriber: vi.fn().mockResolvedValue({ id: 22 }),
+  getSiteSettings: vi.fn().mockResolvedValue({ logoUrl: "/manus-storage/logo-clairdroit.jpeg" }),
   sendNotificationEmail: vi.fn().mockRejectedValue(new Error("Unexpected token '<'")),
 }));
 
@@ -12,6 +13,7 @@ vi.mock("./db", async () => {
     ...actual,
     insertContactMessage: mocks.insertContactMessage,
     insertNewsletterSubscriber: mocks.insertNewsletterSubscriber,
+    getSiteSettings: mocks.getSiteSettings,
   };
 });
 
@@ -25,7 +27,7 @@ import type { TrpcContext } from "./_core/context";
 
 const context: TrpcContext = {
   user: null,
-  req: { protocol: "https", headers: {} } as TrpcContext["req"],
+  req: { protocol: "https", headers: { host: "clairdroit.example" } } as TrpcContext["req"],
   res: {} as TrpcContext["res"],
 };
 
@@ -48,6 +50,10 @@ describe("formulaires avec notification non bloquante", () => {
     expect(result).toEqual({ success: true, id: 11 });
     expect(mocks.insertContactMessage).toHaveBeenCalledOnce();
     expect(mocks.sendNotificationEmail).toHaveBeenCalledOnce();
+    expect(mocks.sendNotificationEmail).toHaveBeenCalledWith(expect.objectContaining({
+      logoUrl: "https://clairdroit.example/manus-storage/logo-clairdroit.jpeg",
+      text: expect.stringContaining("ClairDroit"),
+    }));
   });
 
   it("retourne le succès de la newsletter après sauvegarde même si Resend échoue", async () => {
@@ -58,5 +64,10 @@ describe("formulaires avec notification non bloquante", () => {
     expect(result).toEqual({ success: true, id: 22 });
     expect(mocks.insertNewsletterSubscriber).toHaveBeenCalledOnce();
     expect(mocks.sendNotificationEmail).toHaveBeenCalledOnce();
+    expect(mocks.sendNotificationEmail).toHaveBeenCalledWith(expect.objectContaining({
+      logoUrl: "https://clairdroit.example/manus-storage/logo-clairdroit.jpeg",
+      subject: expect.stringContaining("ClairDroit"),
+      text: expect.stringContaining("ClairDroit"),
+    }));
   });
 });

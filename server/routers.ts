@@ -103,6 +103,22 @@ async function notifyWithoutBlocking(payload: Parameters<typeof sendNotification
   }
 }
 
+async function resolveLogoUrl(req: { protocol?: string; headers?: Record<string, unknown> }) {
+  try {
+    const settings = await getSiteSettings();
+    const logoUrl = settings?.logoUrl?.trim();
+    if (!logoUrl) return undefined;
+    const host = typeof req.headers?.host === "string" ? req.headers.host : "";
+    if (!host || /^https?:\/\//i.test(logoUrl)) return logoUrl;
+    const forwardedProto = req.headers?.["x-forwarded-proto"];
+    const protocol = typeof forwardedProto === "string" ? forwardedProto.split(",")[0].trim() : req.protocol || "https";
+    return new URL(logoUrl, `${protocol}://${host}`).toString();
+  } catch (error) {
+    console.warn("[Email] Logo indisponible pour la notification :", error);
+    return undefined;
+  }
+}
+
 export const appRouter = router({
   system: systemRouter,
   auth: router({
@@ -159,13 +175,14 @@ export const appRouter = router({
       email: z.string().trim().email().max(320),
       subject: z.string().trim().min(2).max(255),
       message: z.string().trim().min(10).max(10000),
-    })).mutation(async ({ input }) => {
+    })).mutation(async ({ input, ctx }) => {
       const saved = await insertContactMessage(input);
       await notifyWithoutBlocking({
         subject: `Nouveau message — ${input.subject}`,
         replyTo: input.email,
-        text: `Nouveau message reçu sur Droit de regard.\n\nNom : ${input.name}\nEmail : ${input.email}\nObjet : ${input.subject}\n\n${input.message}`,
-        html: `<h2>Nouveau message reçu sur Droit de regard</h2><p><strong>Nom :</strong> ${emailText(input.name)}</p><p><strong>Email :</strong> ${emailText(input.email)}</p><p><strong>Objet :</strong> ${emailText(input.subject)}</p><p>${emailText(input.message).replace(/\n/g, "<br />")}</p>`,
+        logoUrl: await resolveLogoUrl(ctx.req),
+        text: `Nouveau message reçu sur ClairDroit.\n\nNom : ${input.name}\nEmail : ${input.email}\nObjet : ${input.subject}\n\n${input.message}`,
+        html: `<h2 style="margin:0 0 18px;color:#14243d;font-family:Georgia,serif;font-size:28px;">Nouveau message reçu</h2><p style="margin:0 0 22px;color:#596273;line-height:1.7;">Un nouveau message a été envoyé depuis la page Nous écrire.</p><div style="padding:18px;background:#f4f0e7;border-left:3px solid #b56f55;"><p style="margin:0 0 8px;"><strong>Nom :</strong> ${emailText(input.name)}</p><p style="margin:0 0 8px;"><strong>Email :</strong> ${emailText(input.email)}</p><p style="margin:0 0 8px;"><strong>Objet :</strong> ${emailText(input.subject)}</p><p style="margin:0;white-space:pre-wrap;">${emailText(input.message)}</p></div>`,
       });
       return { success: true, id: saved?.id } as const;
     }),
@@ -173,13 +190,14 @@ export const appRouter = router({
     updateStatus: adminProcedure.input(z.object({ id: z.number().int().positive(), status: z.enum(["new", "read", "archived"]) })).mutation(({ input }) => updateContactMessageStatus(input.id, input.status)),
   }),
   newsletter: router({
-    subscribe: publicProcedure.input(z.object({ email: z.string().trim().email().max(320) })).mutation(async ({ input }) => {
+    subscribe: publicProcedure.input(z.object({ email: z.string().trim().email().max(320) })).mutation(async ({ input, ctx }) => {
       const subscriber = await insertNewsletterSubscriber(input.email);
       await notifyWithoutBlocking({
-        subject: "Nouvelle inscription à la newsletter",
+        subject: "Nouvelle inscription à la newsletter ClairDroit",
         replyTo: input.email,
-        text: `Nouvelle inscription à la newsletter de Droit de regard.\n\nEmail : ${input.email}`,
-        html: `<h2>Nouvelle inscription à la newsletter</h2><p><strong>Email :</strong> ${emailText(input.email)}</p>`,
+        logoUrl: await resolveLogoUrl(ctx.req),
+        text: `Nouvelle inscription à la newsletter de ClairDroit.\n\nEmail : ${input.email}`,
+        html: `<h2 style="margin:0 0 18px;color:#14243d;font-family:Georgia,serif;font-size:28px;">Nouvelle inscription</h2><p style="margin:0 0 22px;color:#596273;line-height:1.7;">Une nouvelle personne souhaite recevoir les actualités de ClairDroit.</p><div style="padding:18px;background:#f4f0e7;border-left:3px solid #b56f55;"><p style="margin:0;"><strong>Adresse email :</strong> ${emailText(input.email)}</p></div>`,
       });
       return { success: true, id: subscriber?.id } as const;
     }),
