@@ -408,3 +408,18 @@
 - [x] Refuser côté serveur les soumissions qui remplissent le honeypot sans enregistrer ni notifier.
 - [x] Ajouter les tests de soumission légitime et de détection anti-spam.
 - [x] Vérifier l’accessibilité, le build et enregistrer un checkpoint.
+
+## Préparation de migration indépendante
+
+- [x] Inventorier les dépendances Manus du code et les services à remplacer.
+- [x] Choisir Railway, MySQL Railway, un stockage S3 compatible et différer le choix du domaine.
+- [x] Préparer une configuration indépendante sans exposer de secrets.
+- [x] Rédiger une procédure de sauvegarde, migration, tests et bascule réversible.
+- [x] Valider avec l’utilisateur la première étape avant tout déploiement externe.
+
+### Adaptation technique Railway
+
+- [x] Ajouter un mode de stockage S3 compatible activable par variables Railway.
+- [x] Conserver un mode local et un mode Manus de secours sans exposer de secrets.
+- [x] Vérifier que l’authentification email/mot de passe fonctionne avec le JWT local sans OAuth Manus.
+- [x] Documenter les variables Railway et le transfert des images avant le déploiement.
