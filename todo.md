@@ -367,3 +367,10 @@
 
 - [x] Retirer le texte de présentation et son conteneur décoratif de l’en-tête À propos de moi.
 - [x] Vérifier que le titre, la biographie, la photo et le responsive restent corrects.
+
+## Recherche globale et SEO renforcé
+
+- [x] Rendre la recherche globale visible et accessible depuis le site, avec résultats limités aux articles publiés.
+- [x] Renforcer les métadonnées SEO, les URLs canoniques et les données structurées des articles.
+- [x] Ajouter ou vérifier sitemap, robots et aperçu social sans inventer de contenu.
+- [x] Valider les recherches, les métadonnées, le responsive, les tests et le build.

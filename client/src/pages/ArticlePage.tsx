@@ -14,15 +14,57 @@ export default function ArticlePage() {
 
   useEffect(() => {
     if (!article) return;
-    document.title = remoteQuery.data?.seoTitle || article.title;
+    const title = remoteQuery.data?.seoTitle || article.title;
     const description = remoteQuery.data?.seoDescription || article.excerpt;
-    let meta = document.querySelector('meta[name="description"]');
-    if (!meta) {
-      meta = document.createElement("meta");
-      meta.setAttribute("name", "description");
-      document.head.appendChild(meta);
+    const canonicalUrl = `${window.location.origin}/articles/${article.slug}`;
+    const imageUrl = new URL(article.image, window.location.origin).href;
+    document.title = `${title} — ClairDroit`;
+    const upsertMeta = (selector: string, attribute: "name" | "property", key: string, content: string) => {
+      let meta = document.querySelector<HTMLMetaElement>(selector);
+      if (!meta) {
+        meta = document.createElement("meta");
+        meta.setAttribute(attribute, key);
+        document.head.appendChild(meta);
+      }
+      meta.content = content;
+    };
+    upsertMeta('meta[name="description"]', "name", "description", description);
+    upsertMeta('meta[property="og:title"]', "property", "og:title", title);
+    upsertMeta('meta[property="og:description"]', "property", "og:description", description);
+    upsertMeta('meta[property="og:type"]', "property", "og:type", "article");
+    upsertMeta('meta[property="og:url"]', "property", "og:url", canonicalUrl);
+    upsertMeta('meta[property="og:image"]', "property", "og:image", imageUrl);
+    upsertMeta('meta[name="twitter:card"]', "name", "twitter:card", "summary_large_image");
+    upsertMeta('meta[name="twitter:title"]', "name", "twitter:title", title);
+    upsertMeta('meta[name="twitter:description"]', "name", "twitter:description", description);
+    upsertMeta('meta[name="twitter:image"]', "name", "twitter:image", imageUrl);
+    let canonical = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+    if (!canonical) {
+      canonical = document.createElement("link");
+      canonical.rel = "canonical";
+      document.head.appendChild(canonical);
     }
-    meta.setAttribute("content", description);
+    canonical.href = canonicalUrl;
+    let structuredData = document.querySelector<HTMLScriptElement>("#article-structured-data");
+    if (!structuredData) {
+      structuredData = document.createElement("script");
+      structuredData.id = "article-structured-data";
+      structuredData.type = "application/ld+json";
+      document.head.appendChild(structuredData);
+    }
+    structuredData.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Article",
+      headline: article.title,
+      description,
+      image: [imageUrl],
+      datePublished: remoteQuery.data?.publishedAt ?? undefined,
+      dateModified: remoteQuery.data?.updatedAt ?? undefined,
+      author: { "@type": "Person", name: article.author },
+      mainEntityOfPage: { "@type": "WebPage", "@id": canonicalUrl },
+      publisher: { "@type": "Organization", name: "ClairDroit" },
+    });
+    return () => structuredData?.remove();
   }, [article, remoteQuery.data]);
 
   if (remoteQuery.isLoading && !article) {

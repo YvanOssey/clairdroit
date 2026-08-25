@@ -27,6 +27,35 @@ export function SiteHeader() {
       document.head.appendChild(description);
     }
     description.content = pageSeo?.description ?? settings.homeDescription;
+    const canonicalUrl = `${window.location.origin}${location || "/"}`;
+    let canonical = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+    if (!canonical) {
+      canonical = document.createElement("link");
+      canonical.rel = "canonical";
+      document.head.appendChild(canonical);
+    }
+    canonical.href = canonicalUrl;
+    const title = pageSeo ? `${pageSeo.title} — ${settings.siteName}` : `${settings.siteName} — ${settings.siteTagline}`;
+    const socialMeta = {
+      "og:title": title,
+      "og:description": pageSeo?.description ?? settings.homeDescription,
+      "og:type": "website",
+      "og:url": canonicalUrl,
+      "og:site_name": settings.siteName,
+      "twitter:title": title,
+      "twitter:description": pageSeo?.description ?? settings.homeDescription,
+    };
+    Object.entries(socialMeta).forEach(([property, content]) => {
+      const selector = property.startsWith("twitter:") ? `meta[name="${property}"]` : `meta[property="${property}"]`;
+      let tag = document.querySelector<HTMLMetaElement>(selector);
+      if (!tag) {
+        tag = document.createElement("meta");
+        if (property.startsWith("twitter:")) tag.name = property;
+        else tag.setAttribute("property", property);
+        document.head.appendChild(tag);
+      }
+      tag.content = content;
+    });
   }, [location, pageSeo?.title, pageSeo?.description, settings.siteName, settings.siteTagline, settings.homeDescription]);
   const navItems = [
     { label: settings.navHomeLabel, href: "/actualite-juridique" },
@@ -78,11 +107,12 @@ export function SiteHeader() {
             <button
               type="button"
               onClick={() => setSearchOpen((open) => !open)}
-              className="flex h-10 w-10 items-center justify-center text-[#12243b] transition-colors duration-180 hover:bg-[#ece6da] hover:text-[#b86e4b]"
+              className="flex h-10 items-center justify-center gap-2 px-2 text-[#12243b] transition-colors duration-180 hover:bg-[#ece6da] hover:text-[#b86e4b] sm:px-3"
               aria-label={searchOpen ? "Fermer la recherche" : "Ouvrir la recherche"}
               aria-expanded={searchOpen}
             >
               {searchOpen ? <X size={18} strokeWidth={1.8} /> : <Search size={18} strokeWidth={1.8} />}
+              <span className="hidden text-[0.68rem] font-bold uppercase tracking-[0.12em] sm:inline">{searchOpen ? "Fermer" : "Rechercher"}</span>
             </button>
             <Link
               href="/contact"
