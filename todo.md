@@ -436,3 +436,9 @@
 - [x] Corriger le chemin de production transmis à `path.join` dans le bundle serveur.
 - [x] Rendre l’absence d’OAUTH_SERVER_URL non bloquante pour l’authentification admin locale.
 - [x] Valider le démarrage avec la variable `PORT` fournie par Railway.
+
+## URL publique Railway
+
+- [x] Ouvrir les réglages réseau du service Railway `clairdroit`.
+- [x] Générer une URL publique Railway sans modifier le domaine Manus.
+- [x] Vérifier que l’URL répond et la transmettre pour test.
