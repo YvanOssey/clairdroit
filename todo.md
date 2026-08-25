@@ -325,4 +325,4 @@
 
 - [x] Vérifier la configuration Resend effective et les journaux d’envoi en production.
 - [x] Corriger l’expéditeur ou le destinataire afin que les notifications soient effectivement distribuées.
-- [ ] Tester un envoi contrôlé et les notifications Contact/Newsletter avant checkpoint.
+- [x] Tester un envoi contrôlé et les notifications Contact/Newsletter avant checkpoint.
