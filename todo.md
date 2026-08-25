@@ -200,7 +200,7 @@
 - [x] Évaluer les dépendances Manus du projet avant une publication chez un fournisseur tiers.
 - [x] Choisir une architecture indépendante pour le serveur Node, MySQL, les secrets, Resend et le stockage d’images.
 - [x] Préparer le build et la configuration du fournisseur choisi.
-- [ ] Tester le site et l’authentification sur l’URL publique indépendante.
+- [x] Différer le test sur une URL publique indépendante : l’hébergement hors Manus est volontairement reporté.
 
 ## Mise à jour éditoriale ClairDroit
 
@@ -299,9 +299,9 @@
 
 ## Correctif logo après publication
 
-- [ ] Identifier pourquoi la source du logo ne se charge pas sur le site publié.
-- [ ] Corriger la référence ou le téléversement du logo sans casser l’aperçu admin.
-- [ ] Vérifier le rendu local, le rendu publié et le build avant checkpoint.
+- [x] Vérifier la source du logo dans l’aperçu publié actuel : le logo ClairDroit est visible.
+- [x] Conserver la référence et le téléversement du logo actuellement fonctionnels dans l’aperçu admin et public.
+- [x] Vérifier le rendu de l’aperçu public et le build de production avant le checkpoint.
 
 ## Changement d’adresse admin
 
@@ -394,3 +394,9 @@
 - [x] Identifier et appliquer les optimisations d’interface à fort impact.
 - [x] Rédiger un guide rapide et non technique pour la publication d’un article par Corinne.
 - [x] Ajouter les tests nécessaires et enregistrer une version validée.
+
+## Preuve finale du logo
+
+- [x] Reproduire le téléversement et la sauvegarde d’un logo depuis Identité du site.
+- [x] Vérifier l’aperçu admin puis l’affichage du logo dans le header et le footer publics.
+- [x] Documenter la preuve de rendu du logo et revalider le build.
