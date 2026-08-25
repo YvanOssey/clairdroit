@@ -423,3 +423,16 @@
 - [x] Conserver un mode local et un mode Manus de secours sans exposer de secrets.
 - [x] Vérifier que l’authentification email/mot de passe fonctionne avec le JWT local sans OAuth Manus.
 - [x] Documenter les variables Railway et le transfert des images avant le déploiement.
+
+## Diagnostic du crash Railway
+
+- [x] Lire les logs de build et de démarrage du service Railway.
+- [x] Identifier la cause racine sans modifier les secrets à l’aveugle.
+- [x] Appliquer la correction minimale et valider localement.
+- [ ] Redéployer prudemment et confirmer que le service reste actif.
+
+### Cause identifiée par les logs Railway
+
+- [x] Corriger le chemin de production transmis à `path.join` dans le bundle serveur.
+- [x] Rendre l’absence d’OAUTH_SERVER_URL non bloquante pour l’authentification admin locale.
+- [x] Valider le démarrage avec la variable `PORT` fournie par Railway.
