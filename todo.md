@@ -320,3 +320,9 @@
 - [x] Identifier la requête exacte de la boîte admin qui reçoit encore `index.html`.
 - [x] Corriger le client ou le montage de cette requête sans perturber l’enregistrement des formulaires.
 - [x] Ajouter un test de régression pour le chargement des messages et valider le parcours complet.
+
+## Notifications email Resend non reçues
+
+- [x] Vérifier la configuration Resend effective et les journaux d’envoi en production.
+- [x] Corriger l’expéditeur ou le destinataire afin que les notifications soient effectivement distribuées.
+- [ ] Tester un envoi contrôlé et les notifications Contact/Newsletter avant checkpoint.
