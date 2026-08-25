@@ -333,3 +333,9 @@
 - [x] Afficher « ClairDroit » comme nom d’expéditeur avec l’adresse Resend autorisée.
 - [x] Ajouter le logo du site et une mise en page HTML responsive aux emails Contact et Newsletter.
 - [x] Tester le rendu, l’envoi contrôlé, la version texte et le build avant checkpoint.
+
+## Pages de conformité du site
+
+- [x] Ajouter les pages publiques Mentions légales et Politique de confidentialité avec un contenu de travail clairement signalé à vérifier.
+- [x] Ajouter leurs routes, liens dans le footer et métadonnées dédiées.
+- [x] Vérifier le rendu desktop/mobile et demander les informations personnelles nécessaires pour finaliser les textes.

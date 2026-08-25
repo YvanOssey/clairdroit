@@ -10,6 +10,7 @@ import AdminSiteSettings from "@/pages/AdminSiteSettings";
 import AdminInbox from "@/pages/AdminInbox";
 import ArticlePage from "@/pages/ArticlePage";
 import Contact from "@/pages/Contact";
+import { LegalNotice, PrivacyPolicy } from "@/pages/LegalPages";
 import Home from "@/pages/Home";
 import { ActualiteJuridique, AnalysesJuridiques, ArticlesVulgarises, CarrieresJuridiques } from "@/pages/EditorialSections";
 import { Redirect, Route, Switch } from "wouter";
@@ -29,6 +30,8 @@ function Router() {
       <Route path="/a-propos" component={About} />
       <Route path="/carrieres-juridiques" component={CarrieresJuridiques} />
       <Route path="/contact" component={Contact} />
+      <Route path="/mentions-legales" component={LegalNotice} />
+      <Route path="/politique-confidentialite" component={PrivacyPolicy} />
       <Route path="/admin/settings" component={AdminSiteSettings} />
       <Route path="/admin/inbox" component={AdminInbox} />
       <Route path="/admin/articles/:id/edit" component={AdminArticleEditor} />
