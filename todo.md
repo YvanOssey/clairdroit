@@ -377,12 +377,20 @@
 
 ## Réflexion sur l’hébergement indépendant
 
-- [ ] Comparer les besoins de ClairDroit avec les solutions d’hébergement Node.js, MySQL, secrets, Resend et stockage.
-- [ ] Évaluer coûts, simplicité, sauvegardes et compatibilité de Railway, Render et d’une solution Manus.
-- [ ] Préparer une recommandation et un plan de migration réversible sans publier immédiatement.
+- [x] Comparer les besoins de ClairDroit avec les solutions d’hébergement Node.js, MySQL, secrets, Resend et stockage.
+- [x] Évaluer coûts, simplicité, sauvegardes et compatibilité de Railway, Render et d’une solution Manus.
+- [x] Préparer une recommandation et un plan de migration réversible sans publier immédiatement.
 
 ## Audit des fonctionnalités actuelles
 
 - [x] Inventorier les fonctionnalités publiques et administratives actuellement disponibles.
 - [x] Vérifier les parcours critiques : connexion, publication, recherche, formulaires, email et pages de conformité.
 - [x] Classer les optimisations par impact, difficulté et priorité avant toute nouvelle modification.
+
+## Finalisation sécurité, performance, interface et guide
+
+- [x] Auditer les protections serveur, les secrets, les formulaires, les sessions et les permissions admin.
+- [x] Auditer la performance du bundle, des images, des requêtes et du rendu responsive.
+- [x] Identifier et appliquer les optimisations d’interface à fort impact.
+- [x] Rédiger un guide rapide et non technique pour la publication d’un article par Corinne.
+- [x] Ajouter les tests nécessaires et enregistrer une version validée.

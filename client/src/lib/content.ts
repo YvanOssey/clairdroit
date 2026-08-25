@@ -176,6 +176,12 @@ export function filterArticlesByEditorialSection(articles: Article[], section: E
   return articles.filter((article) => (article.editorialSection ?? "actualite") === section);
 }
 
+export function selectRelatedArticles(current: Article, candidates: Article[], limit = 2) {
+  return candidates
+    .filter((article) => article.slug !== current.slug && article.editorialSection === current.editorialSection)
+    .slice(0, limit);
+}
+
 export function searchArticles(query: string, publishedArticles: Article[] = []) {
   const normalizedQuery = query.trim().toLowerCase();
   if (!normalizedQuery) return [];

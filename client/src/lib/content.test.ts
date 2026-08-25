@@ -71,3 +71,36 @@ describe("searchArticles", () => {
     expect(searchArticles("travail hybride", [])).toHaveLength(0);
   });
 });
+
+describe("selectRelatedArticles", () => {
+  const makeArticle = (slug: string, editorialSection: "actualite" | "vulgarisation" | "analyses" | "carrieres") => ({
+    slug,
+    editorialSection,
+    category: "Droit du travail",
+    eyebrow: "Publication",
+    title: slug,
+    excerpt: "Résumé de test suffisamment long.",
+    date: "25 août 2026",
+    readTime: "3 min",
+    image: "/image.jpg",
+    imageAlt: "Illustration de test",
+    author: "ClairDroit",
+    sections: [{ heading: "Repère", body: "Contenu de test suffisamment long." }],
+  });
+
+  it("exclut l’article courant et conserve sa section éditoriale", async () => {
+    const { selectRelatedArticles } = await import("./content");
+    const current = makeArticle("courant", "analyses");
+    const candidates = [current, makeArticle("analyse-1", "analyses"), makeArticle("actualite-1", "actualite"), makeArticle("analyse-2", "analyses")];
+
+    expect(selectRelatedArticles(current, candidates).map((item) => item.slug)).toEqual(["analyse-1", "analyse-2"]);
+  });
+
+  it("respecte la limite demandée", async () => {
+    const { selectRelatedArticles } = await import("./content");
+    const current = makeArticle("courant", "carrieres");
+    const candidates = [current, makeArticle("carrieres-1", "carrieres"), makeArticle("carrieres-2", "carrieres"), makeArticle("carrieres-3", "carrieres")];
+
+    expect(selectRelatedArticles(current, candidates, 2)).toHaveLength(2);
+  });
+});
