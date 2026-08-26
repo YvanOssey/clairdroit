@@ -522,3 +522,9 @@
 - [x] Optimiser les listes publiques, les requêtes répétées et le cache sans modifier l’expérience éditoriale.
 - [x] Tester le comportement sous charge représentative sans données fictives persistantes.
 - [x] Documenter la capacité actuelle, les seuils d’alerte et les options d’hébergement.
+
+## Surveillance Railway et montée en charge
+- [x] Choisir entre consultation manuelle des métriques Railway et alertes automatisées (consultation manuelle retenue pour le moment).
+- [x] Préparer un suivi des métriques CPU, mémoire, latence, erreurs et connexions MySQL.
+- [x] Définir une procédure d’augmentation des ressources puis d’ajout d’un replica, avec contrôle des coûts.
+- [x] Vérifier la procédure sans modifier automatiquement la taille du service.

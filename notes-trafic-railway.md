@@ -16,3 +16,8 @@ Interprétation : aucune erreur HTTP n’est apparue, mais les temps mesurés so
 Après publication de l’optimisation du cache, un test léger identique a été réalisé avec 10 requêtes simultanées par page sur l’accueil, Actualité juridique et Contact. Résultats : accueil 10/10 HTTP 200, moyenne 6,752 s, maximum 8,711 s ; Actualité juridique 10/10 HTTP 200, moyenne 8,118 s, maximum 13,235 s ; Contact 10/10 HTTP 200, moyenne 8,103 s, maximum 10,400 s.
 
 Les 30 requêtes ont toutes répondu HTTP 200. Les temps restent élevés et semblent inclure le démarrage à froid, la distance réseau et le chargement de l’application ; ils ne permettent pas d’annoncer une capacité maximale. Pour un trafic élevé, consulter les métriques Railway avant d’augmenter les réplicas, puis dimensionner MySQL et le service Node ensemble.
+## Observabilité Railway — 26 août 2026
+
+Sources officielles : https://docs.railway.com/observability et https://docs.railway.com/deployments/healthchecks.
+
+Le tableau Observability Railway propose des widgets CPU, mémoire, réseau, disque, logs et consommation du projet. Des monitors avec alertes email, in-app ou webhook peuvent être ajoutés aux widgets, mais la documentation indique que les monitors nécessitent le plan Pro. Les healthchecks servent à valider un nouveau déploiement avant bascule vers celui-ci ; Railway précise qu’ils ne surveillent pas continuellement le service après son activation. Un endpoint `/health` peut donc améliorer les déploiements, mais ne remplace pas un monitoring continu.
