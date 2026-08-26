@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { SITE_SETTINGS_DEFAULTS } from "@shared/siteSettings";
-import { parsePageContent, serializePageContent } from "./db";
+import { normalizeStoredImageUrl, parsePageContent, serializePageContent } from "./db";
 
 describe("page content persistence", () => {
   it("round-trips edited page content through the JSON representation", () => {
@@ -19,5 +19,15 @@ describe("page content persistence", () => {
   it("falls back safely when older rows have no page content", () => {
     expect(parsePageContent(null)).toEqual(SITE_SETTINGS_DEFAULTS.pageContent);
     expect(parsePageContent("invalid-json")).toEqual(SITE_SETTINGS_DEFAULTS.pageContent);
+  });
+
+  it("removes legacy Manus image URLs while preserving R2 URLs", () => {
+    expect(normalizeStoredImageUrl("/manus-storage/photo-corinne.jpeg")).toBe("");
+    expect(normalizeStoredImageUrl("https://clairdroit.r2.dev/photo-corinne.jpeg")).toBe("https://clairdroit.r2.dev/photo-corinne.jpeg");
+
+    const restored = parsePageContent(JSON.stringify({
+      about: { photoUrl: "/manus-storage/photo-corinne.jpeg" },
+    }));
+    expect(restored.about.photoUrl).toBe("");
   });
 });

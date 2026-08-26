@@ -539,7 +539,7 @@
 - [x] Localiser les balises image qui reçoivent une URL vide.
 - [x] Rendre conditionnel l’affichage du logo, du portrait et des images d’articles sans URL.
 - [x] Ajouter une régression et valider TypeScript, tests, build et rendu public.
-- [ ] Créer un checkpoint du correctif.
+- [x] Créer un checkpoint du correctif.
 
 ## Nom de domaine ClairDroit
 - [ ] Clarifier le nom exact, l’extension et le budget souhaités.
@@ -552,3 +552,9 @@
 - [x] Initialiser la structure de la compétence avec `init_skill.py`.
 - [x] Rédiger `SKILL.md` et les références de migration, sécurité, validation et capacité.
 - [x] Valider la compétence avec `quick_validate.py` et la livrer à l’utilisateur.
+
+## Correctif portrait encore référencé par Manus
+- [x] Identifier où la valeur `/manus-storage/` est encore persistée ou reconstruite.
+- [x] Neutraliser l’ancienne URL du portrait sans supprimer une éventuelle URL R2 valide.
+- [x] Vérifier le champ admin, la page À propos et les tests de réglages.
+- [ ] Créer un checkpoint du correctif portrait.

@@ -193,6 +193,13 @@ export function serializePageContent(value: PageContentValues): string {
   return JSON.stringify(value);
 }
 
+/** Ignore les anciennes références Manus sans toucher aux URLs R2 ou externes valides. */
+export function normalizeStoredImageUrl(value: string | null | undefined): string {
+  if (typeof value !== "string") return "";
+  const normalized = value.trim();
+  return normalized && !normalized.includes("/manus-storage/") ? normalized : "";
+}
+
 export function parsePageContent(value: string | null | undefined): PageContentValues {
   const fallback = SITE_SETTINGS_DEFAULTS.pageContent;
   if (!value) return fallback;
@@ -201,7 +208,11 @@ export function parsePageContent(value: string | null | undefined): PageContentV
     return {
       ...fallback,
       ...parsed,
-      about: { ...fallback.about, ...(parsed.about ?? {}) },
+      about: {
+        ...fallback.about,
+        ...(parsed.about ?? {}),
+        photoUrl: normalizeStoredImageUrl(parsed.about?.photoUrl),
+      },
       featured: { ...fallback.featured, ...(parsed.featured ?? {}) },
       decryptions: { ...fallback.decryptions, ...(parsed.decryptions ?? {}) },
       rubrics: { ...fallback.rubrics, ...(parsed.rubrics ?? {}) },
@@ -215,7 +226,13 @@ export function parsePageContent(value: string | null | undefined): PageContentV
 }
 
 function formatSettings(row: typeof siteSettings.$inferSelect) {
-  return { ...SITE_SETTINGS_DEFAULTS, ...row, logoUrl: row.logoUrl ?? SITE_SETTINGS_DEFAULTS.logoUrl, socialLinks: parseSocialLinks(row.socialLinks), pageContent: parsePageContent(row.pageContent) };
+  return {
+    ...SITE_SETTINGS_DEFAULTS,
+    ...row,
+    logoUrl: normalizeStoredImageUrl(row.logoUrl),
+    socialLinks: parseSocialLinks(row.socialLinks),
+    pageContent: parsePageContent(row.pageContent),
+  };
 }
 
 export async function getSiteSettings() {
@@ -228,7 +245,18 @@ export async function getSiteSettings() {
 export async function upsertSiteSettings(values: Omit<InsertSiteSettings, "id" | "updatedAt" | "socialLinks" | "pageContent"> & { socialLinks: SocialLink[]; pageContent: PageContentValues }) {
   const db = await getDb();
   if (!db) throw new Error("Database is not available");
-  const databaseValues = { ...values, socialLinks: JSON.stringify(values.socialLinks), pageContent: serializePageContent(values.pageContent) };
+  const databaseValues = {
+    ...values,
+    logoUrl: normalizeStoredImageUrl(values.logoUrl),
+    socialLinks: JSON.stringify(values.socialLinks),
+    pageContent: serializePageContent({
+      ...values.pageContent,
+      about: {
+        ...values.pageContent.about,
+        photoUrl: normalizeStoredImageUrl(values.pageContent.about.photoUrl),
+      },
+    }),
+  };
   await db.insert(siteSettings).values({ id: 1, ...databaseValues }).onDuplicateKeyUpdate({ set: databaseValues });
   return getSiteSettings();
 }
