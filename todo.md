@@ -533,7 +533,13 @@
 - [x] Identifier les champs d’identité admin à mettre à jour sans modifier les secrets.
 - [ ] Migrer la photo de Corinne vers R2 et enregistrer sa nouvelle URL.
 - [ ] Vérifier l’aperçu, la page À propos et la persistance des réglages.
-- [ ] Créer un checkpoint après validation.
+- [x] Créer un checkpoint après validation.
+
+## Correctif images avec URL vide
+- [x] Localiser les balises image qui reçoivent une URL vide.
+- [x] Rendre conditionnel l’affichage du logo, du portrait et des images d’articles sans URL.
+- [x] Ajouter une régression et valider TypeScript, tests, build et rendu public.
+- [ ] Créer un checkpoint du correctif.
 
 ## Nom de domaine ClairDroit
 - [ ] Clarifier le nom exact, l’extension et le budget souhaités.

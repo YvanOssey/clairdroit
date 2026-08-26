@@ -81,7 +81,7 @@ export function SiteHeader() {
         <div className="container flex min-h-[76px] items-center justify-between gap-6">
           <Link href="/" className="group flex shrink-0 items-center gap-3" aria-label={`${settings.siteName}, accueil`}>
             <span className="flex h-10 w-10 items-center justify-center bg-[#12243b] shadow-[4px_4px_0_#b86e4b] transition-transform duration-200 group-hover:-translate-y-0.5">
-              <img src={settings.logoUrl} alt="" className="h-7 w-7 object-contain" />
+              {settings.logoUrl ? <img src={settings.logoUrl} alt="" className="h-7 w-7 object-contain" /> : <span className="font-display text-sm font-semibold text-[#f7f4ee]" aria-hidden="true">CD</span>}
             </span>
             <span className="font-display text-[1.65rem] font-semibold leading-none tracking-[-0.03em] text-[#12243b]">
               {settings.siteName}
@@ -228,7 +228,7 @@ export function SiteFooter() {
         <div>
           <div className="mb-5 flex items-center gap-3">
             <span className="flex h-9 w-9 items-center justify-center bg-[#f7f4ee]">
-              <img src={settings.logoUrl} alt="" className="h-6 w-6 object-contain" />
+              {settings.logoUrl ? <img src={settings.logoUrl} alt="" className="h-6 w-6 object-contain" /> : <span className="font-display text-xs font-semibold text-[#12243b]" aria-hidden="true">CD</span>}
             </span>
             <span className="font-display text-2xl font-semibold">{settings.siteName}</span>
           </div>

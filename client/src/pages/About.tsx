@@ -46,7 +46,7 @@ export default function About() {
 
         <figure className="relative overflow-hidden bg-[#ece6da] md:sticky md:top-28">
           <div className="absolute inset-0 translate-x-3 translate-y-3 border border-[#b86e4b]" aria-hidden="true" />
-          <img src={photoUrl} alt="Portrait de Corinne Thio" className="relative aspect-[3/4] w-full object-cover object-center" />
+          {photoUrl ? <img src={photoUrl} alt="Portrait de Corinne Thio" className="relative aspect-[3/4] w-full object-cover object-center" /> : <div className="relative flex aspect-[3/4] w-full items-center justify-center px-8 text-center text-sm leading-6 text-[#667384]">Le portrait de Corinne sera bientôt disponible.</div>}
           <figcaption className="relative bg-[#12243b] px-5 py-4 text-xs uppercase tracking-[0.12em] text-[#f7f4ee]">Corinne Thio · Juriste & blogueuse</figcaption>
         </figure>
       </section>
