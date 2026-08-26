@@ -516,3 +516,9 @@
 - [x] Ajouter une confirmation renforcée et des tests pour les actions destructives.
 - [x] Configurer une sauvegarde régulière selon l’option retenue et documenter la restauration (reporté volontairement pour le moment, en attente de budget).
 - [x] Vérifier les flux, mettre à jour le suivi et créer un checkpoint.
+
+## Capacité et trafic simultané
+- [x] Auditer les requêtes publiques, les appels tRPC, le chargement des images R2 et les limites Railway.
+- [x] Optimiser les listes publiques, les requêtes répétées et le cache sans modifier l’expérience éditoriale.
+- [ ] Tester le comportement sous charge représentative sans données fictives persistantes.
+- [x] Documenter la capacité actuelle, les seuils d’alerte et les options d’hébergement.
