@@ -529,6 +529,18 @@
 - [x] Définir une procédure d’augmentation des ressources puis d’ajout d’un replica, avec contrôle des coûts.
 - [x] Vérifier la procédure sans modifier automatiquement la taille du service.
 
+## Photo et informations administratives ClairDroit
+- [x] Identifier les champs d’identité admin à mettre à jour sans modifier les secrets.
+- [ ] Migrer la photo de Corinne vers R2 et enregistrer sa nouvelle URL.
+- [ ] Vérifier l’aperçu, la page À propos et la persistance des réglages.
+- [ ] Créer un checkpoint après validation.
+
+## Nom de domaine ClairDroit
+- [ ] Clarifier le nom exact, l’extension et le budget souhaités.
+- [ ] Vérifier la disponibilité et les conditions du registrar choisi.
+- [ ] Raccorder le domaine à Railway avec DNS et HTTPS.
+- [ ] Vérifier les redirections, les URLs canoniques et les emails.
+
 ## Compétence réutilisable de migration et exploitation
 - [x] Définir le périmètre réutilisable à partir du parcours ClairDroit.
 - [x] Initialiser la structure de la compétence avec `init_skill.py`.

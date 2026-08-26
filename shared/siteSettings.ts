@@ -143,7 +143,7 @@ export type SiteSettingsValues = {
 export const SITE_SETTINGS_DEFAULTS: SiteSettingsValues = {
   siteName: "ClairDroit",
   siteTagline: "Le droit clair pour tous !",
-  logoUrl: "/manus-storage/logo-clairdroit_a271f928.jpeg",
+  logoUrl: "",
   navHomeLabel: "Actualité juridique",
   navArticlesLabel: "Articles juridiques vulgarisés",
   navCategoriesLabel: "Analyses juridiques",
@@ -174,7 +174,7 @@ export const SITE_SETTINGS_DEFAULTS: SiteSettingsValues = {
       paragraphOne: "ClairDroit est un espace de lecture consacré à la vulgarisation juridique, aux analyses et aux explications utiles au quotidien. Chaque article part d’une question concrète et revient à l’essentiel.",
       paragraphTwo: "Mon objectif est de proposer une information fiable, gratuite et compréhensible, afin que le droit ne soit plus perçu comme un domaine réservé aux initiés.",
       quote: "« Expliquer n’est pas simplifier à outrance. C’est choisir le bon point d’entrée. »",
-      quoteAttribution: "— La ligne de Droit de regard",
+      quoteAttribution: "— La ligne de ClairDroit",
       principlesEyebrow: "Notre méthode",
       principleOneTitle: "Un angle",
       principleOneBody: "Chaque texte commence par une question concrète, pas par une accumulation de références.",
@@ -185,7 +185,7 @@ export const SITE_SETTINGS_DEFAULTS: SiteSettingsValues = {
       ctaEyebrow: "Pour aller plus loin",
       ctaTitle: "Entrer dans les textes.",
       ctaLabel: "Lire les analyses",
-      photoUrl: "/manus-storage/photo-corinne_f8503683.jpeg",
+      photoUrl: "",
     },
     featured: {
       eyebrow: "À la une",
