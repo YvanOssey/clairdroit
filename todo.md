@@ -578,11 +578,18 @@
 - [x] Intégrer la biographie complète fournie par l’utilisateur.
 - [x] Conserver le bloc portrait et l’appel vers les analyses.
 - [x] Ajouter une régression et valider le rendu public responsive.
-- [ ] Créer un checkpoint de la mise à jour éditoriale.
+- [x] Créer un checkpoint de la mise à jour éditoriale.
 
 ## Réintégration du contenu À propos dans Identité du site
 - [x] Réintégrer dans l’administration les champs À propos demandés par l’utilisateur.
 - [x] Préremplir les champs avec le contenu fourni et corriger l’attribution ClairDroit.
 - [x] Relier le rendu public aux valeurs sauvegardées depuis Identité du site.
 - [x] Ajouter une régression et valider TypeScript, tests et rendu responsive.
-- [ ] Créer un checkpoint de réintégration.
+- [x] Créer un checkpoint de réintégration.
+
+## Audit de cohérence pages publiques / Identité du site
+- [x] Inventorier les champs visibles sur chaque page publique active.
+- [x] Comparer les champs publics aux sections et champs de l’administration.
+- [ ] Corriger les écarts de synchronisation confirmés sans réintroduire les blocs supprimés.
+- [ ] Ajouter une régression et valider TypeScript, tests et rendu des pages.
+- [ ] Créer un checkpoint de l’audit et des corrections.
