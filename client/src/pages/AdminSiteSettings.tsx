@@ -11,6 +11,7 @@ import {
   LockKeyhole,
   PanelsTopLeft,
   ShieldCheck,
+  UserRound,
   Facebook,
   Github,
   ImagePlus,
@@ -137,6 +138,27 @@ const sections: SettingsSection[] = [
 ];
 
 const pageSections: PageSection[] = [
+  {
+    title: "À propos de moi",
+    description:
+      "Textes, titres et repères de la page personnelle de Corinne Thio.",
+    icon: UserRound,
+    group: "about",
+    fields: [
+      { key: "eyebrow", label: "Surtitre" },
+      { key: "titleMain", label: "Titre — première ligne" },
+      { key: "titleAccent", label: "Titre — accent" },
+      {
+        key: "biography",
+        label: "Biographie complète",
+        multiline: true,
+        help: "Un paragraphe vide sépare chaque partie sur la page publique.",
+      },
+      { key: "ctaEyebrow", label: "Surtitre appel à l’action" },
+      { key: "ctaTitle", label: "Titre appel à l’action" },
+      { key: "ctaLabel", label: "Libellé du bouton" },
+    ],
+  },
   {
     title: "À la une",
     description: "Le texte d’introduction et l’état vide de l’accueil.",

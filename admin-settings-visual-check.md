@@ -7,3 +7,5 @@ La vérification mobile reste à effectuer avant le checkpoint.
 La capture mobile à 375 px confirme que l’en-tête de section « Marque » reste lisible avec son icône, sa description et le champ principal. Le bouton d’enregistrement reste accessible en bas de l’écran. Les sections suivantes sont empilées verticalement par conception.
 
 Après le retrait des groupes obsolètes, la capture desktop de `/admin/settings` montre une liste plus cohérente : les anciennes zones À propos éditoriale et Décryptages ne sont plus proposées, tandis que les sections actives restent disponibles. La capture mobile conserve une hiérarchie lisible, avec le bouton d’enregistrement accessible.
+
+La vérification desktop confirme que la page `/a-propos` affiche la biographie complète, le titre, le bloc « Portrait de Corinne Thio », la légende de Corinne Thio et l’appel vers les analyses. La section « À propos de moi » est à nouveau visible dans `/admin/settings` avec un champ « Biographie complète » et les champs du titre et de l’appel final ; les anciens champs intention/méthode/citation restent masqués.

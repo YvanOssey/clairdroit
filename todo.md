@@ -571,4 +571,18 @@
 - [x] Retirer de l’interface les champs qui correspondent aux blocs supprimés.
 - [x] Conserver uniquement les réglages encore utilisés ou nécessaires aux pages publiques.
 - [x] Ajouter une régression et valider TypeScript, tests et rendu admin.
-- [ ] Créer un checkpoint de synchronisation.
+- [x] Créer un checkpoint de synchronisation.
+
+## Mise à jour du contenu À propos de moi
+- [x] Remplacer le titre et les libellés de la page À propos selon le contenu fourni.
+- [x] Intégrer la biographie complète fournie par l’utilisateur.
+- [x] Conserver le bloc portrait et l’appel vers les analyses.
+- [x] Ajouter une régression et valider le rendu public responsive.
+- [ ] Créer un checkpoint de la mise à jour éditoriale.
+
+## Réintégration du contenu À propos dans Identité du site
+- [x] Réintégrer dans l’administration les champs À propos demandés par l’utilisateur.
+- [x] Préremplir les champs avec le contenu fourni et corriger l’attribution ClairDroit.
+- [x] Relier le rendu public aux valeurs sauvegardées depuis Identité du site.
+- [x] Ajouter une régression et valider TypeScript, tests et rendu responsive.
+- [ ] Créer un checkpoint de réintégration.

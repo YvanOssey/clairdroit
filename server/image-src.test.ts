@@ -10,14 +10,13 @@ describe("rendu des images optionnelles", () => {
     const source = readClientFile("components/SiteLayout.tsx");
 
     expect(source).toContain("settings.logoUrl ? <img");
-    expect(source).toContain("aria-hidden=\"true\">CD</span>");
+    expect(source).toContain('aria-hidden="true">CD</span>');
   });
 
   it("ne monte pas le portrait avant la disponibilité de son URL", () => {
     const source = readClientFile("pages/About.tsx");
 
-    expect(source).toContain("photoUrl ? <img");
+    expect(source).toContain("{photoUrl ? (");
     expect(source).toContain("Le portrait de Corinne sera bientôt disponible.");
   });
 });
-

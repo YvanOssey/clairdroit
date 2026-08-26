@@ -12,6 +12,8 @@ describe("organisation de l’identité du site", () => {
     expect(source).toContain('title: "Marque"');
     expect(source).toContain('title: "Navigation"');
     expect(source).toContain('title: "Accueil"');
+    expect(source).toContain('title: "À propos de moi"');
+    expect(source).toContain('key: "biography"');
     expect(source).toContain('title: "À la une"');
     expect(source).toContain('title: "Nous écrire"');
     expect(source).toContain('title="Photo de la page À propos"');
@@ -33,5 +35,25 @@ describe("organisation de l’identité du site", () => {
     expect(source).not.toContain('key: "principleOneTitle"');
     expect(source).not.toContain('key: "quoteAttribution"');
     expect(source).not.toContain('label: "URL du portrait"');
+  });
+
+  it("conserve et affiche le contenu public fourni pour À propos de moi", () => {
+    const aboutSource = readFileSync(
+      resolve(process.cwd(), "client/src/pages/About.tsx"),
+      "utf8"
+    );
+    const settingsSource = readFileSync(
+      resolve(process.cwd(), "shared/siteSettings.ts"),
+      "utf8"
+    );
+    expect(settingsSource).toContain("biography:");
+    expect(settingsSource).toContain(
+      "Passionnée par la transmission du savoir"
+    );
+    expect(aboutSource).toContain("about.biography");
+    expect(aboutSource).toContain("Portrait de Corinne Thio");
+    expect(aboutSource).toContain("Corinne Thio · Juriste & blogueuse");
+    expect(aboutSource).toContain("about.ctaTitle");
+    expect(aboutSource).toContain("about.ctaLabel");
   });
 });
