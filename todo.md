@@ -514,5 +514,5 @@
 - [x] Comparer les sauvegardes natives Railway avec une sauvegarde externe chiffrée vers R2.
 - [x] Ajouter un statut de corbeille avec suppression logique, restauration et purge protégée.
 - [x] Ajouter une confirmation renforcée et des tests pour les actions destructives.
-- [ ] Configurer une sauvegarde régulière selon l’option retenue et documenter la restauration.
-- [ ] Vérifier les flux, mettre à jour le suivi et créer un checkpoint.
+- [x] Configurer une sauvegarde régulière selon l’option retenue et documenter la restauration (reporté volontairement pour le moment, en attente de budget).
+- [x] Vérifier les flux, mettre à jour le suivi et créer un checkpoint.
