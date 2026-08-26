@@ -122,6 +122,26 @@ export async function updateArticle(id: number, values: Partial<InsertArticle>) 
   return getArticleById(id);
 }
 
+export async function trashArticle(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database is not available");
+  await db.update(articles).set({ status: "trashed", publishedAt: null }).where(eq(articles.id, id));
+  return getArticleById(id);
+}
+
+export async function restoreArticle(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database is not available");
+  await db.update(articles).set({ status: "draft", publishedAt: null }).where(eq(articles.id, id));
+  return getArticleById(id);
+}
+
+export async function purgeArticle(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database is not available");
+  await db.delete(articles).where(eq(articles.id, id));
+}
+
 export async function insertContactMessage(values: InsertContactMessage) {
   const db = await getDb();
   if (!db) throw new Error("Database is not available");

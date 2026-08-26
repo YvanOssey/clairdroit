@@ -71,6 +71,13 @@
       "when": 1787610518522,
       "tag": "0009_lazy_mentor",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "5",
+      "when": 1787713343232,
+      "tag": "0010_supreme_captain_flint",
+      "breakpoints": true
     }
   ]
 }

@@ -140,7 +140,7 @@ export type RemoteArticle = {
   coverImage: string | null;
   seoTitle: string | null;
   seoDescription: string | null;
-  status: "draft" | "published" | "archived";
+  status: "draft" | "published" | "archived" | "trashed";
   publishedAt: Date | null;
   createdAt: Date;
   updatedAt: Date;

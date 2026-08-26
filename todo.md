@@ -509,3 +509,10 @@
 - [x] Vérifier le nombre exact d’articles publiés et préserver les éventuels brouillons.
 - [x] Supprimer uniquement les articles dont le statut est `published`.
 - [x] Vérifier que le nombre d’articles publiés est nul et que les autres données restent présentes.
+
+## Corbeille et sauvegardes Railway
+- [x] Comparer les sauvegardes natives Railway avec une sauvegarde externe chiffrée vers R2.
+- [x] Ajouter un statut de corbeille avec suppression logique, restauration et purge protégée.
+- [x] Ajouter une confirmation renforcée et des tests pour les actions destructives.
+- [ ] Configurer une sauvegarde régulière selon l’option retenue et documenter la restauration.
+- [ ] Vérifier les flux, mettre à jour le suivi et créer un checkpoint.

@@ -26,7 +26,7 @@ export const users = mysqlTable("users", {
 export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
 
-export const articleStatus = ["draft", "published", "archived"] as const;
+export const articleStatus = ["draft", "published", "archived", "trashed"] as const;
 export const editorialSection = ["actualite", "vulgarisation", "analyses", "carrieres"] as const;
 
 export const articles = mysqlTable("articles", {

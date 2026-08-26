@@ -21,6 +21,9 @@ import {
   listNewsletterSubscribers,
   listPublishedArticles,
   updateArticle,
+  trashArticle,
+  restoreArticle,
+  purgeArticle,
   updateContactMessageStatus,
   upsertSiteSettings,
   upsertUser,
@@ -248,6 +251,25 @@ export const appRouter = router({
         publishedAt: nextStatus === "published" ? existing.publishedAt ?? new Date() : null,
       });
       return updated;
+    }),
+    trash: adminProcedure.input(z.object({ id: z.number().int().positive(), confirmation: z.literal("CORBEILLE") })).mutation(async ({ input }) => {
+      const existing = await getArticleById(input.id);
+      if (!existing) throw new TRPCError({ code: "NOT_FOUND", message: "Article introuvable" });
+      if (existing.status === "trashed") throw new TRPCError({ code: "BAD_REQUEST", message: "Cet article est déjà dans la corbeille." });
+      return trashArticle(input.id);
+    }),
+    restore: adminProcedure.input(z.object({ id: z.number().int().positive() })).mutation(async ({ input }) => {
+      const existing = await getArticleById(input.id);
+      if (!existing) throw new TRPCError({ code: "NOT_FOUND", message: "Article introuvable" });
+      if (existing.status !== "trashed") throw new TRPCError({ code: "BAD_REQUEST", message: "Seul un article dans la corbeille peut être restauré." });
+      return restoreArticle(input.id);
+    }),
+    purge: adminProcedure.input(z.object({ id: z.number().int().positive(), confirmation: z.literal("SUPPRIMER DÉFINITIVEMENT") })).mutation(async ({ input }) => {
+      const existing = await getArticleById(input.id);
+      if (!existing) throw new TRPCError({ code: "NOT_FOUND", message: "Article introuvable" });
+      if (existing.status !== "trashed") throw new TRPCError({ code: "BAD_REQUEST", message: "Déplacez d’abord l’article dans la corbeille." });
+      await purgeArticle(input.id);
+      return { success: true } as const;
     }),
   }),
 });
