@@ -446,56 +446,56 @@
 ## Contenu absent sur Railway
 
 - [x] Vérifier que Railway possède une base MySQL configurée et accessible par `DATABASE_URL`; le service redémarre Online après la liaison et répond en HTTPS.
-- [ ] Migrer les réglages et articles publiés de la base Manus vers Railway.
-- [ ] Configurer puis tester le stockage S3 des images et du logo.
-- [ ] Vérifier le rendu des articles, images, administration et formulaires sur l’URL Railway.
+- [x] Migrer les réglages et articles publiés de la base Manus vers Railway (réglages reconstitués et enregistrés sur Railway ; anciens articles volontairement non migrés).
+- [x] Configurer puis tester le stockage S3 des images et du logo.
+- [x] Vérifier le rendu des articles, images, administration et formulaires sur l’URL Railway.
 
 ### Correction de liaison MySQL
 
-- [ ] Ajouter la référence Railway `DATABASE_URL → ${{MySQL.MYSQL_URL}}`, car le serveur lit `DATABASE_URL`.
-- [ ] Redéployer et vérifier une requête de données avec la bonne variable.
+- [x] Ajouter la référence Railway `DATABASE_URL → ${{MySQL.MYSQL_URL}}`, car le serveur lit `DATABASE_URL`.
+- [x] Redéployer et vérifier une requête de données avec la bonne variable.
 
 ## Recopie manuelle des articles sur Railway
 
-- [ ] Ouvrir l’administration de ClairDroit sur Railway avec le compte admin autorisé.
-- [ ] Recopier et publier l’article « Comprendre une clause de période d’essai ».
-- [ ] Recopier et publier l’article « Données personnelles : les bons réflexes avant de cliquer ».
-- [ ] Recopier et publier l’article « Lire un bail avant de signer ».
-- [ ] Recopier et publier l’article « Contrat commercial : cinq questions à poser avant de s’engager ».
-- [ ] Recopier et publier l’article « Quand une règle change : comment suivre le mouvement ».
-- [ ] Vérifier l’affichage public des articles copiés sur Railway.
+- [x] Ouvrir l’administration de ClairDroit sur Railway avec le compte admin autorisé.
+- [x] Recopier et publier l’article « Comprendre une clause de période d’essai » (non applicable : les anciens articles Manus ne sont pas migrés).
+- [x] Recopier et publier l’article « Données personnelles : les bons réflexes avant de cliquer » (non applicable : les anciens articles Manus ne sont pas migrés).
+- [x] Recopier et publier l’article « Lire un bail avant de signer » (non applicable : les anciens articles Manus ne sont pas migrés).
+- [x] Recopier et publier l’article « Contrat commercial : cinq questions à poser avant de s’engager » (non applicable : les anciens articles Manus ne sont pas migrés).
+- [x] Recopier et publier l’article « Quand une règle change : comment suivre le mouvement » (non applicable : les anciens articles Manus ne sont pas migrés).
+- [x] Vérifier l’affichage public des articles copiés sur Railway (non applicable : la validation porte sur un article original).
 
 ## Nouveau périmètre de publication
 
-- [ ] Ne pas migrer les cinq anciens articles Manus vers Railway.
-- [ ] Conserver la version Manus comme archive et solution de secours.
-- [ ] Préparer la création d’articles originaux par Corinne dans l’administration Railway.
-- [ ] Vérifier la publication d’un nouvel article après configuration finale de Railway.
+- [x] Ne pas migrer les cinq anciens articles Manus vers Railway.
+- [x] Conserver la version Manus comme archive et solution de secours.
+- [x] Préparer la création d’articles originaux par Corinne dans l’administration Railway.
+- [x] Vérifier la publication d’un nouvel article après configuration finale de Railway.
 
 ## Stockage indépendant du logo
 
 - [x] Vérifier le fichier logo disponible et son format : JPEG 1024 × 1536, environ 578 Ko.
-- [ ] Choisir le stockage objet indépendant et créer le bucket.
-- [ ] Configurer les variables S3 Railway sans exposer leurs valeurs.
-- [ ] Téléverser le logo et remplacer la référence Manus.
-- [ ] Vérifier l’affichage du logo dans le site et les emails.
+- [x] Choisir le stockage objet indépendant et créer le bucket.
+- [x] Configurer les variables S3 Railway sans exposer leurs valeurs.
+- [x] Téléverser le logo et remplacer la référence Manus.
+- [x] Vérifier l’affichage du logo dans le site et les emails.
 
 ### URL publique R2 pour le logo
 
-- [ ] Activer une URL publique de lecture temporaire ou un domaine public R2 pour `clairdroit-assets`.
-- [ ] Renseigner `S3_PUBLIC_URL` dans Railway sans exposer de secret.
+- [x] Activer une URL publique de lecture temporaire ou un domaine public R2 pour `clairdroit-assets`.
+- [x] Renseigner `S3_PUBLIC_URL` dans Railway sans exposer de secret.
 
 ## Schéma MySQL Railway manquant
 
 - [x] Appliquer le schéma des tables `users`, `articles`, `siteSettings`, `contactMessages` et `newsletterSubscribers` à MySQL Railway.
 - [x] Vérifier la présence des tables et de leurs contraintes sans supprimer de données.
-- [ ] Tester la création persistante du compte admin Railway.
+- [x] Tester la création persistante du compte admin Railway.
 ## Diagnostic connexion administrateur Railway
 - [x] Diagnostiquer l’échec de connexion de `corinnethio52@gmail.com` après initialisation du schéma MySQL.
 - [x] Corriger la configuration ou le compte admin sans exposer le mot de passe.
-- [ ] Vérifier la connexion admin et l’accès au panneau de rédaction sur l’URL Railway.
+- [x] Vérifier la connexion admin et l’accès au panneau de rédaction sur l’URL Railway.
 ## Correctif crypto du login Railway
 - [x] Diagnostiquer l’origine de `crypto is not defined` dans la signature de session en production.
 - [x] Corriger l’import ou l’usage du module crypto de manière compatible Node 18.
 - [x] Valider TypeScript, tests et build avant le déploiement.
-- [ ] Retester la connexion admin et l’accès au panneau de rédaction sur Railway.
+- [x] Retester la connexion admin et l’accès au panneau de rédaction sur Railway.
