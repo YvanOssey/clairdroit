@@ -4,7 +4,18 @@ import axios, { type AxiosInstance } from "axios";
 import { parse as parseCookieHeader } from "cookie";
 import type { Request } from "express";
 import { SignJWT, jwtVerify } from "jose";
+import { webcrypto } from "node:crypto";
 import type { User } from "../../drizzle/schema";
+
+// jose v6 expects the Web Crypto API as a global. Node 18 provides it through
+// node:crypto, but it is not guaranteed to expose it as an unqualified global
+// in every Railway runtime configuration.
+if (!globalThis.crypto) {
+  Object.defineProperty(globalThis, "crypto", {
+    configurable: true,
+    value: webcrypto,
+  });
+}
 import * as db from "../db";
 import { ENV } from "./env";
 import type {
