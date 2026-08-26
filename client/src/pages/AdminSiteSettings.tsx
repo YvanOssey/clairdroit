@@ -5,6 +5,7 @@ import {
   ArrowUpRight,
   AtSign,
   BookOpen,
+  BriefcaseBusiness,
   Globe2,
   Home,
   Info,
@@ -57,11 +58,14 @@ type SettingsSection = {
   icon: LucideIcon;
   fields: Field[];
 };
+type PageContentGroup =
+  | keyof PageContentValues
+  | `editorialPages.${keyof PageContentValues["editorialPages"]}`;
 type PageSection = {
   title: string;
   description: string;
   icon: LucideIcon;
-  group: keyof PageContentValues;
+  group: PageContentGroup;
   fields: PageField[];
 };
 
@@ -157,6 +161,125 @@ const pageSections: PageSection[] = [
       { key: "ctaEyebrow", label: "Surtitre appel à l’action" },
       { key: "ctaTitle", label: "Titre appel à l’action" },
       { key: "ctaLabel", label: "Libellé du bouton" },
+    ],
+  },
+  {
+    title: "Actualité juridique",
+    description:
+      "Titres, présentation et état vide de la page Actualité juridique.",
+    icon: BookOpen,
+    group: "editorialPages.actualite",
+    fields: [
+      { key: "eyebrow", label: "Surtitre" },
+      { key: "titleMain", label: "Titre — première ligne" },
+      { key: "titleAccent", label: "Titre — accent" },
+      { key: "description", label: "Description", multiline: true },
+      { key: "label", label: "Libellé de sélection" },
+      { key: "resultsTitle", label: "Titre de la liste" },
+      { key: "emptyEyebrow", label: "Surtitre sans publication" },
+      { key: "emptyTitle", label: "Titre sans publication" },
+      {
+        key: "emptyDescription",
+        label: "Description sans publication",
+        multiline: true,
+      },
+    ],
+  },
+  {
+    title: "Articles juridiques vulgarisés",
+    description:
+      "Titres, présentation et état vide de la page de vulgarisation.",
+    icon: PanelsTopLeft,
+    group: "editorialPages.vulgarisation",
+    fields: [
+      { key: "eyebrow", label: "Surtitre" },
+      { key: "titleMain", label: "Titre — première ligne" },
+      { key: "titleAccent", label: "Titre — accent" },
+      { key: "description", label: "Description", multiline: true },
+      { key: "label", label: "Libellé de sélection" },
+      { key: "resultsTitle", label: "Titre de la liste" },
+      { key: "emptyEyebrow", label: "Surtitre sans publication" },
+      { key: "emptyTitle", label: "Titre sans publication" },
+      {
+        key: "emptyDescription",
+        label: "Description sans publication",
+        multiline: true,
+      },
+    ],
+  },
+  {
+    title: "Analyses juridiques",
+    description: "Titres, présentation et état vide de la page des analyses.",
+    icon: ShieldCheck,
+    group: "editorialPages.analyses",
+    fields: [
+      { key: "eyebrow", label: "Surtitre" },
+      { key: "titleMain", label: "Titre — première ligne" },
+      { key: "titleAccent", label: "Titre — accent" },
+      { key: "description", label: "Description", multiline: true },
+      { key: "label", label: "Libellé de sélection" },
+      { key: "resultsTitle", label: "Titre de la liste" },
+      { key: "emptyEyebrow", label: "Surtitre sans publication" },
+      { key: "emptyTitle", label: "Titre sans publication" },
+      {
+        key: "emptyDescription",
+        label: "Description sans publication",
+        multiline: true,
+      },
+    ],
+  },
+  {
+    title: "Tips carrières juridiques",
+    description: "Titres, présentation et état vide de la page Carrières.",
+    icon: UserRound,
+    group: "editorialPages.carrieres",
+    fields: [
+      { key: "eyebrow", label: "Surtitre" },
+      { key: "titleMain", label: "Titre — première ligne" },
+      { key: "titleAccent", label: "Titre — accent" },
+      { key: "description", label: "Description", multiline: true },
+      { key: "label", label: "Libellé de sélection" },
+      { key: "resultsTitle", label: "Titre de la liste" },
+      { key: "emptyEyebrow", label: "Surtitre sans publication" },
+      { key: "emptyTitle", label: "Titre sans publication" },
+      {
+        key: "emptyDescription",
+        label: "Description sans publication",
+        multiline: true,
+      },
+    ],
+  },
+  {
+    title: "Contenu de la page Carrières",
+    description:
+      "Tous les textes affichés dans la page Tips carrières juridiques.",
+    icon: BriefcaseBusiness,
+    group: "careersPage",
+    fields: [
+      { key: "eyebrow", label: "Surtitre" },
+      { key: "titleMain", label: "Titre — première ligne" },
+      { key: "titleAccent", label: "Titre — accent" },
+      { key: "description", label: "Description", multiline: true },
+      { key: "overviewEyebrow", label: "Surtitre présentation" },
+      { key: "overviewTitleMain", label: "Titre présentation" },
+      { key: "overviewTitleAccent", label: "Accent présentation" },
+      { key: "overviewBody", label: "Texte présentation", multiline: true },
+      { key: "asideBody", label: "Texte latéral", multiline: true },
+      { key: "subjectOneTitle", label: "Repère 1" },
+      { key: "subjectOneBody", label: "Texte repère 1", multiline: true },
+      { key: "subjectTwoTitle", label: "Repère 2" },
+      { key: "subjectTwoBody", label: "Texte repère 2", multiline: true },
+      { key: "subjectThreeTitle", label: "Repère 3" },
+      { key: "subjectThreeBody", label: "Texte repère 3", multiline: true },
+      { key: "guidanceEyebrow", label: "Surtitre conseils" },
+      { key: "guidanceTitle", label: "Titre conseils" },
+      {
+        key: "guidanceItems",
+        label: "Conseils (un par ligne)",
+        multiline: true,
+      },
+      { key: "ctaText", label: "Texte appel", multiline: true },
+      { key: "ctaLabel", label: "Libellé bouton" },
     ],
   },
   {
@@ -550,16 +673,15 @@ function PageEditorSection({
 }: {
   section: PageSection;
   pageContent: PageContentValues;
-  onChange: (
-    group: keyof PageContentValues,
-    key: string,
-    value: string
-  ) => void;
+  onChange: (group: PageContentGroup, key: string, value: string) => void;
 }) {
-  const values = pageContent[section.group] as unknown as Record<
-    string,
-    string
-  >;
+  const values = (section.group.startsWith("editorialPages.")
+    ? pageContent.editorialPages[
+        section.group.split(".")[1] as keyof PageContentValues["editorialPages"]
+      ]
+    : pageContent[
+        section.group as keyof PageContentValues
+      ]) as unknown as Record<string, string>;
   return (
     <section className="border-t border-[#b86e4b] pt-6">
       <SectionHeading
@@ -668,17 +790,41 @@ export default function AdminSiteSettings() {
   const updateField = (key: TextKey, value: string) =>
     setForm(current => ({ ...current, [key]: value }));
   const updatePageField = (
-    group: keyof PageContentValues,
+    group: PageContentGroup,
     key: string,
     value: string
   ) =>
-    setForm(current => ({
-      ...current,
-      pageContent: {
-        ...current.pageContent,
-        [group]: { ...current.pageContent[group], [key]: value },
-      },
-    }));
+    setForm(current => {
+      if (group.startsWith("editorialPages.")) {
+        const page = group.split(
+          "."
+        )[1] as keyof PageContentValues["editorialPages"];
+        return {
+          ...current,
+          pageContent: {
+            ...current.pageContent,
+            editorialPages: {
+              ...current.pageContent.editorialPages,
+              [page]: {
+                ...current.pageContent.editorialPages[page],
+                [key]: value,
+              },
+            },
+          },
+        };
+      }
+      const contentGroup = group as keyof PageContentValues;
+      return {
+        ...current,
+        pageContent: {
+          ...current.pageContent,
+          [contentGroup]: {
+            ...(current.pageContent[contentGroup] as Record<string, string>),
+            [key]: value,
+          },
+        },
+      };
+    });
   const updateSocial = (index: number, changes: Partial<SocialLink>) =>
     setForm(current => ({
       ...current,

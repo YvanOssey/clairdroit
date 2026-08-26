@@ -12,7 +12,11 @@ import {
   siteSettings,
   users,
 } from "../drizzle/schema";
-import { SITE_SETTINGS_DEFAULTS, type PageContentValues, type SocialLink } from "../shared/siteSettings";
+import {
+  SITE_SETTINGS_DEFAULTS,
+  type PageContentValues,
+  type SocialLink,
+} from "../shared/siteSettings";
 import { ENV } from "./_core/env";
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -64,33 +68,52 @@ export async function upsertUser(user: InsertUser): Promise<void> {
   values.lastSignedIn ??= new Date();
   if (Object.keys(updateSet).length === 0) updateSet.lastSignedIn = new Date();
 
-  await db.insert(users).values(values).onDuplicateKeyUpdate({ set: updateSet });
+  await db
+    .insert(users)
+    .values(values)
+    .onDuplicateKeyUpdate({ set: updateSet });
 }
 
 export async function getUserByOpenId(openId: string) {
   const db = await getDb();
   if (!db) return undefined;
-  const result = await db.select().from(users).where(eq(users.openId, openId)).limit(1);
+  const result = await db
+    .select()
+    .from(users)
+    .where(eq(users.openId, openId))
+    .limit(1);
   return result.length > 0 ? result[0] : undefined;
 }
 
 export async function getUserByEmail(email: string) {
   const db = await getDb();
   if (!db) return undefined;
-  const result = await db.select().from(users).where(eq(users.email, email)).limit(1);
+  const result = await db
+    .select()
+    .from(users)
+    .where(eq(users.email, email))
+    .limit(1);
   return result.length > 0 ? result[0] : undefined;
 }
 
 export async function listPublishedArticles() {
   const db = await getDb();
   if (!db) return [];
-  return db.select().from(articles).where(eq(articles.status, "published")).orderBy(desc(articles.publishedAt), desc(articles.createdAt));
+  return db
+    .select()
+    .from(articles)
+    .where(eq(articles.status, "published"))
+    .orderBy(desc(articles.publishedAt), desc(articles.createdAt));
 }
 
 export async function getPublishedArticleBySlug(slug: string) {
   const db = await getDb();
   if (!db) return undefined;
-  const result = await db.select().from(articles).where(eq(articles.slug, slug)).limit(1);
+  const result = await db
+    .select()
+    .from(articles)
+    .where(eq(articles.slug, slug))
+    .limit(1);
   const article = result[0];
   return article?.status === "published" ? article : undefined;
 }
@@ -98,13 +121,20 @@ export async function getPublishedArticleBySlug(slug: string) {
 export async function listAdminArticles() {
   const db = await getDb();
   if (!db) return [];
-  return db.select().from(articles).orderBy(desc(articles.updatedAt), desc(articles.createdAt));
+  return db
+    .select()
+    .from(articles)
+    .orderBy(desc(articles.updatedAt), desc(articles.createdAt));
 }
 
 export async function getArticleById(id: number) {
   const db = await getDb();
   if (!db) return undefined;
-  const result = await db.select().from(articles).where(eq(articles.id, id)).limit(1);
+  const result = await db
+    .select()
+    .from(articles)
+    .where(eq(articles.id, id))
+    .limit(1);
   return result[0];
 }
 
@@ -115,7 +145,10 @@ export async function insertArticle(article: InsertArticle) {
   return getArticleById(Number(result[0].insertId));
 }
 
-export async function updateArticle(id: number, values: Partial<InsertArticle>) {
+export async function updateArticle(
+  id: number,
+  values: Partial<InsertArticle>
+) {
   const db = await getDb();
   if (!db) throw new Error("Database is not available");
   await db.update(articles).set(values).where(eq(articles.id, id));
@@ -125,14 +158,20 @@ export async function updateArticle(id: number, values: Partial<InsertArticle>) 
 export async function trashArticle(id: number) {
   const db = await getDb();
   if (!db) throw new Error("Database is not available");
-  await db.update(articles).set({ status: "trashed", publishedAt: null }).where(eq(articles.id, id));
+  await db
+    .update(articles)
+    .set({ status: "trashed", publishedAt: null })
+    .where(eq(articles.id, id));
   return getArticleById(id);
 }
 
 export async function restoreArticle(id: number) {
   const db = await getDb();
   if (!db) throw new Error("Database is not available");
-  await db.update(articles).set({ status: "draft", publishedAt: null }).where(eq(articles.id, id));
+  await db
+    .update(articles)
+    .set({ status: "draft", publishedAt: null })
+    .where(eq(articles.id, id));
   return getArticleById(id);
 }
 
@@ -146,21 +185,38 @@ export async function insertContactMessage(values: InsertContactMessage) {
   const db = await getDb();
   if (!db) throw new Error("Database is not available");
   const result = await db.insert(contactMessages).values(values);
-  const inserted = await db.select().from(contactMessages).where(eq(contactMessages.id, Number(result[0].insertId))).limit(1);
+  const inserted = await db
+    .select()
+    .from(contactMessages)
+    .where(eq(contactMessages.id, Number(result[0].insertId)))
+    .limit(1);
   return inserted[0];
 }
 
 export async function listContactMessages() {
   const db = await getDb();
   if (!db) return [];
-  return db.select().from(contactMessages).orderBy(desc(contactMessages.createdAt));
+  return db
+    .select()
+    .from(contactMessages)
+    .orderBy(desc(contactMessages.createdAt));
 }
 
-export async function updateContactMessageStatus(id: number, status: "new" | "read" | "archived") {
+export async function updateContactMessageStatus(
+  id: number,
+  status: "new" | "read" | "archived"
+) {
   const db = await getDb();
   if (!db) throw new Error("Database is not available");
-  await db.update(contactMessages).set({ status }).where(eq(contactMessages.id, id));
-  const result = await db.select().from(contactMessages).where(eq(contactMessages.id, id)).limit(1);
+  await db
+    .update(contactMessages)
+    .set({ status })
+    .where(eq(contactMessages.id, id));
+  const result = await db
+    .select()
+    .from(contactMessages)
+    .where(eq(contactMessages.id, id))
+    .limit(1);
   return result[0];
 }
 
@@ -168,22 +224,37 @@ export async function insertNewsletterSubscriber(email: string) {
   const db = await getDb();
   if (!db) throw new Error("Database is not available");
   const now = new Date();
-  await db.insert(newsletterSubscribers).values({ email, status: "active" }).onDuplicateKeyUpdate({ set: { status: "active", updatedAt: now } });
-  const result = await db.select().from(newsletterSubscribers).where(eq(newsletterSubscribers.email, email)).limit(1);
+  await db
+    .insert(newsletterSubscribers)
+    .values({ email, status: "active" })
+    .onDuplicateKeyUpdate({ set: { status: "active", updatedAt: now } });
+  const result = await db
+    .select()
+    .from(newsletterSubscribers)
+    .where(eq(newsletterSubscribers.email, email))
+    .limit(1);
   return result[0];
 }
 
 export async function listNewsletterSubscribers() {
   const db = await getDb();
   if (!db) return [];
-  return db.select().from(newsletterSubscribers).orderBy(desc(newsletterSubscribers.createdAt));
+  return db
+    .select()
+    .from(newsletterSubscribers)
+    .orderBy(desc(newsletterSubscribers.createdAt));
 }
 
 function parseSocialLinks(value: string | null | undefined): SocialLink[] {
   if (!value) return [];
   try {
     const parsed = JSON.parse(value);
-    return Array.isArray(parsed) ? parsed.map((item) => ({ ...item, icon: item.icon ?? item.platform })) as SocialLink[] : [];
+    return Array.isArray(parsed)
+      ? (parsed.map(item => ({
+          ...item,
+          icon: item.icon ?? item.platform,
+        })) as SocialLink[])
+      : [];
   } catch {
     return [];
   }
@@ -194,13 +265,19 @@ export function serializePageContent(value: PageContentValues): string {
 }
 
 /** Ignore les anciennes références Manus sans toucher aux URLs R2 ou externes valides. */
-export function normalizeStoredImageUrl(value: string | null | undefined): string {
+export function normalizeStoredImageUrl(
+  value: string | null | undefined
+): string {
   if (typeof value !== "string") return "";
   const normalized = value.trim();
-  return normalized && !normalized.includes("/manus-storage/") ? normalized : "";
+  return normalized && !normalized.includes("/manus-storage/")
+    ? normalized
+    : "";
 }
 
-export function parsePageContent(value: string | null | undefined): PageContentValues {
+export function parsePageContent(
+  value: string | null | undefined
+): PageContentValues {
   const fallback = SITE_SETTINGS_DEFAULTS.pageContent;
   if (!value) return fallback;
   try {
@@ -213,12 +290,36 @@ export function parsePageContent(value: string | null | undefined): PageContentV
         ...(parsed.about ?? {}),
         photoUrl: normalizeStoredImageUrl(parsed.about?.photoUrl),
       },
+      editorialPages: {
+        ...fallback.editorialPages,
+        ...(parsed.editorialPages ?? {}),
+        actualite: {
+          ...fallback.editorialPages.actualite,
+          ...(parsed.editorialPages?.actualite ?? {}),
+        },
+        vulgarisation: {
+          ...fallback.editorialPages.vulgarisation,
+          ...(parsed.editorialPages?.vulgarisation ?? {}),
+        },
+        analyses: {
+          ...fallback.editorialPages.analyses,
+          ...(parsed.editorialPages?.analyses ?? {}),
+        },
+        carrieres: {
+          ...fallback.editorialPages.carrieres,
+          ...(parsed.editorialPages?.carrieres ?? {}),
+        },
+      },
+      careersPage: { ...fallback.careersPage, ...(parsed.careersPage ?? {}) },
       featured: { ...fallback.featured, ...(parsed.featured ?? {}) },
       decryptions: { ...fallback.decryptions, ...(parsed.decryptions ?? {}) },
       rubrics: { ...fallback.rubrics, ...(parsed.rubrics ?? {}) },
       contact: { ...fallback.contact, ...(parsed.contact ?? {}) },
       legalNotice: { ...fallback.legalNotice, ...(parsed.legalNotice ?? {}) },
-      privacyPolicy: { ...fallback.privacyPolicy, ...(parsed.privacyPolicy ?? {}) },
+      privacyPolicy: {
+        ...fallback.privacyPolicy,
+        ...(parsed.privacyPolicy ?? {}),
+      },
     };
   } catch {
     return fallback;
@@ -238,11 +339,22 @@ function formatSettings(row: typeof siteSettings.$inferSelect) {
 export async function getSiteSettings() {
   const db = await getDb();
   if (!db) return { id: 1, ...SITE_SETTINGS_DEFAULTS, updatedAt: new Date() };
-  const result = await db.select().from(siteSettings).where(eq(siteSettings.id, 1)).limit(1);
-  return result[0] ? formatSettings(result[0]) : { id: 1, ...SITE_SETTINGS_DEFAULTS, updatedAt: new Date() };
+  const result = await db
+    .select()
+    .from(siteSettings)
+    .where(eq(siteSettings.id, 1))
+    .limit(1);
+  return result[0]
+    ? formatSettings(result[0])
+    : { id: 1, ...SITE_SETTINGS_DEFAULTS, updatedAt: new Date() };
 }
 
-export async function upsertSiteSettings(values: Omit<InsertSiteSettings, "id" | "updatedAt" | "socialLinks" | "pageContent"> & { socialLinks: SocialLink[]; pageContent: PageContentValues }) {
+export async function upsertSiteSettings(
+  values: Omit<
+    InsertSiteSettings,
+    "id" | "updatedAt" | "socialLinks" | "pageContent"
+  > & { socialLinks: SocialLink[]; pageContent: PageContentValues }
+) {
   const db = await getDb();
   if (!db) throw new Error("Database is not available");
   const databaseValues = {
@@ -257,6 +369,9 @@ export async function upsertSiteSettings(values: Omit<InsertSiteSettings, "id" |
       },
     }),
   };
-  await db.insert(siteSettings).values({ id: 1, ...databaseValues }).onDuplicateKeyUpdate({ set: databaseValues });
+  await db
+    .insert(siteSettings)
+    .values({ id: 1, ...databaseValues })
+    .onDuplicateKeyUpdate({ set: databaseValues });
   return getSiteSettings();
 }

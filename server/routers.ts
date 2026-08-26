@@ -32,6 +32,41 @@ import { hashPassword, verifyPassword } from "./auth/password";
 import { storagePut } from "./storage";
 import { emailText, sendNotificationEmail } from "./email";
 
+const editorialPageInput = z.object({
+  eyebrow: z.string().trim().min(1).max(180),
+  titleMain: z.string().trim().min(1).max(180),
+  titleAccent: z.string().trim().min(1).max(180),
+  description: z.string().trim().min(1).max(1500),
+  label: z.string().trim().min(1).max(180),
+  resultsTitle: z.string().trim().min(1).max(180),
+  emptyEyebrow: z.string().trim().min(1).max(180),
+  emptyTitle: z.string().trim().min(1).max(300),
+  emptyDescription: z.string().trim().min(1).max(1200),
+});
+
+const careersPageInput = z.object({
+  eyebrow: z.string().trim().min(1).max(180),
+  titleMain: z.string().trim().min(1).max(180),
+  titleAccent: z.string().trim().min(1).max(180),
+  description: z.string().trim().min(1).max(1500),
+  overviewEyebrow: z.string().trim().min(1).max(180),
+  overviewTitleMain: z.string().trim().min(1).max(180),
+  overviewTitleAccent: z.string().trim().min(1).max(180),
+  overviewBody: z.string().trim().min(1).max(3000),
+  asideBody: z.string().trim().min(1).max(1500),
+  subjectOneTitle: z.string().trim().min(1).max(180),
+  subjectOneBody: z.string().trim().min(1).max(1000),
+  subjectTwoTitle: z.string().trim().min(1).max(180),
+  subjectTwoBody: z.string().trim().min(1).max(1000),
+  subjectThreeTitle: z.string().trim().min(1).max(180),
+  subjectThreeBody: z.string().trim().min(1).max(1000),
+  guidanceEyebrow: z.string().trim().min(1).max(180),
+  guidanceTitle: z.string().trim().min(1).max(180),
+  guidanceItems: z.string().trim().min(1).max(3000),
+  ctaText: z.string().trim().min(1).max(500),
+  ctaLabel: z.string().trim().min(1).max(120),
+});
+
 const siteSettingsInput = z.object({
   siteName: z.string().trim().min(1).max(120),
   siteTagline: z.string().trim().min(1).max(180),
@@ -106,6 +141,13 @@ const siteSettingsInput = z.object({
       ctaLabel: z.string().trim().min(1).max(120),
       photoUrl: z.string().trim().max(2000),
     }),
+    editorialPages: z.object({
+      actualite: editorialPageInput,
+      vulgarisation: editorialPageInput,
+      analyses: editorialPageInput,
+      carrieres: editorialPageInput,
+    }),
+    careersPage: careersPageInput,
     featured: z.object({
       eyebrow: z.string().trim().min(1).max(180),
       titleMain: z.string().trim().min(1).max(180),

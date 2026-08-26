@@ -14,6 +14,16 @@ describe("organisation de l’identité du site", () => {
     expect(source).toContain('title: "Accueil"');
     expect(source).toContain('title: "À propos de moi"');
     expect(source).toContain('key: "biography"');
+    expect(source).toContain('title: "Actualité juridique"');
+    expect(source).toContain('title: "Articles juridiques vulgarisés"');
+    expect(source).toContain('title: "Analyses juridiques"');
+    expect(source).toContain('title: "Tips carrières juridiques"');
+    expect(source).toContain('title: "Contenu de la page Carrières"');
+    expect(source).toContain('group: "editorialPages.actualite"');
+    expect(source).toContain('group: "editorialPages.vulgarisation"');
+    expect(source).toContain('group: "editorialPages.analyses"');
+    expect(source).toContain('group: "editorialPages.carrieres"');
+    expect(source).toContain('key: "guidanceItems"');
     expect(source).toContain('title: "À la une"');
     expect(source).toContain('title: "Nous écrire"');
     expect(source).toContain('title="Photo de la page À propos"');
@@ -55,5 +65,17 @@ describe("organisation de l’identité du site", () => {
     expect(aboutSource).toContain("Corinne Thio · Juriste & blogueuse");
     expect(aboutSource).toContain("about.ctaTitle");
     expect(aboutSource).toContain("about.ctaLabel");
+    const sectionsSource = readFileSync(
+      resolve(process.cwd(), "client/src/pages/EditorialSections.tsx"),
+      "utf8"
+    );
+    const careersSource = readFileSync(
+      resolve(process.cwd(), "client/src/pages/LegalCareers.tsx"),
+      "utf8"
+    );
+    expect(sectionsSource).toContain(
+      "settings.pageContent.editorialPages[section]"
+    );
+    expect(careersSource).toContain("careersPage");
   });
 });

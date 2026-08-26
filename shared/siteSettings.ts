@@ -15,7 +15,49 @@ export type SocialLink = {
   visible: boolean;
 };
 
+export type EditorialPageSettings = {
+  eyebrow: string;
+  titleMain: string;
+  titleAccent: string;
+  description: string;
+  label: string;
+  resultsTitle: string;
+  emptyEyebrow: string;
+  emptyTitle: string;
+  emptyDescription: string;
+};
+
+export type CareersPageSettings = {
+  eyebrow: string;
+  titleMain: string;
+  titleAccent: string;
+  description: string;
+  overviewEyebrow: string;
+  overviewTitleMain: string;
+  overviewTitleAccent: string;
+  overviewBody: string;
+  asideBody: string;
+  subjectOneTitle: string;
+  subjectOneBody: string;
+  subjectTwoTitle: string;
+  subjectTwoBody: string;
+  subjectThreeTitle: string;
+  subjectThreeBody: string;
+  guidanceEyebrow: string;
+  guidanceTitle: string;
+  guidanceItems: string;
+  ctaText: string;
+  ctaLabel: string;
+};
+
 export type PageContentValues = {
+  editorialPages: {
+    actualite: EditorialPageSettings;
+    vulgarisation: EditorialPageSettings;
+    analyses: EditorialPageSettings;
+    carrieres: EditorialPageSettings;
+  };
+  careersPage: CareersPageSettings;
   about: {
     eyebrow: string;
     titleMain: string;
@@ -234,6 +276,94 @@ export const SITE_SETTINGS_DEFAULTS: SiteSettingsValues = {
       emptyTitle: "Les articles publiés apparaîtront ici.",
       emptyDescription:
         "Publiez votre premier article depuis le panneau d’administration pour alimenter cet index.",
+    },
+    editorialPages: {
+      actualite: {
+        eyebrow: "Actualité juridique",
+        titleMain: "Comprendre ce qui",
+        titleAccent: "change.",
+        description:
+          "Les évolutions juridiques qui comptent, replacées dans leur contexte et traduites en conséquences concrètes.",
+        label: "Dernières actualités",
+        resultsTitle: "Une lecture à la fois.",
+        emptyEyebrow: "Bientôt ici",
+        emptyTitle:
+          "Cette sélection sera alimentée par les prochaines publications.",
+        emptyDescription:
+          "Les articles publiés depuis votre panneau d’administration apparaîtront automatiquement dans cette page.",
+      },
+      vulgarisation: {
+        eyebrow: "Articles juridiques vulgarisés",
+        titleMain: "Le droit,",
+        titleAccent: "sans détour.",
+        description:
+          "Des articles pédagogiques pour entrer dans les notions juridiques avec des mots simples, des exemples et des repères utiles.",
+        label: "À comprendre",
+        resultsTitle: "Une lecture à la fois.",
+        emptyEyebrow: "Bientôt ici",
+        emptyTitle:
+          "Cette sélection sera alimentée par les prochaines publications.",
+        emptyDescription:
+          "Les articles publiés depuis votre panneau d’administration apparaîtront automatiquement dans cette page.",
+      },
+      analyses: {
+        eyebrow: "Analyses juridiques",
+        titleMain: "Lire entre",
+        titleAccent: "les lignes.",
+        description:
+          "Des analyses pour prendre du recul, confronter les textes à la pratique et mieux saisir les enjeux contemporains du droit.",
+        label: "Le temps de l’analyse",
+        resultsTitle: "Une lecture à la fois.",
+        emptyEyebrow: "Bientôt ici",
+        emptyTitle:
+          "Cette sélection sera alimentée par les prochaines publications.",
+        emptyDescription:
+          "Les articles publiés depuis votre panneau d’administration apparaîtront automatiquement dans cette page.",
+      },
+      carrieres: {
+        eyebrow: "Tips carrières juridiques",
+        titleMain: "Construire son",
+        titleAccent: "parcours.",
+        description:
+          "Des conseils concrets pour comprendre les métiers du droit, progresser dans ses études et construire une trajectoire juridique durable.",
+        label: "Conseils de carrière",
+        resultsTitle: "Une lecture à la fois.",
+        emptyEyebrow: "Bientôt ici",
+        emptyTitle:
+          "Cette sélection sera alimentée par les prochaines publications.",
+        emptyDescription:
+          "Les articles publiés depuis votre panneau d’administration apparaîtront automatiquement dans cette page.",
+      },
+    },
+    careersPage: {
+      eyebrow: "Tips carrières juridiques",
+      titleMain: "Trouver sa voie",
+      titleAccent: "dans le droit.",
+      description:
+        "Des repères simples et utiles pour mieux comprendre les métiers juridiques, préparer son parcours et progresser avec confiance.",
+      overviewEyebrow: "Le carnet de parcours",
+      overviewTitleMain: "Des conseils pour",
+      overviewTitleAccent: "avancer concrètement.",
+      overviewBody:
+        "Les carrières juridiques sont nombreuses : avocat, juriste d’entreprise, magistrat, notaire, chercheur ou encore chargé de conformité. Cette page rassemble des clés de lecture pour mieux comparer les parcours et faire des choix informés.",
+      asideBody:
+        "Une carrière se construit par étapes. L’important est de comprendre les exigences de chaque voie et de trouver celle qui correspond à ses envies.",
+      subjectOneTitle: "Construire son parcours",
+      subjectOneBody:
+        "Identifier ses intérêts, comprendre les différentes voies et avancer avec des objectifs réalistes.",
+      subjectTwoTitle: "Développer ses compétences",
+      subjectTwoBody:
+        "Méthodes de travail, rédaction, recherche juridique et aisance orale : les fondamentaux qui font la différence.",
+      subjectThreeTitle: "Entrer dans le monde professionnel",
+      subjectThreeBody:
+        "Préparer un stage, un entretien ou une candidature avec des repères concrets et une présentation claire.",
+      guidanceEyebrow: "Avant de commencer",
+      guidanceTitle: "Quelques repères utiles.",
+      guidanceItems:
+        "Clarifier son projet avant de choisir une spécialisation.\nSe renseigner auprès de sources officielles et de professionnels.\nConstruire progressivement une expérience et un réseau.",
+      ctaText:
+        "Vous souhaitez proposer un sujet ou partager une expérience de parcours ?",
+      ctaLabel: "Nous écrire",
     },
     /** Legacy compatibility only: no longer editable or rendered in the public site. */
     rubrics: {

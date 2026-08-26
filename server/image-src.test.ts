@@ -9,8 +9,10 @@ describe("rendu des images optionnelles", () => {
   it("ne passe pas directement les URLs optionnelles du logo aux balises img", () => {
     const source = readClientFile("components/SiteLayout.tsx");
 
-    expect(source).toContain("settings.logoUrl ? <img");
-    expect(source).toContain('aria-hidden="true">CD</span>');
+    expect(source).toContain("settings.logoUrl ? (");
+    expect(source).toContain("src={settings.logoUrl}");
+    expect(source).toContain('aria-hidden="true"');
+    expect(source).toContain("CD");
   });
 
   it("ne monte pas le portrait avant la disponibilité de son URL", () => {

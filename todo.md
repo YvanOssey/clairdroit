@@ -590,6 +590,15 @@
 ## Audit de cohérence pages publiques / Identité du site
 - [x] Inventorier les champs visibles sur chaque page publique active.
 - [x] Comparer les champs publics aux sections et champs de l’administration.
-- [ ] Corriger les écarts de synchronisation confirmés sans réintroduire les blocs supprimés.
-- [ ] Ajouter une régression et valider TypeScript, tests et rendu des pages.
-- [ ] Créer un checkpoint de l’audit et des corrections.
+- [x] Corriger les écarts de synchronisation confirmés sans réintroduire les blocs supprimés.
+- [x] Ajouter une régression et valider TypeScript, tests et rendu des pages.
+- [x] Créer un checkpoint de l’audit et des corrections.
+
+## Édition complète des textes publics
+- [x] Définir les champs éditoriaux des pages Actualité, Vulgarisation, Analyses et Carrières.
+- [x] Ajouter ces champs au modèle partagé, aux valeurs par défaut et à la validation serveur.
+- [x] Afficher ces champs dans Identité du site avec des repères clairs.
+- [x] Relier chaque page publique active à ses réglages sauvegardés.
+- [x] Nettoyer les anciens champs et éléments supprimés qui ne sont plus utilisés.
+- [x] Ajouter les régressions et valider TypeScript, tests, build et responsive.
+- [ ] Enregistrer le checkpoint de pause demandé.
