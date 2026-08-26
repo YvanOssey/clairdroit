@@ -528,3 +528,9 @@
 - [x] Préparer un suivi des métriques CPU, mémoire, latence, erreurs et connexions MySQL.
 - [x] Définir une procédure d’augmentation des ressources puis d’ajout d’un replica, avec contrôle des coûts.
 - [x] Vérifier la procédure sans modifier automatiquement la taille du service.
+
+## Compétence réutilisable de migration et exploitation
+- [x] Définir le périmètre réutilisable à partir du parcours ClairDroit.
+- [x] Initialiser la structure de la compétence avec `init_skill.py`.
+- [x] Rédiger `SKILL.md` et les références de migration, sécurité, validation et capacité.
+- [x] Valider la compétence avec `quick_validate.py` et la livrer à l’utilisateur.
