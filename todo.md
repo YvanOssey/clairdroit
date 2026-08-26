@@ -499,3 +499,8 @@
 - [x] Corriger l’import ou l’usage du module crypto de manière compatible Node 18.
 - [x] Valider TypeScript, tests et build avant le déploiement.
 - [x] Retester la connexion admin et l’accès au panneau de rédaction sur Railway.
+
+## Nettoyage après validation Railway
+- [x] Identifier l’article de test par son titre et son identifiant exact.
+- [x] Supprimer uniquement l’article de test de la base Railway.
+- [x] Vérifier que la page d’accueil et les autres publications réelles restent correctes.
