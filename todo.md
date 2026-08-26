@@ -520,5 +520,5 @@
 ## Capacité et trafic simultané
 - [x] Auditer les requêtes publiques, les appels tRPC, le chargement des images R2 et les limites Railway.
 - [x] Optimiser les listes publiques, les requêtes répétées et le cache sans modifier l’expérience éditoriale.
-- [ ] Tester le comportement sous charge représentative sans données fictives persistantes.
+- [x] Tester le comportement sous charge représentative sans données fictives persistantes.
 - [x] Documenter la capacité actuelle, les seuils d’alerte et les options d’hébergement.

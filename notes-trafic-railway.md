@@ -11,3 +11,8 @@ Implication pour ClairDroit : l’application est principalement stateless côt�
 Test non destructif effectué sur l’URL publique Railway avec 10 requêtes simultanées par page, sur 3 pages, soit 30 requêtes au total. Résultats : accueil 10/10 réponses HTTP 200, moyenne 7,308 s, maximum 11,210 s ; Actualité juridique 10/10 HTTP 200, moyenne 6,131 s, maximum 7,246 s ; Contact 10/10 HTTP 200, moyenne 8,420 s, maximum 9,924 s.
 
 Interprétation : aucune erreur HTTP n’est apparue, mais les temps mesurés sont élevés. Le test a été lancé avant le déploiement de l’optimisation React Query et mesure aussi le démarrage à froid, les appels API côté navigateur et la distance réseau. Il ne constitue pas une capacité maximale. Avant une campagne plus importante, examiner les métriques Railway, le temps des appels `/api/trpc` et la région du service.
+## Test post-déploiement — 26 août 2026
+
+Après publication de l’optimisation du cache, un test léger identique a été réalisé avec 10 requêtes simultanées par page sur l’accueil, Actualité juridique et Contact. Résultats : accueil 10/10 HTTP 200, moyenne 6,752 s, maximum 8,711 s ; Actualité juridique 10/10 HTTP 200, moyenne 8,118 s, maximum 13,235 s ; Contact 10/10 HTTP 200, moyenne 8,103 s, maximum 10,400 s.
+
+Les 30 requêtes ont toutes répondu HTTP 200. Les temps restent élevés et semblent inclure le démarrage à froid, la distance réseau et le chargement de l’application ; ils ne permettent pas d’annoncer une capacité maximale. Pour un trafic élevé, consulter les métriques Railway avant d’augmenter les réplicas, puis dimensionner MySQL et le service Node ensemble.
