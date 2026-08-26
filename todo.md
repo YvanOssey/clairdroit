@@ -557,4 +557,11 @@
 - [x] Identifier où la valeur `/manus-storage/` est encore persistée ou reconstruite.
 - [x] Neutraliser l’ancienne URL du portrait sans supprimer une éventuelle URL R2 valide.
 - [x] Vérifier le champ admin, la page À propos et les tests de réglages.
-- [ ] Créer un checkpoint du correctif portrait.
+- [x] Créer un checkpoint du correctif portrait.
+
+## Réorganisation de la page Identité du site
+- [x] Regrouper les champs admin par page ou zone éditoriale clairement nommée.
+- [x] Ajouter un repère visuel, une icône ou un texte pour chaque section modifiable.
+- [x] Griser et signaler les informations non éditables sans les supprimer.
+- [x] Ajouter une régression et valider l’affichage desktop/mobile.
+- [ ] Créer un checkpoint de la réorganisation.
