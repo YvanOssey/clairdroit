@@ -10,8 +10,6 @@ import {
   Info,
   LockKeyhole,
   PanelsTopLeft,
-  PenLine,
-  UserRound,
   ShieldCheck,
   Facebook,
   Github,
@@ -60,8 +58,8 @@ type SettingsSection = {
 };
 type PageSection = {
   title: string;
-  description?: string;
-  icon?: LucideIcon;
+  description: string;
+  icon: LucideIcon;
   group: keyof PageContentValues;
   fields: PageField[];
 };
@@ -140,41 +138,6 @@ const sections: SettingsSection[] = [
 
 const pageSections: PageSection[] = [
   {
-    title: "À propos de moi",
-    description: "Le contenu de la page personnelle de Corinne Thio.",
-    icon: UserRound,
-    group: "about",
-    fields: [
-      { key: "eyebrow", label: "Surtitre" },
-      { key: "titleMain", label: "Titre — première ligne" },
-      { key: "titleAccent", label: "Titre — accent" },
-      { key: "intro", label: "Introduction", multiline: true },
-      { key: "intentionEyebrow", label: "Surtitre intention" },
-      { key: "intentionTitleMain", label: "Titre intention" },
-      { key: "intentionTitleAccent", label: "Accent intention" },
-      { key: "paragraphOne", label: "Premier paragraphe", multiline: true },
-      { key: "paragraphTwo", label: "Deuxième paragraphe", multiline: true },
-      { key: "quote", label: "Citation", multiline: true },
-      { key: "quoteAttribution", label: "Attribution" },
-      { key: "principlesEyebrow", label: "Surtitre méthode" },
-      { key: "principleOneTitle", label: "Principe 1" },
-      { key: "principleOneBody", label: "Texte principe 1", multiline: true },
-      { key: "principleTwoTitle", label: "Principe 2" },
-      { key: "principleTwoBody", label: "Texte principe 2", multiline: true },
-      { key: "principleThreeTitle", label: "Principe 3" },
-      { key: "principleThreeBody", label: "Texte principe 3", multiline: true },
-      { key: "ctaEyebrow", label: "Surtitre appel à l’action" },
-      { key: "ctaTitle", label: "Titre appel à l’action" },
-      { key: "ctaLabel", label: "Libellé du bouton" },
-      {
-        key: "photoUrl",
-        label: "URL du portrait",
-        editable: false,
-        help: "Lecture seule : utilisez « Téléverser le portrait » pour remplacer l’image.",
-      },
-    ],
-  },
-  {
     title: "À la une",
     description: "Le texte d’introduction et l’état vide de l’accueil.",
     icon: BookOpen,
@@ -187,26 +150,6 @@ const pageSections: PageSection[] = [
       { key: "quote", label: "Citation", multiline: true },
       { key: "detail", label: "Texte complémentaire", multiline: true },
       { key: "linkLabel", label: "Lien du dossier" },
-      { key: "emptyEyebrow", label: "Surtitre sans publication" },
-      { key: "emptyTitle", label: "Titre sans publication" },
-      {
-        key: "emptyDescription",
-        label: "Description sans publication",
-        multiline: true,
-      },
-    ],
-  },
-  {
-    title: "Décryptages",
-    description: "Le titre et les repères de la page des articles.",
-    icon: PenLine,
-    group: "decryptions",
-    fields: [
-      { key: "eyebrow", label: "Surtitre" },
-      { key: "titleMain", label: "Titre — première ligne" },
-      { key: "titleAccent", label: "Titre — accent" },
-      { key: "description", label: "Description", multiline: true },
-      { key: "filterEyebrow", label: "Surtitre des filtres" },
       { key: "emptyEyebrow", label: "Surtitre sans publication" },
       { key: "emptyTitle", label: "Titre sans publication" },
       {
@@ -435,7 +378,7 @@ function Preview({ settings }: { settings: SiteSettingsValues }) {
 }
 
 function PageContentPreview({ settings }: { settings: SiteSettingsValues }) {
-  const { about, featured, decryptions, contact, legalNotice, privacyPolicy } =
+  const { featured, contact, legalNotice, privacyPolicy } =
     settings.pageContent;
   const previews = [
     [
@@ -461,14 +404,9 @@ function PageContentPreview({ settings }: { settings: SiteSettingsValues }) {
     [
       settings.navAboutLabel,
       "/a-propos",
-      `${about.titleMain} ${about.titleAccent}`,
+      "Biographie et portrait de Corinne Thio",
     ],
     ["À la une", "/", `${featured.titleMain} ${featured.titleEnd}`],
-    [
-      "Décryptages",
-      "/articles",
-      `${decryptions.titleMain} ${decryptions.titleAccent}`,
-    ],
     [
       settings.navContactLabel,
       "/contact",
@@ -602,15 +540,11 @@ function PageEditorSection({
   >;
   return (
     <section className="border-t border-[#b86e4b] pt-6">
-      {section.icon && section.description ? (
-        <SectionHeading
-          title={section.title}
-          description={section.description}
-          icon={section.icon}
-        />
-      ) : (
-        <p className="eyebrow mb-6">{section.title}</p>
-      )}
+      <SectionHeading
+        title={section.title}
+        description={section.description}
+        icon={section.icon}
+      />
       <div className="grid gap-6 md:grid-cols-2">
         {section.fields.map(field => (
           <label

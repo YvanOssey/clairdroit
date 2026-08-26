@@ -564,4 +564,11 @@
 - [x] Ajouter un repère visuel, une icône ou un texte pour chaque section modifiable.
 - [x] Griser et signaler les informations non éditables sans les supprimer.
 - [x] Ajouter une régression et valider l’affichage desktop/mobile.
-- [ ] Créer un checkpoint de la réorganisation.
+- [x] Créer un checkpoint de la réorganisation.
+
+## Synchronisation de l’Identité du site avec les blocs publics
+- [x] Comparer les champs de l’administration avec les sections réellement rendues sur les pages publiques.
+- [x] Retirer de l’interface les champs qui correspondent aux blocs supprimés.
+- [x] Conserver uniquement les réglages encore utilisés ou nécessaires aux pages publiques.
+- [x] Ajouter une régression et valider TypeScript, tests et rendu admin.
+- [ ] Créer un checkpoint de synchronisation.
