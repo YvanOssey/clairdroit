@@ -504,3 +504,8 @@
 - [x] Identifier l’article de test par son titre et son identifiant exact.
 - [x] Supprimer uniquement l’article de test de la base Railway.
 - [x] Vérifier que la page d’accueil et les autres publications réelles restent correctes.
+
+## Nettoyage complet des publications Railway
+- [x] Vérifier le nombre exact d’articles publiés et préserver les éventuels brouillons.
+- [x] Supprimer uniquement les articles dont le statut est `published`.
+- [x] Vérifier que le nombre d’articles publiés est nul et que les autres données restent présentes.
