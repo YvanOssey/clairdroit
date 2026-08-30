@@ -1,4 +1,9 @@
-import { AXIOS_TIMEOUT_MS, COOKIE_NAME, ONE_YEAR_MS, decodeOAuthState } from "@shared/const";
+import {
+  AXIOS_TIMEOUT_MS,
+  COOKIE_NAME,
+  ONE_YEAR_MS,
+  decodeOAuthState,
+} from "@shared/const";
 import { ForbiddenError } from "@shared/_core/errors";
 import axios, { type AxiosInstance } from "axios";
 import { parse as parseCookieHeader } from "cookie";
@@ -237,7 +242,7 @@ class SDKServer {
         name,
       };
     } catch (error) {
-      console.warn("[Auth] Session verification failed", String(error));
+      console.warn("[Auth] Session verification failed");
       return null;
     }
   }
@@ -299,7 +304,8 @@ class SDKServer {
     if (session.openId.startsWith("email:")) {
       const email = session.openId.slice("email:".length);
       const allowedEmails = [ENV.adminEmailYvan, ENV.adminEmailThio];
-      if (!allowedEmails.includes(email)) throw ForbiddenError("Unknown admin session");
+      if (!allowedEmails.includes(email))
+        throw ForbiddenError("Unknown admin session");
       const now = new Date();
       const storedAdmin = await db.getUserByOpenId(session.openId);
       if (storedAdmin) {

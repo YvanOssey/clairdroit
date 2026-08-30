@@ -34,12 +34,35 @@ async function findAvailablePort(startPort: number = 3000): Promise<number> {
 async function startServer() {
   const app = express();
   const server = createServer(app);
-  // Configure body parser with larger size limit for file uploads
-  app.use(express.json({ limit: "50mb" }));
-  app.use(express.urlencoded({ limit: "50mb", extended: true }));
+  app.disable("x-powered-by");
+  app.use((req, res, next) => {
+    res.setHeader("X-Content-Type-Options", "nosniff");
+    res.setHeader("X-Frame-Options", "DENY");
+    res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
+    res.setHeader(
+      "Permissions-Policy",
+      "camera=(), microphone=(), geolocation=()"
+    );
+    const forwardedProto = req.headers["x-forwarded-proto"];
+    const isHttps = req.protocol === "https" || forwardedProto === "https";
+    if (isHttps) {
+      res.setHeader(
+        "Strict-Transport-Security",
+        "max-age=31536000; includeSubDomains"
+      );
+    }
+    next();
+  });
+  // Les uploads sont limités à 6 Mo après décodage base64 ; le JSON ne doit pas
+  // permettre de réserver inutilement des dizaines de mégaoctets en mémoire.
+  app.use(express.json({ limit: "9mb" }));
+  app.use(express.urlencoded({ limit: "9mb", extended: true }));
   registerStorageProxy(app);
   if (!ENV.isProduction && (!ENV.forgeApiUrl || !ENV.forgeApiKey)) {
-    app.use("/local-uploads", express.static(path.resolve(process.cwd(), "local-uploads")));
+    app.use(
+      "/local-uploads",
+      express.static(path.resolve(process.cwd(), "local-uploads"))
+    );
   }
   registerOAuthRoutes(app);
   // tRPC API

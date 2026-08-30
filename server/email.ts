@@ -12,10 +12,10 @@ export type NotificationEmail = {
 const escapeHtml = (value: string) =>
   value.replace(
     /[&<>'"]/g,
-    (character) =>
+    character =>
       ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" })[
         character
-      ] ?? character,
+      ] ?? character
   );
 
 export async function sendNotificationEmail(email: NotificationEmail) {
@@ -52,11 +52,12 @@ export async function sendNotificationEmail(email: NotificationEmail) {
   });
 
   if (!response.ok) {
-    const detail = await response.text().catch(() => "");
-    console.warn(`[Email] Resend rejected notification (${response.status})${detail ? `: ${detail}` : ""}`);
+    await response.text().catch(() => "");
+    console.warn(`[Email] Resend rejected notification (${response.status})`);
     throw new TRPCError({
       code: "BAD_GATEWAY",
-      message: "Le message a été enregistré, mais la notification email n’a pas pu être envoyée.",
+      message:
+        "Le message a été enregistré, mais la notification email n’a pas pu être envoyée.",
     });
   }
 

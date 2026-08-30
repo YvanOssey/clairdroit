@@ -2,7 +2,7 @@
 import { timingSafeEqual } from "node:crypto";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { COOKIE_NAME, ONE_YEAR_MS } from "@shared/const";
+import { COOKIE_NAME, SESSION_MAX_AGE_MS } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { ENV } from "./_core/env";
 import { sdk } from "./_core/sdk";
@@ -261,6 +261,110 @@ const safeEqual = (left: string, right: string) => {
   return a.length === b.length && timingSafeEqual(a, b);
 };
 
+const LOGIN_WINDOW_MS = 15 * 60 * 1000;
+const LOGIN_MAX_ATTEMPTS = 5;
+const loginAttempts = new Map<string, { count: number; resetAt: number }>();
+
+function getClientAddress(req: {
+  headers: Record<string, unknown>;
+  socket?: { remoteAddress?: string };
+}) {
+  const forwarded = req.headers["x-forwarded-for"];
+  if (typeof forwarded === "string" && forwarded.trim()) {
+    return forwarded.split(",")[0].trim();
+  }
+  return req.socket?.remoteAddress || "unknown";
+}
+
+function checkLoginRateLimit(req: {
+  headers: Record<string, unknown>;
+  socket?: { remoteAddress?: string };
+}) {
+  const now = Date.now();
+  loginAttempts.forEach((attempt, key) => {
+    if (attempt.resetAt <= now) loginAttempts.delete(key);
+  });
+  const key = getClientAddress(req);
+  const current = loginAttempts.get(key);
+  if (current && current.resetAt > now && current.count >= LOGIN_MAX_ATTEMPTS) {
+    throw new TRPCError({
+      code: "TOO_MANY_REQUESTS",
+      message: "Trop de tentatives. Réessayez dans quelques minutes.",
+    });
+  }
+  loginAttempts.set(key, {
+    count: current && current.resetAt > now ? current.count + 1 : 1,
+    resetAt:
+      current && current.resetAt > now
+        ? current.resetAt
+        : now + LOGIN_WINDOW_MS,
+  });
+}
+
+function clearLoginRateLimit(req: {
+  headers: Record<string, unknown>;
+  socket?: { remoteAddress?: string };
+}) {
+  loginAttempts.delete(getClientAddress(req));
+}
+
+const imageExtensions: Record<string, string[]> = {
+  "image/jpeg": [".jpg", ".jpeg"],
+  "image/png": [".png"],
+  "image/webp": [".webp"],
+  "image/gif": [".gif"],
+};
+
+function hasImageSignature(
+  buffer: Buffer,
+  contentType: keyof typeof imageExtensions
+) {
+  if (contentType === "image/jpeg")
+    return (
+      buffer.length >= 3 &&
+      buffer[0] === 0xff &&
+      buffer[1] === 0xd8 &&
+      buffer[2] === 0xff
+    );
+  if (contentType === "image/png")
+    return buffer
+      .subarray(0, 8)
+      .equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]));
+  if (contentType === "image/gif")
+    return (
+      buffer.subarray(0, 6).toString("ascii") === "GIF87a" ||
+      buffer.subarray(0, 6).toString("ascii") === "GIF89a"
+    );
+  return (
+    buffer.length >= 12 &&
+    buffer.subarray(0, 4).toString("ascii") === "RIFF" &&
+    buffer.subarray(8, 12).toString("ascii") === "WEBP"
+  );
+}
+
+function validateImageUpload(
+  fileName: string,
+  contentType: keyof typeof imageExtensions,
+  buffer: Buffer
+) {
+  const requiredExtensions = imageExtensions[contentType];
+  const normalizedName = fileName.toLowerCase();
+  if (
+    !requiredExtensions.some(extension => normalizedName.endsWith(extension))
+  ) {
+    throw new TRPCError({
+      code: "BAD_REQUEST",
+      message: "L’extension de l’image ne correspond pas à son format.",
+    });
+  }
+  if (!hasImageSignature(buffer, contentType)) {
+    throw new TRPCError({
+      code: "BAD_REQUEST",
+      message: "Le contenu du fichier ne correspond pas à une image autorisée.",
+    });
+  }
+}
+
 const isHoneypotFilled = (value?: string) => Boolean(value?.trim());
 
 async function notifyWithoutBlocking(
@@ -269,10 +373,7 @@ async function notifyWithoutBlocking(
   try {
     await sendNotificationEmail(payload);
   } catch (error) {
-    console.warn(
-      "[Email] Notification non bloquante échouée après sauvegarde :",
-      error
-    );
+    console.warn("[Email] Notification non bloquante échouée après sauvegarde");
   }
 }
 
@@ -293,7 +394,7 @@ async function resolveLogoUrl(req: {
         : req.protocol || "https";
     return new URL(logoUrl, `${protocol}://${host}`).toString();
   } catch (error) {
-    console.warn("[Email] Logo indisponible pour la notification :", error);
+    console.warn("[Email] Logo indisponible pour la notification");
     return undefined;
   }
 }
@@ -313,10 +414,14 @@ export const appRouter = router({
     }),
     login: publicProcedure
       .input(
-        z.object({ email: z.string().email(), password: z.string().min(1) })
+        z.object({
+          email: z.string().email(),
+          password: z.string().min(1).max(256),
+        })
       )
       .mutation(async ({ input, ctx }) => {
         const email = input.email.trim().toLowerCase();
+        checkLoginRateLimit(ctx.req);
         const existing = await getUserByEmail(email);
         const configuredPasswords = new Map([
           [ENV.adminEmailYvan, ENV.adminPasswordYvan],
@@ -352,6 +457,7 @@ export const appRouter = router({
           }
         }
 
+        clearLoginRateLimit(ctx.req);
         const passwordHash =
           existing?.passwordHash ?? hashPassword(input.password);
         const openId = `email:${email}`;
@@ -373,7 +479,7 @@ export const appRouter = router({
         ctx.res.cookie(COOKIE_NAME, token, {
           ...cookieOptions,
           sameSite: "lax",
-          maxAge: ONE_YEAR_MS,
+          maxAge: SESSION_MAX_AGE_MS,
         });
         return { success: true } as const;
       }),
@@ -466,7 +572,6 @@ export const appRouter = router({
             "image/png",
             "image/webp",
             "image/gif",
-            "image/svg+xml",
           ]),
           data: z.string().min(1).max(8_500_000),
         })
@@ -478,6 +583,7 @@ export const appRouter = router({
             code: "PAYLOAD_TOO_LARGE",
             message: "L’image ne doit pas dépasser 6 Mo.",
           });
+        validateImageUpload(input.fileName, input.contentType, buffer);
         const safeName = input.fileName.replace(/[^a-zA-Z0-9._-]+/g, "-");
         return storagePut(
           `${ctx.user.id}-editorial/${Date.now()}-${safeName}`,

@@ -1,8 +1,10 @@
 export const COOKIE_NAME = "app_session_id";
 export const ONE_YEAR_MS = 1000 * 60 * 60 * 24 * 365;
+// Session interactive courte : une session volée ne doit pas rester valide un an.
+export const SESSION_MAX_AGE_MS = 1000 * 60 * 60 * 8;
 export const AXIOS_TIMEOUT_MS = 30_000;
-export const UNAUTHED_ERR_MSG = 'Please login (10001)';
-export const NOT_ADMIN_ERR_MSG = 'You do not have required permission (10002)';
+export const UNAUTHED_ERR_MSG = "Please login (10001)";
+export const NOT_ADMIN_ERR_MSG = "You do not have required permission (10002)";
 
 // One-time nonce cookie that binds an OAuth login to the browser that started
 // it. The `__Host-` prefix forces the cookie host-only (Secure, Path=/, no

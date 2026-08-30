@@ -601,4 +601,21 @@
 - [x] Relier chaque page publique active à ses réglages sauvegardés.
 - [x] Nettoyer les anciens champs et éléments supprimés qui ne sont plus utilisés.
 - [x] Ajouter les régressions et valider TypeScript, tests, build et responsive.
-- [ ] Enregistrer le checkpoint de pause demandé.
+- [x] Enregistrer le checkpoint de pause demandé.
+
+## Audit de sécurité — checklist 20 contrôles
+- [x] Délimiter le périmètre, les environnements, les rôles et les fournisseurs externes.
+- [x] Vérifier les secrets, le dépôt, l’authentification, les autorisations et les sessions.
+- [x] Vérifier les entrées, uploads, CORS, HTTPS, erreurs, logs et dépendances.
+- [x] Vérifier les emails, webhooks éventuels, sauvegardes et limites de la revue.
+- [x] Rédiger le rapport priorisé avec preuves non sensibles et corrections recommandées.
+
+## Corrections de sécurité prioritaires
+- [x] Ajouter une limitation de débit et une temporisation sur la connexion admin.
+- [ ] Durcir les sessions avec durée réduite, version/révocation et rotation appropriée.
+- [x] Réduire les limites de corps HTTP et renforcer la validation des uploads par contenu réel.
+- [x] Désactiver ou assainir les SVG et isoler les fichiers téléversés.
+- [x] Masquer les détails d’erreurs dans les logs et les réponses publiques.
+- [ ] Trier et mettre à jour les dépendances vulnérables sans casser l’application.
+- [x] Ajouter les tests de régression sécurité et revalider l’ensemble.
+- [ ] Enregistrer un checkpoint de la version durcie.

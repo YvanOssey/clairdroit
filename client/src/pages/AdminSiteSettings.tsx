@@ -866,10 +866,9 @@ export default function AdminSiteSettings() {
         "image/png",
         "image/webp",
         "image/gif",
-        "image/svg+xml",
       ].includes(file.type)
     ) {
-      toast.error("Formats acceptés : JPG, PNG, WebP, GIF ou SVG.");
+      toast.error("Formats acceptés : JPG, PNG, WebP ou GIF.");
       return;
     }
     if (file.size > 6_000_000) {
@@ -884,12 +883,11 @@ export default function AdminSiteSettings() {
       const encoded = String(reader.result).split(",")[1];
       uploadMutation.mutate({
         fileName: file.name,
-        contentType: file.type as
-          | "image/jpeg"
-          | "image/png"
-          | "image/webp"
-          | "image/gif"
-          | "image/svg+xml",
+          contentType: file.type as
+            | "image/jpeg"
+            | "image/png"
+            | "image/webp"
+            | "image/gif",
         data: encoded,
       });
     };
