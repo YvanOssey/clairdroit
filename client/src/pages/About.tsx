@@ -55,7 +55,7 @@ export default function About() {
 
         <figure className="relative overflow-hidden bg-[#ece6da] md:sticky md:top-28">
           <div className="relative border-b border-[#b86e4b]/40 px-5 py-4">
-            <p className="eyebrow">Portrait de Corinne Thio</p>
+          
           </div>
           <div className="relative">
             <div
