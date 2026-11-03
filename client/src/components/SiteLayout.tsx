@@ -213,14 +213,14 @@ export function SiteHeader() {
           </Link>
 
           <nav
-            className="hidden items-center gap-7 lg:flex"
+            className="hidden items-center gap-4 lg:flex xl:gap-7"
             aria-label="Navigation principale"
           >
             {navItems.map(item => (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`relative py-2 text-[0.72rem] font-bold uppercase tracking-[0.14em] transition-colors duration-180 ${
+                className={`relative whitespace-nowrap py-2 text-[0.72rem] font-bold uppercase tracking-[0.08em] xl:tracking-[0.14em] transition-colors duration-180 ${
                   isActive(item.href)
                     ? "text-[#b86e4b]"
                     : "text-[#3a4b60] hover:text-[#12243b]"
@@ -249,13 +249,13 @@ export function SiteHeader() {
               ) : (
                 <Search size={18} strokeWidth={1.8} />
               )}
-              <span className="hidden text-[0.68rem] font-bold uppercase tracking-[0.12em] sm:inline">
+              <span className="hidden text-[0.68rem] font-bold uppercase tracking-[0.12em] sm:inline lg:hidden xl:inline">
                 {searchOpen ? "Fermer" : "Rechercher"}
               </span>
             </button>
             <Link
               href="/contact"
-              className="hidden border border-[#12243b] px-4 py-2.5 text-[0.69rem] font-bold uppercase tracking-[0.13em] text-[#12243b] transition-all duration-180 hover:bg-[#12243b] hover:text-[#f7f4ee] sm:inline-flex"
+              className="hidden whitespace-nowrap border border-[#12243b] px-4 py-2.5 text-[0.69rem] font-bold uppercase tracking-[0.13em] text-[#12243b] transition-all duration-180 hover:bg-[#12243b] hover:text-[#f7f4ee] sm:inline-flex"
             >
               {settings.navContactLabel}
             </Link>

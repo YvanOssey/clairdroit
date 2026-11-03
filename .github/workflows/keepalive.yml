@@ -1,0 +1,26 @@
+# Garde ClairDroit éveillé sur l'offre gratuite de Render, qui met le service en veille
+# après 15 minutes sans visite (le visiteur suivant attendait alors 30 à 60 secondes).
+# GitHub lance ce réveil toutes les 10 minutes environ ; l'horaire n'est pas garanti à la minute.
+name: Garder le site éveillé
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Appeler /healthz
+        run: |
+          for essai in 1 2 3; do
+            if curl -fsS --max-time 90 https://clairdroit.onrender.com/healthz; then
+              echo " — site éveillé"; exit 0
+            fi
+            echo "Essai $essai échoué, nouvel essai dans 20 s"; sleep 20
+          done
+          echo "Le site ne répond pas"; exit 1
