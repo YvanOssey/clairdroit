@@ -75,6 +75,8 @@ export default function Home() {
             </div>
           </div>
 
+          {/* Les repères ne s'affichent qu'une fois des articles publiés : des compteurs à zéro donnent l'impression d'un site vide. */}
+          {liveArticles.length > 0 && (
           <aside className="relative z-10 border-l border-[#b86e4b] pl-6 pt-2 lg:mt-20" aria-label="Repères de la revue">
             <p className="eyebrow mb-8">Le numéro du moment</p>
             <div className="space-y-7">
@@ -85,12 +87,13 @@ export default function Home() {
               <div className="editorial-rule" />
               <div>
                 <span className="font-display text-5xl font-semibold text-[#b86e4b]">{totalReadMinutes}</span>
-                <p className="mt-1 text-sm leading-6 text-[#536174]">minutes de lecture dans vos publications.</p>
+                <p className="mt-1 text-sm leading-6 text-[#536174]">minute{totalReadMinutes > 1 ? "s" : ""} de lecture dans nos publications.</p>
               </div>
               <div className="editorial-rule" />
               <div className="flex items-center gap-3 text-[0.68rem] font-bold uppercase tracking-[0.12em] text-[#12243b]"><FileText size={16} className="text-[#b86e4b]" /> Édition en cours</div>
             </div>
           </aside>
+          )}
         </div>
       </section>
 
