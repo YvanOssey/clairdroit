@@ -191,12 +191,12 @@ export function SiteHeader() {
             className="group flex shrink-0 items-center gap-3"
             aria-label={`${settings.siteName}, accueil`}
           >
-            <span className="flex h-10 w-10 items-center justify-center bg-[#12243b] shadow-[4px_4px_0_#b86e4b] transition-transform duration-200 group-hover:-translate-y-0.5">
+            <span className="flex h-11 w-11 items-center justify-center overflow-hidden bg-[#12243b] shadow-[4px_4px_0_#b86e4b] transition-transform duration-200 group-hover:-translate-y-0.5">
               {settings.logoUrl ? (
                 <img
                   src={settings.logoUrl}
                   alt=""
-                  className="h-7 w-7 object-contain"
+                  className="h-full w-full object-contain"
                 />
               ) : (
                 <span
@@ -391,12 +391,12 @@ export function SiteFooter() {
       <div className="container grid gap-12 py-14 md:grid-cols-[1.2fr_0.8fr_1fr] md:gap-16">
         <div>
           <div className="mb-5 flex items-center gap-3">
-            <span className="flex h-9 w-9 items-center justify-center bg-[#f7f4ee]">
+            <span className="flex h-11 w-11 items-center justify-center overflow-hidden bg-[#f7f4ee] ring-1 ring-[#b86e4b]/60">
               {settings.logoUrl ? (
                 <img
                   src={settings.logoUrl}
                   alt=""
-                  className="h-6 w-6 object-contain"
+                  className="h-full w-full object-contain"
                 />
               ) : (
                 <span
