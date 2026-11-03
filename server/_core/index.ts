@@ -55,6 +55,12 @@ async function startServer() {
   });
   // Les uploads sont limités à 6 Mo après décodage base64 ; le JSON ne doit pas
   // permettre de réserver inutilement des dizaines de mégaoctets en mémoire.
+  // Point de santé pour l'hébergeur (Render, Railway…) : répond sans toucher à la base,
+  // pour signaler que le serveur est démarré, y compris au réveil d'une instance gratuite.
+  app.get("/healthz", (_req, res) => {
+    res.setHeader("Cache-Control", "no-store");
+    res.status(200).send("ok");
+  });
   app.use(express.json({ limit: "9mb" }));
   app.use(express.urlencoded({ limit: "9mb", extended: true }));
   registerStorageProxy(app);
@@ -82,7 +88,9 @@ async function startServer() {
   }
 
   const preferredPort = parseInt(process.env.PORT || "3000");
-  const port = await findAvailablePort(preferredPort);
+  // En production, l'hébergeur fournit PORT et n'enverra le trafic que sur ce port :
+  // on l'utilise tel quel au lieu d'en chercher un autre.
+  const port = ENV.isProduction ? preferredPort : await findAvailablePort(preferredPort);
 
   if (port !== preferredPort) {
     console.log(`Port ${preferredPort} is busy, using port ${port} instead`);

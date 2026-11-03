@@ -1,0 +1,48 @@
+# Hébergement gratuit de ClairDroit sur Render (Blueprint).
+# La base MySQL est externe (TiDB Serverless, compatible MySQL) ; les images restent sur Cloudflare R2.
+# Aucun secret ici : les valeurs marquées `sync: false` se saisissent dans le tableau de bord Render.
+services:
+  - type: web
+    name: clairdroit
+    runtime: node
+    plan: free
+    region: frankfurt
+    branch: main
+    # Les dépendances de développement (vite, esbuild…) sont nécessaires au build :
+    # NODE_ENV=production n'est donc défini que par le script `start`.
+    buildCommand: corepack enable && pnpm install --frozen-lockfile && pnpm build
+    startCommand: pnpm start
+    healthCheckPath: /healthz
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      # mysql://UTILISATEUR:MOTDEPASSE@HOTE:4000/clairdroit?ssl={"rejectUnauthorized":true}
+      - key: DATABASE_URL
+        sync: false
+      # Nouveau secret généré par Render : les sessions admin existantes devront se reconnecter.
+      - key: JWT_SECRET
+        generateValue: true
+      - key: ADMIN_PASSWORD_YVAN
+        sync: false
+      - key: ADMIN_PASSWORD_THIO
+        sync: false
+      - key: RESEND_API_KEY
+        sync: false
+      - key: EMAIL_FROM
+        sync: false
+      - key: CONTACT_NOTIFICATION_EMAIL
+        sync: false
+      # Cloudflare R2 (API compatible S3)
+      - key: S3_ENDPOINT
+        sync: false
+      - key: S3_REGION
+        value: auto
+      - key: S3_BUCKET
+        sync: false
+      - key: S3_ACCESS_KEY_ID
+        sync: false
+      - key: S3_SECRET_ACCESS_KEY
+        sync: false
+      - key: S3_PUBLIC_URL
+        sync: false
