@@ -330,7 +330,8 @@ function formatSettings(row: typeof siteSettings.$inferSelect) {
   return {
     ...SITE_SETTINGS_DEFAULTS,
     ...row,
-    logoUrl: normalizeStoredImageUrl(row.logoUrl),
+    // Sans logo téléversé, on garde le logo officiel par défaut (site, e-mails).
+    logoUrl: normalizeStoredImageUrl(row.logoUrl) || SITE_SETTINGS_DEFAULTS.logoUrl,
     socialLinks: parseSocialLinks(row.socialLinks),
     pageContent: parsePageContent(row.pageContent),
   };

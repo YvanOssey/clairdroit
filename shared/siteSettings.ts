@@ -193,7 +193,8 @@ export type SiteSettingsValues = {
 export const SITE_SETTINGS_DEFAULTS: SiteSettingsValues = {
   siteName: "ClairDroit",
   siteTagline: "Le droit clair pour tous !",
-  logoUrl: "",
+  // Logo officiel (Dame Justice dorée sur bleu nuit), servi depuis client/public/logo.
+  logoUrl: "/logo/clairdroit-mark.png",
   navHomeLabel: "Actualité",
   navArticlesLabel: "Vulgarisation",
   navCategoriesLabel: "Analyses",
